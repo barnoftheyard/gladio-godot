@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://3mij3cjhkwsm"]
+
+[ext_resource type="Script" path="res://addons/fpc/reticles/reticle_1.gd" id="1_rimeb"]
+
+[node name="Reticle" type="CenterContainer" node_paths=PackedStringArray("reticle_lines")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rimeb")
+reticle_lines = [NodePath("top"), NodePath("left"), NodePath("right"), NodePath("bottom")]
+
+[node name="dot" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="top" type="Line2D" parent="."]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="left" type="Line2D" parent="."]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="right" type="Line2D" parent="."]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="bottom" type="Line2D" parent="."]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
