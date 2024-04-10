@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://models/male/male.gd" id="4_wgvw7"]
 [ext_resource type="Script" path="res://scripts/DamageEffect.gd" id="5_jc7r5"]
 [ext_resource type="AudioStream" uid="uid://dnt8qud2ucxju" path="res://sounds/step0.wav" id="5_q1r4f"]
+[ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="5_yjhy0"]
 [ext_resource type="AudioStream" uid="uid://ctrg66kfmdi83" path="res://sounds/step1.wav" id="6_ocaur"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uy03j"]
@@ -325,12 +326,6 @@ _data = {
 "crouch": SubResource("Animation_in1ml")
 }
 
-[sub_resource type="Theme" id="Theme_wdf0f"]
-MarginContainer/constants/margin_bottom = 10
-MarginContainer/constants/margin_left = 10
-MarginContainer/constants/margin_right = 10
-MarginContainer/constants/margin_top = 10
-
 [sub_resource type="Shader" id="Shader_yhe64"]
 code = "shader_type canvas_item;
 render_mode unshaded;
@@ -453,6 +448,9 @@ cull_mask = 1048574
 [node name="smg" parent="Head/Weapon/SubViewportContainer/SubViewport" instance=ExtResource("2_rpj6g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
 
+[node name="WeaponRay" type="RayCast3D" parent="Head/Weapon"]
+target_position = Vector3(0, 0, -2048)
+
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -468,7 +466,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 453.0
 offset_bottom = 50.0
-theme = SubResource("Theme_wdf0f")
+theme = ExtResource("5_yjhy0")
 script = ExtResource("3_x1wcc")
 
 [node name="MarginContainer" type="MarginContainer" parent="UserInterface/DebugPanel"]
@@ -485,7 +483,7 @@ anchor_bottom = 1.0
 offset_top = -23.0
 offset_right = 40.0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 48
+theme = ExtResource("5_yjhy0")
 
 [node name="DamageEffect" type="ColorRect" parent="UserInterface"]
 visible = false

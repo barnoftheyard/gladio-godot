@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://jnpofrhieie4"]
+[gd_scene load_steps=27 format=3 uid="uid://jnpofrhieie4"]
 
 [ext_resource type="PackedScene" uid="uid://c0ong1s2d6xsj" path="res://models/male/male.glb" id="1_jjuqy"]
 
@@ -1804,7 +1804,7 @@ filters = ["Armature/Skeleton3D:Hand.R", "Armature/Skeleton3D:Lower Arm.R", "Arm
 [sub_resource type="AnimationNodeBlend2" id="17"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n245d"]
-graph_offset = Vector2(1.68573, 154.788)
+graph_offset = Vector2(-703.182, 236.073)
 nodes/Animation/node = SubResource("9")
 nodes/Animation/position = Vector2(-560, 120)
 "nodes/Animation 2/node" = SubResource("1")
@@ -1838,38 +1838,73 @@ nodes/strafe_dir/node = SubResource("17")
 nodes/strafe_dir/position = Vector2(20, 380)
 node_connections = [&"Blend3", 0, &"stance", &"Blend3", 1, &"Animation 2", &"Blend3", 2, &"Animation 3", &"aim", 0, &"strafe", &"aim", 1, &"Animation 6", &"output", 0, &"speed", &"pistol_aim", 0, &"aim", &"pistol_aim", 1, &"Animation 8", &"speed", 0, &"pistol_aim", &"stance", 0, &"Animation", &"stance", 1, &"Animation 9", &"strafe", 0, &"Blend3", &"strafe", 1, &"strafe_dir", &"strafe_dir", 0, &"Animation 4", &"strafe_dir", 1, &"Animation 5"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_h080k"]
+properties/0/path = NodePath("AnimationTree:parameters/Blend3/blend_amount")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("AnimationTree:parameters/aim/blend_amount")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("AnimationTree:parameters/pistol_aim/blend_amount")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("AnimationTree:parameters/speed/scale")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("AnimationTree:parameters/stance/blend_amount")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("AnimationTree:parameters/strafe/add_amount")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("AnimationTree:parameters/strafe_dir/blend_amount")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+
 [node name="male" instance=ExtResource("1_jjuqy")]
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(0, 0.953915, 0)
-bones/0/rotation = Quaternion(-0.00382531, 0, 1.45519e-11, 0.999993)
-bones/1/rotation = Quaternion(-0.0847872, 3.32e-08, -2.82511e-09, 0.996399)
-bones/2/rotation = Quaternion(0.0773295, 2.76068e-08, 7.16603e-09, 0.997006)
-bones/4/rotation = Quaternion(-0.214986, 1.94981e-09, -6.26513e-11, 0.976617)
-bones/6/rotation = Quaternion(-0.0161942, -0.0120846, -0.597942, 0.801285)
-bones/7/rotation = Quaternion(6.28643e-09, 1.2503e-07, -0.0586975, 0.998276)
-bones/13/rotation = Quaternion(-0.01622, 0.0120499, 0.596225, 0.802563)
-bones/14/rotation = Quaternion(-6.98492e-10, -1.27649e-07, 0.0596007, 0.998222)
-bones/17/rotation = Quaternion(0.244801, 0.0402348, 0.157111, 0.955913)
-bones/19/rotation = Quaternion(-0.00551873, 0.00679485, 0.999926, -0.00843868)
-bones/19/scale = Vector3(0.999002, 1, 0.993872)
-bones/20/rotation = Quaternion(-0.0581861, 0.000487983, -0.0110957, 0.998244)
-bones/20/scale = Vector3(0.999996, 1, 0.999977)
-bones/21/rotation = Quaternion(0.409064, -0.0438485, 0.0907834, 0.906919)
-bones/21/scale = Vector3(0.999171, 1.00075, 1.00014)
-bones/23/position = Vector3(-0.0955969, 0.0468122, 0.0355709)
-bones/23/rotation = Quaternion(0.00901329, -0.0271602, 0.999563, 0.00746649)
-bones/23/scale = Vector3(0.999003, 0.999999, 0.993872)
-bones/24/rotation = Quaternion(-0.0200723, -0.000486773, 0.00381613, 0.999791)
-bones/24/scale = Vector3(1.00001, 1.00008, 1.00002)
-bones/25/rotation = Quaternion(0.403137, 0.0584236, -0.107485, 0.906926)
-bones/25/scale = Vector3(0.998941, 1.00091, 1.00021)
-bones/27/position = Vector3(0.0946615, 0.551877, 0.311496)
-bones/28/position = Vector3(0.101526, 0.116024, 0.00368604)
-bones/28/rotation = Quaternion(-0.703916, 0.0671039, 0.0671039, 0.703916)
-bones/29/position = Vector3(-0.0946615, 0.551877, 0.311496)
-bones/30/position = Vector3(-0.106343, 0.116024, -0.0228076)
-bones/30/rotation = Quaternion(-0.702184, -0.083296, -0.083296, 0.702184)
+bones/0/rotation = Quaternion(-0.0162387, -0.0506999, -0.000420268, 0.998582)
+bones/1/rotation = Quaternion(-0.0847872, 3.31821e-08, -3.078e-09, 0.996399)
+bones/2/rotation = Quaternion(0.0772662, 0.0399568, -0.0062272, 0.99619)
+bones/3/rotation = Quaternion(0.222076, -0.0390945, 0.0191832, 0.974056)
+bones/4/rotation = Quaternion(-0.293104, 0.000224488, 0.00044898, 0.95608)
+bones/6/rotation = Quaternion(0.683247, -0.215121, -0.406316, 0.567278)
+bones/7/rotation = Quaternion(0.124533, -0.724704, -0.266355, 0.623178)
+bones/8/rotation = Quaternion(0.00578622, 0.0483282, -0.028533, 0.998407)
+bones/10/rotation = Quaternion(0.255485, 0.000345844, -0.20339, 0.945177)
+bones/13/rotation = Quaternion(0.060198, 0.287916, 0.608446, 0.737071)
+bones/14/rotation = Quaternion(0.784623, -0.19155, 0.279964, 0.518937)
+bones/15/rotation = Quaternion(-0.185975, 0.0165602, -0.189701, 0.963926)
+bones/17/rotation = Quaternion(0.10334, 0.0286594, 0.00780448, 0.994203)
+bones/19/rotation = Quaternion(0.289401, -0.00588355, 0.949849, -0.11832)
+bones/19/scale = Vector3(0.999522, 0.999911, 0.993478)
+bones/20/rotation = Quaternion(-0.194123, 0.00683482, -0.0638018, 0.978876)
+bones/21/rotation = Quaternion(0.532879, -0.103549, 0.00756266, 0.839798)
+bones/21/scale = Vector3(0.998703, 1.00153, 0.999822)
+bones/23/rotation = Quaternion(0.108746, 0.231555, 0.960693, 0.107819)
+bones/23/scale = Vector3(0.999041, 1.0001, 0.993612)
+bones/24/rotation = Quaternion(-0.297637, -0.000424675, 0.0568081, 0.952987)
+bones/25/rotation = Quaternion(0.371165, 0.262885, -0.00677905, 0.890552)
+bones/28/rotation = Quaternion(-0.686019, 0.345868, 0.0241987, 0.639663)
+bones/30/rotation = Quaternion(-0.673629, -0.216527, 0.00670466, 0.706608)
+
+[node name="SpineOverride" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.995629, 0.0160825, -0.0919959, -0.0466189, 0.93914, -0.340357, 0.0809232, 0.343158, 0.935785, 7.72438e-05, 1.14986, -0.0492317)
+bone_name = "Spine"
+bone_idx = 1
+override_pose = true
+
+[node name="HeadOverride" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2"]
+transform = Transform3D(0.995078, 0.0138153, -0.0981296, 0.00258415, 0.98628, 0.165059, 0.0990636, -0.1645, 0.98139, 0.00337043, 1.57641, 0.194819)
+bone_name = "Head"
+bone_idx = 4
+override_pose = true
+
+[node name="HandAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="3"]
+transform = Transform3D(-0.999781, 0.00897592, 0.0189166, 0.0184115, -0.053357, 0.998406, 0.00997079, 0.998535, 0.0531801, -0.129794, 1.26325, 0.298191)
+bone_name = "Hand.R"
+bone_idx = 15
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 libraries = {
@@ -1878,9 +1913,12 @@ libraries = {
 tree_root = SubResource("AnimationNodeBlendTree_n245d")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Blend3/blend_amount = -1.0
-parameters/aim/blend_amount = 0.0
+parameters/aim/blend_amount = 1.0
 parameters/pistol_aim/blend_amount = 0.0
 parameters/speed/scale = 1.0
-parameters/stance/blend_amount = 0.0
+parameters/stance/blend_amount = 1.0
 parameters/strafe/add_amount = 0.0
 parameters/strafe_dir/blend_amount = 0.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="3"]
+replication_config = SubResource("SceneReplicationConfig_h080k")
