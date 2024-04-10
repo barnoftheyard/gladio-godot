@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnos31t86a0dr"]
+
+[ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
+[ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="2_s6dxf"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_c7ueb")
+player_scene = ExtResource("2_s6dxf")
+
+[node name="Title" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Host" type="Button" parent="Title"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 446.0
+offset_right = 115.0
+offset_bottom = 521.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "Host"
+
+[node name="Join" type="Button" parent="Title"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 533.0
+offset_right = 94.0
+offset_bottom = 608.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "Join"
+
+[node name="test_world" parent="." instance=ExtResource("2_a25eh")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://addons/fpc/character.tscn")
+spawn_path = NodePath("../test_world")
+
+[connection signal="pressed" from="Title/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Title/Join" to="." method="_on_join_pressed"]

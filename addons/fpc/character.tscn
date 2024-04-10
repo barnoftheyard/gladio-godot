@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cc1m2a1obsyn4"]
+[gd_scene load_steps=30 format=3 uid="uid://cc1m2a1obsyn4"]
 
 [ext_resource type="Script" path="res://addons/fpc/character.gd" id="1_0t4e8"]
 [ext_resource type="Script" path="res://scripts/Weapon.gd" id="2_dlj5t"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://jnpofrhieie4" path="res://models/male/male.tscn" id="3_51y7w"]
 [ext_resource type="Script" path="res://addons/fpc/debug.gd" id="3_x1wcc"]
 [ext_resource type="Script" path="res://models/male/male.gd" id="4_wgvw7"]
+[ext_resource type="Script" path="res://scripts/DamageEffect.gd" id="5_jc7r5"]
 [ext_resource type="AudioStream" uid="uid://dnt8qud2ucxju" path="res://sounds/step0.wav" id="5_q1r4f"]
 [ext_resource type="AudioStream" uid="uid://ctrg66kfmdi83" path="res://sounds/step1.wav" id="6_ocaur"]
 
@@ -330,7 +331,61 @@ MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
 
+[sub_resource type="Shader" id="Shader_yhe64"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform float randx;
+uniform float randy;
+uniform float grain_alpha;
+uniform float grain_scale : hint_range(0.0, 10.0);
+uniform sampler2D noise_tex;
+uniform sampler2D vignette_tex;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+
+void fragment()
+{
+	vec4 col = texture(SCREEN_TEXTURE, SCREEN_UV);
+	
+	vec2 offset = vec2(randx,randy);
+	vec4 noise = texture(noise_tex, mod(SCREEN_UV * grain_scale + offset, 1.0));
+	vec4 v_fade = texture(vignette_tex, SCREEN_UV);
+	
+	noise /= grain_alpha;
+	
+	COLOR.rgba = vec4(col.r, col.g, col.b, col.a) / noise.rgba;
+}"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v8621"]
+noise_type = 3
+frequency = 0.08
+fractal_type = 0
+fractal_gain = 0.445
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f58y3"]
+noise = SubResource("FastNoiseLite_v8621")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i0mpn"]
+shader = SubResource("Shader_yhe64")
+shader_parameter/randx = 0.0
+shader_parameter/randy = 0.0
+shader_parameter/grain_alpha = 0.5
+shader_parameter/grain_scale = 10.0
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_f58y3")
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_k4wwl"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ltoef"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Head:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("HEAD", "CAMERA", "HEADBOB_ANIMATION", "JUMP_ANIMATION", "CROUCH_ANIMATION", "CHARATER_MODEL", "COLLISION_MESH")]
 script = ExtResource("1_0t4e8")
@@ -360,7 +415,7 @@ transform = Transform3D(1, 0, 0, 0, 0.999391, -0.0348995, 0, 0.0348995, 0.999391
 libraries = {
 "": SubResource("AnimationLibrary_o0unb")
 }
-blend_times = [&"RESET", &"RESET", 0.5, &"RESET", &"walk", 0.5, &"walk", &"RESET", 0.5]
+blend_times = [&"walk", &"RESET", 0.5, &"RESET", &"walk", 0.5, &"RESET", &"RESET", 0.5]
 
 [node name="JumpAnimation" type="AnimationPlayer" parent="Head"]
 libraries = {
@@ -422,13 +477,31 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/DebugPanel/MarginContainer"]
 layout_mode = 2
 
+[node name="Health" type="Label" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+
+[node name="DamageEffect" type="ColorRect" parent="UserInterface"]
+visible = false
+material = SubResource("ShaderMaterial_i0mpn")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+script = ExtResource("5_jc7r5")
+
 [node name="CrouchCeilingDetection" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_k4wwl")
 target_position = Vector3(0, 0.5, 0)
 
 [node name="male" parent="." instance=ExtResource("3_51y7w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("4_wgvw7")
 
 [node name="Footsteps" type="Node3D" parent="."]
@@ -444,5 +517,8 @@ stream = ExtResource("5_q1r4f")
 
 [node name="step1" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds"]
 stream = ExtResource("6_ocaur")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ltoef")
 
 [connection signal="timeout" from="Footsteps/FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]

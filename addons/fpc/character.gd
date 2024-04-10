@@ -53,6 +53,7 @@ extends CharacterBody3D
 @export var continuous_jumping : bool = true
 @export var view_bobbing : bool = true
 @export var jump_animation : bool = true
+@export var health : int = 100
 
 # Member variables
 var speed : float = base_speed
@@ -67,6 +68,8 @@ var RETICLE : Control
 # Get the gravity from the project settings to be synced with RigidBody nodes
 var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity") # Don't set this as a const, see the gravity section in _physics_process
 
+func _enter_tree():
+	set_multiplayer_authority(name.to_int())
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -83,7 +86,16 @@ func _ready():
 	JUMP_ANIMATION.play("RESET")
 	
 	speed = base_speed
-
+	
+	#if we're not host remove the debug screen
+	if is_multiplayer_authority():
+		$Head/Camera.current = is_multiplayer_authority()
+		
+		$UserInterface/Health.text = "+ " + str(health)
+		$male.hide()
+		
+	else:
+		$UserInterface.queue_free()
 
 func change_reticle(reticle):
 	if RETICLE:
@@ -96,16 +108,9 @@ func change_reticle(reticle):
 
 func _physics_process(delta):
 	current_speed = Vector3.ZERO.distance_to(get_real_velocity())
-	$UserInterface/DebugPanel.add_property("Speed", snappedf(current_speed, 0.001), 1)
-	$UserInterface/DebugPanel.add_property("Target speed", speed, 2)
-	var cv : Vector3 = get_real_velocity()
-	var vd : Array[float] = [
-		snappedf(cv.x, 0.001),
-		snappedf(cv.y, 0.001),
-		snappedf(cv.z, 0.001)
-	]
-	var readable_velocity : String = "X: " + str(vd[0]) + " Y: " + str(vd[1]) + " Z: " + str(vd[2])
-	$UserInterface/DebugPanel.add_property("Velocity", readable_velocity, 3)
+	
+	if is_multiplayer_authority():
+		update_ui()
 	
 	# Gravity
 	#gravity = ProjectSettings.get_setting("physics/3d/default_gravity") # If the gravity changes during your game, uncomment this code
@@ -115,8 +120,10 @@ func _physics_process(delta):
 	handle_jumping()
 	
 	var input_dir = Vector2.ZERO
-	if !immobile:
+	
+	if !immobile and is_multiplayer_authority():
 		input_dir = Input.get_vector(LEFT, RIGHT, FORWARD, BACKWARD)
+		
 	handle_movement(delta, input_dir)
 	
 	low_ceiling = $CrouchCeilingDetection.is_colliding()
@@ -125,7 +132,7 @@ func _physics_process(delta):
 	if dynamic_fov:
 		update_camera_fov()
 	
-	if view_bobbing:
+	if view_bobbing and is_multiplayer_authority():
 		headbob_animation(input_dir)
 		#translates the camera view bobbing to the Viewmodel transform
 		$Head/Weapon/SubViewportContainer/SubViewport/WeaponViewmodel.transform = $Head/Camera.transform
@@ -136,7 +143,15 @@ func _physics_process(delta):
 	#do the footstep sounds
 	footsteps(input_dir)
 	
+	#pushes physics objects
+	for index in get_slide_collision_count():				#player collision detection
+		var collision = get_slide_collision(index)	
+		#this pushes physics objects
+		if collision.get_collider() is RigidBody3D:
+			collision.get_collider().apply_central_impulse(-collision.get_normal() * 
+			collision.get_collider().mass)	#apply push force
 	
+	#jump animation handling
 	if jump_animation:
 		if !was_on_floor and is_on_floor(): # Just landed
 			match randi() % 2:
@@ -149,7 +164,7 @@ func _physics_process(delta):
 
 
 func handle_jumping():
-	if jumping_enabled:
+	if jumping_enabled and is_multiplayer_authority():
 		if continuous_jumping:
 			if Input.is_action_pressed(JUMP) and is_on_floor() and !low_ceiling:
 				if jump_animation:
@@ -185,7 +200,7 @@ func handle_movement(delta, input_dir):
 
 
 func handle_state(moving):
-	if sprint_enabled:
+	if sprint_enabled and is_multiplayer_authority():
 		if sprint_mode == 0:
 			if Input.is_action_pressed(SPRINT) and state != "crouching":
 				if moving:
@@ -210,7 +225,7 @@ func handle_state(moving):
 			elif state == "sprinting":
 				enter_normal_state()
 	
-	if crouch_enabled:
+	if crouch_enabled and is_multiplayer_authority():
 		if crouch_mode == 0:
 			if Input.is_action_pressed(CROUCH) and state != "sprinting":
 				if state != "crouching":
@@ -287,13 +302,8 @@ func headbob_animation(moving):
 		HEADBOB_ANIMATION.speed_scale = 1
 
 func _process(delta):
-	$UserInterface/DebugPanel.add_property("FPS", Performance.get_monitor(Performance.TIME_FPS), 0)
-	var status : String = state
-	if !is_on_floor():
-		status += " in the air"
-	$UserInterface/DebugPanel.add_property("State", status, 4)
 	
-	if Input.is_action_just_pressed(PAUSE):
+	if Input.is_action_just_pressed(PAUSE) and is_multiplayer_authority():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
@@ -307,7 +317,7 @@ func _process(delta):
 	#HEAD.rotation_degrees.x -= controller_view_rotation.y * 1.5
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and is_multiplayer_authority():
 		HEAD.rotation_degrees.y -= event.relative.x * mouse_sensitivity
 		HEAD.rotation_degrees.x -= event.relative.y * mouse_sensitivity
 
@@ -317,6 +327,28 @@ func footsteps(moving):
 	#function has to the only floor variant to prevent bug
 	elif !moving or !is_on_floor_only():
 		$Footsteps/FootstepsTimer.stop()
+		
+func damage(amount):
+	health -= amount
+	$UserInterface/Health.text = "+ " + str(health)
+	
+func update_ui():
+	$UserInterface/DebugPanel.add_property("Speed", snappedf(current_speed, 0.001), 1)
+	$UserInterface/DebugPanel.add_property("Target speed", speed, 2)
+	var cv : Vector3 = get_real_velocity()
+	var vd : Array[float] = [
+		snappedf(cv.x, 0.001),
+		snappedf(cv.y, 0.001),
+		snappedf(cv.z, 0.001)
+	]
+	var readable_velocity : String = "X: " + str(vd[0]) + " Y: " + str(vd[1]) + " Z: " + str(vd[2])
+	$UserInterface/DebugPanel.add_property("Velocity", readable_velocity, 3)
+	
+	$UserInterface/DebugPanel.add_property("FPS", Performance.get_monitor(Performance.TIME_FPS), 0)
+	var status : String = state
+	if !is_on_floor():
+		status += " in the air"
+	$UserInterface/DebugPanel.add_property("State", status, 4)
 
 func _on_footsteps_timer_timeout():
 	#adjust the timing of the steps to our current player speed
@@ -324,4 +356,3 @@ func _on_footsteps_timer_timeout():
 	#get all sounds and play the sounds randomly
 	var sounds = $Footsteps/FootstepsSounds.get_children()
 	sounds[randi() % sounds.size()].play()
-	

@@ -10,6 +10,10 @@ func set_all_meshes_layer_mask(node, value, boolean):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
-	set_all_meshes_layer_mask($SubViewportContainer/SubViewport/smg, 1, false)
-	set_all_meshes_layer_mask($SubViewportContainer/SubViewport/smg, 2, true)
+	#if not host remove viewmodels
+	if !is_multiplayer_authority():
+		$SubViewportContainer.queue_free()
+	else:
+		#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
+		set_all_meshes_layer_mask($SubViewportContainer/SubViewport/smg, 1, false)
+		set_all_meshes_layer_mask($SubViewportContainer/SubViewport/smg, 2, true)
