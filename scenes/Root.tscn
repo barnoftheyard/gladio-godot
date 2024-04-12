@@ -1,0 +1,85 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnos31t86a0dr"]
+
+[ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
+[ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="2_s6dxf"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_c7ueb")
+player_scene = ExtResource("2_s6dxf")
+
+[node name="Title" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Title"]
+layout_mode = 1
+offset_right = 421.0
+offset_bottom = 319.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Host" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Host"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Port: "
+
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Join" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Join"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="IPLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "IP: "
+
+[node name="IPLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Port: "
+
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+
+[node name="test_world" parent="." instance=ExtResource("2_a25eh")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://addons/fpc/character.tscn")
+spawn_path = NodePath("../test_world")
+
+[connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/Join" to="." method="_on_join_pressed"]

@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0fbdoho2psn5"]
+
+[ext_resource type="Script" path="res://scripts/Weapon.gd" id="1_tk8kd"]
+[ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_nryhr"]
+[ext_resource type="AudioStream" uid="uid://c7l8rb5v4ngxh" path="res://sounds/lmg.mp3" id="3_kaanv"]
+
+[node name="Weapon" type="Node3D"]
+script = ExtResource("1_tk8kd")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stretch = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="WeaponViewmodel" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+cull_mask = 1048574
+
+[node name="smg" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_nryhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
+
+[node name="WeaponRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -2048)
+
+[node name="WeaponSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_kaanv")
