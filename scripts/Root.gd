@@ -36,3 +36,11 @@ func _on_join_pressed():
 	multiplayer.multiplayer_peer = peer
 	
 	print("Joining server " + join_ip_entry.text + ": " + join_port_entry.text)
+
+
+func _on_settings_button_pressed():
+	$Title/Settings.show()
+
+
+func _on_popup_menu_popup_hide():
+	pass # Replace with function body.
