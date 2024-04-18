@@ -1,0 +1,174 @@
+[gd_scene load_steps=21 format=3 uid="uid://jnpofrhieie4"]
+
+[ext_resource type="PackedScene" uid="uid://c0ong1s2d6xsj" path="res://models/male/male.glb" id="1_jjuqy"]
+[ext_resource type="Script" path="res://models/male/male.gd" id="2_tujp7"]
+[ext_resource type="AnimationLibrary" uid="uid://c0spmnmy0yth4" path="res://CharacterAnim.res" id="3_7afvc"]
+
+[sub_resource type="AnimationNodeAnimation" id="1"]
+animation = &"walk "
+
+[sub_resource type="AnimationNodeAnimation" id="2"]
+animation = &"run "
+
+[sub_resource type="AnimationNodeAnimation" id="3"]
+animation = &"strafe L "
+
+[sub_resource type="AnimationNodeAnimation" id="4"]
+animation = &"strafe R "
+
+[sub_resource type="AnimationNodeAnimation" id="5"]
+animation = &"aim"
+
+[sub_resource type="AnimationNodeAnimation" id="7"]
+animation = &"aim"
+
+[sub_resource type="AnimationNodeAnimation" id="8"]
+animation = &"stance "
+
+[sub_resource type="AnimationNodeAnimation" id="9"]
+animation = &"idle "
+
+[sub_resource type="AnimationNodeBlend3" id="10"]
+
+[sub_resource type="AnimationNodeBlend2" id="11"]
+filter_enabled = true
+filters = ["%GeneralSkeleton:Lower Arm.R", "%GeneralSkeleton:RightHand", "%GeneralSkeleton:RightThumbMetacarpal", "%GeneralSkeleton:Upper Arm.R", "%GeneralSkeleton:Upper Thumb.R", "Armature/Skeleton3D:Hand.L", "Armature/Skeleton3D:Hand.R", "Armature/Skeleton3D:Lower Arm.L", "Armature/Skeleton3D:Lower Arm.R", "Armature/Skeleton3D:Upper Arm.L", "Armature/Skeleton3D:Upper Arm.R", "Armature/Skeleton3D:Upper Thumb.L", "Armature/Skeleton3D:Upper Thumb.R", "Armature/Skeleton:Coller.L", "Armature/Skeleton:Coller.R", "Armature/Skeleton:Fingers.L", "Armature/Skeleton:Fingers.R", "Armature/Skeleton:Hand.L", "Armature/Skeleton:Hand.R", "Armature/Skeleton:Lower Arm.L", "Armature/Skeleton:Lower Arm.R", "Armature/Skeleton:Lower Thumb.L", "Armature/Skeleton:Lower Thumb.R", "Armature/Skeleton:Upper Arm.L", "Armature/Skeleton:Upper Arm.R", "Armature/Skeleton:Upper Thumb.L", "Armature/Skeleton:Upper Thumb.R"]
+
+[sub_resource type="AnimationNodeBlend2" id="13"]
+filter_enabled = true
+filters = ["%GeneralSkeleton:LeftHand", "%GeneralSkeleton:LeftThumbMetacarpal", "%GeneralSkeleton:Lower Arm.L", "%GeneralSkeleton:Upper Arm.L", "%GeneralSkeleton:Upper Thumb.L", "Armature/Skeleton3D:Hand.R", "Armature/Skeleton3D:Lower Arm.R", "Armature/Skeleton3D:Upper Arm.R", "Armature/Skeleton3D:Upper Thumb.R", "Armature/Skeleton:Coller.R", "Armature/Skeleton:Fingers.R", "Armature/Skeleton:Hand.R", "Armature/Skeleton:Lower Arm.R", "Armature/Skeleton:Lower Thumb.R", "Armature/Skeleton:Upper Arm.R", "Armature/Skeleton:Upper Thumb.R"]
+
+[sub_resource type="AnimationNodeTimeScale" id="14"]
+
+[sub_resource type="AnimationNodeBlend2" id="15"]
+
+[sub_resource type="AnimationNodeAdd2" id="16"]
+
+[sub_resource type="AnimationNodeBlend2" id="17"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n245d"]
+graph_offset = Vector2(-291.904, 138.704)
+nodes/Animation/node = SubResource("9")
+nodes/Animation/position = Vector2(-560, 120)
+"nodes/Animation 2/node" = SubResource("1")
+"nodes/Animation 2/position" = Vector2(-580, 320)
+"nodes/Animation 3/node" = SubResource("2")
+"nodes/Animation 3/position" = Vector2(-420, 400)
+"nodes/Animation 4/node" = SubResource("3")
+"nodes/Animation 4/position" = Vector2(-220, 440)
+"nodes/Animation 5/node" = SubResource("4")
+"nodes/Animation 5/position" = Vector2(-220, 580)
+"nodes/Animation 6/node" = SubResource("5")
+"nodes/Animation 6/position" = Vector2(280, 440)
+"nodes/Animation 8/node" = SubResource("7")
+"nodes/Animation 8/position" = Vector2(320, 80)
+"nodes/Animation 9/node" = SubResource("8")
+"nodes/Animation 9/position" = Vector2(-760, 200)
+nodes/Blend3/node = SubResource("10")
+nodes/Blend3/position = Vector2(-200, 240)
+nodes/aim/node = SubResource("11")
+nodes/aim/position = Vector2(440, 200)
+nodes/output/position = Vector2(1120, 280)
+nodes/pistol_aim/node = SubResource("13")
+nodes/pistol_aim/position = Vector2(620, 80)
+nodes/speed/node = SubResource("14")
+nodes/speed/position = Vector2(960, 280)
+nodes/stance/node = SubResource("15")
+nodes/stance/position = Vector2(-380, 160)
+nodes/strafe/node = SubResource("16")
+nodes/strafe/position = Vector2(200, 240)
+nodes/strafe_dir/node = SubResource("17")
+nodes/strafe_dir/position = Vector2(20, 380)
+node_connections = [&"Blend3", 0, &"stance", &"Blend3", 1, &"Animation 2", &"Blend3", 2, &"Animation 3", &"aim", 0, &"strafe", &"aim", 1, &"Animation 6", &"output", 0, &"speed", &"pistol_aim", 0, &"aim", &"pistol_aim", 1, &"Animation 8", &"speed", 0, &"pistol_aim", &"stance", 0, &"Animation", &"stance", 1, &"Animation 9", &"strafe", 0, &"Blend3", &"strafe", 1, &"strafe_dir", &"strafe_dir", 0, &"Animation 4", &"strafe_dir", 1, &"Animation 5"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_h080k"]
+properties/0/path = NodePath("AnimationTree:parameters/Blend3/blend_amount")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("AnimationTree:parameters/aim/blend_amount")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("AnimationTree:parameters/pistol_aim/blend_amount")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("AnimationTree:parameters/speed/scale")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("AnimationTree:parameters/stance/blend_amount")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("AnimationTree:parameters/strafe/add_amount")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("AnimationTree:parameters/strafe_dir/blend_amount")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+
+[node name="male" instance=ExtResource("1_jjuqy")]
+script = ExtResource("2_tujp7")
+
+[node name="GeneralSkeleton" parent="Armature" index="0"]
+bones/0/rotation = Quaternion(-0.0155026, -0.00436131, -0.00111881, 0.99987)
+bones/1/rotation = Quaternion(-0.0175817, 0, -0.00162811, 0.999844)
+bones/2/rotation = Quaternion(0.000783382, 0.0395367, -0.00845941, 0.999182)
+bones/3/rotation = Quaternion(-0.000843566, -0.0425755, 0.0091096, 0.999051)
+bones/4/rotation = Quaternion(-0.0804084, 0.000105446, -0.00695316, 0.996738)
+bones/6/rotation = Quaternion(0.226487, -0.121639, -0.0162505, 0.966252)
+bones/7/rotation = Quaternion(-0.0629316, -0.0815305, 0.0519472, 0.993325)
+bones/9/rotation = Quaternion(-0.214187, 0.673887, 0.214187, 0.673887)
+bones/10/rotation = Quaternion(1.49012e-08, 2.32831e-09, -3.43425e-09, 1)
+bones/13/rotation = Quaternion(-0.20395, -0.13556, 0.0455432, 0.96848)
+bones/14/rotation = Quaternion(-0.75853, 0.296189, 0.104741, 0.570907)
+bones/15/rotation = Quaternion(0.486346, -0.680069, 0.334606, 0.434755)
+bones/16/rotation = Quaternion(-0.214187, -0.673887, -0.214187, 0.673887)
+bones/17/rotation = Quaternion(0.170887, -0.0273603, -0.116064, 0.978048)
+bones/19/rotation = Quaternion(0.00462123, -0.0165705, 0.999852, 0.000754373)
+bones/19/scale = Vector3(0.99988, 0.999993, 1.00013)
+bones/20/rotation = Quaternion(-0.00348305, 0.999988, 0.00327324, -0.000867837)
+bones/20/scale = Vector3(0.999879, 0.999442, 1.00069)
+bones/21/rotation = Quaternion(-0.00115737, 0.707967, -0.706242, 0.00166825)
+bones/21/scale = Vector3(1.00147, 1.00489, 0.993693)
+bones/22/rotation = Quaternion(-1.05367e-08, 1, 2.98023e-08, -3.16101e-08)
+bones/23/rotation = Quaternion(0.00425735, -0.0146155, 0.999884, -0.000982756)
+bones/23/scale = Vector3(1.00022, 1.00029, 0.999475)
+bones/24/rotation = Quaternion(-4.26173e-06, 1, -2.41399e-06, 9.3542e-06)
+bones/24/scale = Vector3(1.0001, 1.00097, 0.998941)
+bones/25/rotation = Quaternion(0.000248518, 0.707607, -0.706606, -9.07387e-05)
+bones/25/scale = Vector3(1.00024, 1.00401, 0.995772)
+bones/26/rotation = Quaternion(-1.58051e-08, 1, 0, -5.26836e-09)
+bones/28/rotation = Quaternion(5.21541e-08, -4.65661e-08, 1.49012e-08, 1)
+bones/30/position = Vector3(-0.266241, 0.103151, 0.100626)
+bones/30/rotation = Quaternion(-1.16415e-10, 1.49012e-08, 0, 1)
+
+[node name="SpineOverride" type="BoneAttachment3D" parent="Armature/GeneralSkeleton" index="1"]
+transform = Transform3D(0.995629, 0.0160825, -0.0919959, -0.0466189, 0.93914, -0.340357, 0.0809232, 0.343158, 0.935785, 7.72438e-05, 1.14986, -0.0492317)
+bone_name = "Spine"
+bone_idx = 1
+override_pose = true
+
+[node name="HandAttachment" type="BoneAttachment3D" parent="Armature/GeneralSkeleton" index="2"]
+transform = Transform3D(0.195317, -0.980664, 0.0122197, 0.92004, 0.187529, 0.344034, -0.339674, -0.0559531, 0.938878, -0.130551, 1.42833, 0.179866)
+bone_name = "Hand.R"
+bone_idx = 15
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="1"]
+libraries = {
+"": ExtResource("3_7afvc")
+}
+tree_root = SubResource("AnimationNodeBlendTree_n245d")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Blend3/blend_amount = -1.0
+parameters/aim/blend_amount = 1.0
+parameters/pistol_aim/blend_amount = 0.0
+parameters/speed/scale = 1.0
+parameters/stance/blend_amount = 1.0
+parameters/strafe/add_amount = 0.0
+parameters/strafe_dir/blend_amount = 0.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="2"]
+replication_config = SubResource("SceneReplicationConfig_h080k")
+
+[node name="AnimationPlayer" parent="." index="3"]
+libraries = {
+"": ExtResource("3_7afvc")
+}

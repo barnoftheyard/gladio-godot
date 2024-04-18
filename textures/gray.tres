@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c7jfm8dkxsrlt"]
+
+[ext_resource type="Texture2D" uid="uid://pe7a4weirj2g" path="res://textures/dark.png" id="1_2q6e4"]
+
+[resource]
+albedo_texture = ExtResource("1_2q6e4")
+metallic_specular = 0.1
+roughness = 0.7
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.000850145

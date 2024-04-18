@@ -1,0 +1,146 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnos31t86a0dr"]
+
+[ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
+[ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="2_s6dxf"]
+[ext_resource type="Script" path="res://scripts/Settings.gd" id="3_5lr76"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_c7ueb")
+player_scene = ExtResource("2_s6dxf")
+
+[node name="Title" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PanelContainer" type="PanelContainer" parent="Title"]
+layout_mode = 1
+offset_right = 421.0
+offset_bottom = 319.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HostButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Host"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Port: "
+
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="JoinButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Join"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="IPLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "IP: "
+
+[node name="IPLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Port: "
+
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="SettingsButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+
+[node name="Settings" type="PopupMenu" parent="Title"]
+title = "Settings"
+initial_position = 1
+size = Vector2i(512, 256)
+unresizable = false
+borderless = false
+transparent = true
+hide_on_item_selection = false
+hide_on_checkable_item_selection = false
+allow_search = false
+item_count = 8
+item_0/text = "Video"
+item_0/id = 0
+item_0/separator = true
+item_1/text = "Fullscreen"
+item_1/checkable = 1
+item_1/id = 1
+item_2/text = "Resolution:"
+item_2/id = 7
+item_3/text = "Multiplayer"
+item_3/id = 2
+item_3/separator = true
+item_4/text = "Player Name"
+item_4/id = 3
+item_5/text = ""
+item_5/id = 4
+item_5/separator = true
+item_6/text = "Save"
+item_6/id = 5
+item_7/text = "Cancel"
+item_7/id = 6
+script = ExtResource("3_5lr76")
+
+[node name="PlayerNamePopup" type="PopupPanel" parent="Title/Settings"]
+title = "Enter new player name:"
+initial_position = 1
+size = Vector2i(256, 64)
+borderless = false
+
+[node name="LineEdit" type="LineEdit" parent="Title/Settings/PlayerNamePopup"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 252.0
+offset_bottom = 60.0
+text = "Placeholder"
+max_length = 32
+caret_blink = true
+
+[node name="test_world" parent="." instance=ExtResource("2_a25eh")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://addons/fpc/character.tscn")
+spawn_path = NodePath("../test_world")
+
+[connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/JoinButton" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="id_pressed" from="Title/Settings" to="Title/Settings" method="_on_id_pressed"]
+[connection signal="popup_hide" from="Title/Settings" to="." method="_on_popup_menu_popup_hide"]
+[connection signal="text_submitted" from="Title/Settings/PlayerNamePopup/LineEdit" to="Title/Settings" method="_on_line_edit_text_submitted"]

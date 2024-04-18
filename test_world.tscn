@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://cvd1w35jx46ep"]
+
+[ext_resource type="Material" uid="uid://c7jfm8dkxsrlt" path="res://textures/gray.tres" id="2_6b068"]
+[ext_resource type="Material" uid="uid://cki767xo7iy2w" path="res://textures/orange.tres" id="2_b2rj1"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_edcox"]
+ground_color = Color(0.160784, 0.815686, 0.905882, 1)
+
+[sub_resource type="Sky" id="Sky_2iust"]
+sky_material = SubResource("PhysicalSkyMaterial_edcox")
+
+[sub_resource type="Environment" id="Environment_20rw3"]
+background_mode = 2
+sky = SubResource("Sky_2iust")
+tonemap_mode = 1
+ssao_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8q5f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n4xt4"]
+
+[node name="test_world" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_20rw3")
+
+[node name="sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.87959, -0.436605, 0.188936, 0, 0.397148, 0.917755, -0.475732, -0.807248, 0.349328, 0, 0, 0)
+light_energy = 2.0
+shadow_enabled = true
+
+[node name="terrain" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -0.5, 10)
+use_collision = true
+size = Vector3(30, 1, 30)
+material = ExtResource("2_6b068")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -10)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = ExtResource("2_6b068")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.8, -13)
+use_collision = true
+size = Vector3(4, 0.5, 4)
+material = ExtResource("2_6b068")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -9.5, 1.2, -10)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = ExtResource("2_6b068")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3, -15.5)
+use_collision = true
+size = Vector3(19, 8, 1)
+material = ExtResource("2_b2rj1")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.99626, 0, 0)
+operation = 2
+
+[node name="PhysicsBody" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.47838, 1.40318, 5.67005)
+mass = 5.0
+max_contacts_reported = 6
+contact_monitor = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody"]
+shape = SubResource("BoxShape3D_u8q5f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody"]
+mesh = SubResource("BoxMesh_n4xt4")
+
+[connection signal="body_entered" from="PhysicsBody" to="PhysicsBody" method="_on_body_entered"]
