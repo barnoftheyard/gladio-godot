@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://i8io85gcx1ir"]
+
+[ext_resource type="FontFile" uid="uid://tpk2xp8pgm6f" path="res://fonts/x14y24pxHeadUpDaisy.ttf" id="1_kxkpr"]
+
+[resource]
+default_font = ExtResource("1_kxkpr")
+default_font_size = 20
+Label/colors/font_color = Color(0.980392, 0.843137, 0, 0.862745)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.333333)

@@ -1,0 +1,284 @@
+[gd_scene load_steps=8 format=3 uid="uid://3mij3cjhkwsm"]
+
+[ext_resource type="Script" path="res://addons/fpc/reticles/reticle_1.gd" id="1_rimeb"]
+[ext_resource type="Material" uid="uid://fc4xo15pn5j4" path="res://hud_material.tres" id="2_x26x2"]
+[ext_resource type="FontFile" uid="uid://tpk2xp8pgm6f" path="res://fonts/x14y24pxHeadUpDaisy.ttf" id="3_hww4f"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_qy54d"]
+radius = 3.5
+height = 2.0
+radial_segments = 4
+is_hemisphere = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4lrnm"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.980392, 0.843137, 0, 0.862745)
+billboard_mode = 2
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_xfo2p"]
+material = SubResource("StandardMaterial3D_4lrnm")
+size = Vector2(0.005, 0.05)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xp3xx"]
+font = ExtResource("3_hww4f")
+font_size = 52
+font_color = Color(0.980392, 0.843137, 0, 0.862745)
+
+[node name="Reticle" type="Control" node_paths=PackedStringArray("reticle_lines")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("1_rimeb")
+reticle_lines = [NodePath("top"), NodePath("left"), NodePath("right"), NodePath("bottom")]
+dot_color = Color(0.980392, 0.843137, 0, 0.862745)
+line_color = Color(0.980392, 0.843137, 0, 0.862745)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="MarginContainer"]
+modulate = Color(0.137255, 0.137255, 0.137255, 0.196078)
+position = Vector2(22, 227)
+rotation = 3.14159
+scale = Vector2(146, 172)
+mesh = SubResource("SphereMesh_qy54d")
+
+[node name="dot" type="Polygon2D" parent="."]
+position = Vector2(575, 325)
+color = Color(0.980392, 0.843137, 0, 0.862745)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="top" type="Line2D" parent="."]
+position = Vector2(575, 325)
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+antialiased = true
+
+[node name="left" type="Line2D" parent="."]
+position = Vector2(575, 325)
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+antialiased = true
+
+[node name="right" type="Line2D" parent="."]
+position = Vector2(575, 325)
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+antialiased = true
+
+[node name="bottom" type="Line2D" parent="."]
+position = Vector2(575, 325)
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+antialiased = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+msaa_3d = 1
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="ReticleCamera" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+cull_mask = 1048572
+fov = 70.0
+size = 1.2
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="SubViewportContainer/SubViewport"]
+layers = 4
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1)
+layers = 4
+radius = 0.4
+height = 0.001
+sides = 32
+material = ExtResource("2_x26x2")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1)
+layers = 4
+operation = 2
+radius = 0.39
+height = 0.001
+sides = 32
+
+[node name="Compass" type="Node3D" parent="SubViewportContainer/SubViewport"]
+
+[node name="N" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Compass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, -1)
+layers = 4
+mesh = SubResource("QuadMesh_xfo2p")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/Compass/N"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00101388, 0.055, 0.00493932)
+layers = 4
+pixel_size = 0.001
+billboard = 2
+modulate = Color(0.980392, 0.843137, 0, 0.862745)
+outline_modulate = Color(0, 0, 0, 0)
+text = "0"
+font = ExtResource("3_hww4f")
+font_size = 52
+outline_size = 0
+
+[node name="E" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Compass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.7, 0)
+layers = 4
+mesh = SubResource("QuadMesh_xfo2p")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/Compass/E"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00101388, 0.055, 0.00493932)
+layers = 4
+pixel_size = 0.001
+billboard = 2
+modulate = Color(0.980392, 0.843137, 0, 0.862745)
+outline_modulate = Color(0, 0, 0, 0)
+text = "90"
+font = ExtResource("3_hww4f")
+font_size = 52
+outline_size = 0
+
+[node name="W" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Compass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -0.7, 0)
+layers = 4
+mesh = SubResource("QuadMesh_xfo2p")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/Compass/W"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00101388, 0.055, 0.00493932)
+layers = 4
+pixel_size = 0.001
+billboard = 2
+modulate = Color(0.980392, 0.843137, 0, 0.862745)
+outline_modulate = Color(0, 0, 0, 0)
+text = "270"
+font = ExtResource("3_hww4f")
+font_size = 52
+outline_size = 0
+
+[node name="S" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Compass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 1)
+layers = 4
+mesh = SubResource("QuadMesh_xfo2p")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/Compass/S"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00101388, 0.055, 0.00493932)
+layers = 4
+pixel_size = 0.001
+billboard = 2
+modulate = Color(0.980392, 0.843137, 0, 0.862745)
+outline_modulate = Color(0, 0, 0, 0)
+text = "180"
+font = ExtResource("3_hww4f")
+font_size = 52
+outline_size = 0
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="SubViewportContainer/SubViewport/Compass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0)
+layers = 4
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/Compass/CSGCombiner3D"]
+layers = 4
+radius = 1.0
+height = 0.005
+sides = 16
+material = ExtResource("2_x26x2")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/Compass/CSGCombiner3D"]
+layers = 4
+operation = 2
+radius = 0.99
+height = 0.005
+sides = 32
+material = ExtResource("2_x26x2")
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.577, 0.7)
+layers = 4
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(0.71, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, 0, 0.23, 0)
+layers = 4
+radius = 0.451
+height = 0.001
+sides = 64
+material = ExtResource("2_x26x2")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+layers = 4
+operation = 2
+radius = 0.406
+height = 0.007
+sides = 64
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, 0, 0.17, 0)
+layers = 4
+operation = 2
+height = 0.007
+sides = 64
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
+layers = 4
+operation = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+split_offset = 12
+
+[node name="mag" type="Label" parent="HSplitContainer"]
+layout_mode = 2
+text = "MAG"
+label_settings = SubResource("LabelSettings_xp3xx")
+horizontal_alignment = 1
+
+[node name="ammo" type="Label" parent="HSplitContainer"]
+layout_mode = 2
+text = "AMMO"
+label_settings = SubResource("LabelSettings_xp3xx")
+horizontal_alignment = 1
