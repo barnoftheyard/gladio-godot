@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cvd1w35jx46ep"]
+[gd_scene load_steps=10 format=3 uid="uid://cvd1w35jx46ep"]
 
-[ext_resource type="Texture2D" uid="uid://pe7a4weirj2g" path="res://textures/dark.png" id="2_08fdt"]
-[ext_resource type="Texture2D" uid="uid://cxjxvqmf4boxq" path="res://textures/green.png" id="3_q4clv"]
-[ext_resource type="Texture2D" uid="uid://dsv4jm4vydflb" path="res://textures/orange.png" id="4_1ns5t"]
+[ext_resource type="Material" uid="uid://dpllmvhj7glh2" path="res://textures/gray.tres" id="1_genfv"]
+[ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
+[ext_resource type="ArrayMesh" uid="uid://dmr3t7go1eqva" path="res://models/aud/ref1.obj" id="3_aldv4"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_edcox"]
 ground_color = Color(0.160784, 0.815686, 0.905882, 1)
@@ -16,52 +16,12 @@ sky = SubResource("Sky_2iust")
 tonemap_mode = 1
 ssao_enabled = true
 
-[sub_resource type="Gradient" id="Gradient_ur0vy"]
-colors = PackedColorArray(0, 0.476245, 0.0193456, 1, 0.360494, 0.612721, 0.119744, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_jd3pw"]
-frequency = 0.0027
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7akuf"]
-width = 1024
-height = 1024
-in_3d_space = true
-seamless = true
-color_ramp = SubResource("Gradient_ur0vy")
-noise = SubResource("FastNoiseLite_jd3pw")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_67ysu"]
-albedo_texture = SubResource("NoiseTexture2D_7akuf")
-uv1_scale = Vector3(0.1, 0.1, 0.1)
-uv1_triplanar = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gomnb"]
-albedo_texture = ExtResource("2_08fdt")
-metallic = 0.81
-metallic_specular = 0.2
-roughness = 0.5
-uv1_triplanar = true
-uv1_triplanar_sharpness = 0.000850145
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0sbk"]
-albedo_texture = ExtResource("3_q4clv")
-metallic = 0.81
-metallic_specular = 0.2
-roughness = 0.5
-uv1_triplanar = true
-uv1_triplanar_sharpness = 0.000850145
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7j4uu"]
-albedo_texture = ExtResource("4_1ns5t")
-metallic = 0.81
-metallic_specular = 0.2
-roughness = 0.5
-uv1_triplanar = true
-uv1_triplanar_sharpness = 0.000850145
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8q5f"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_n4xt4"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vsegq"]
+points = PackedVector3Array(41.5246, 10.7559, 35.4387, 39.347, -5.41125, -96.8863, 39.347, 6.05721, -96.702, 41.2996, 14.0449, 35.2954, 40.1666, -7.74204, 104.579, 40.1666, -10.3016, 104.989, 40.1666, -11.2537, 85.4827, 37.8926, -12.9106, -94.4915, 33.2079, -12.1254, -97.5822, 34.3409, -5.48544, -99.7927, 34.3409, 6.26741, -100.223, 39.347, -7.88424, -69.1523, 36.1971, -33.56, -55.0499, 36.1971, -32.4162, -60.3511, 36.8881, 10.9475, -94.4096, 27.5108, 27.8195, -39.7194, 27.2858, 28.3635, -35.8101, 26.9162, 28.9447, -7.70765, 27.0929, 28.0853, 13.5585, 27.1894, 27.7391, 15.9328, 40.2228, 14.725, 36.9123, 39.347, 0.863941, 101.345, 35.048, -7.97079, 107.731, 35.048, -10.5922, 107.281, 34.3409, -14.4809, 104.907, 37.0971, -20.0142, 97.702, 39.347, -13.8936, 102, 36.1971, -31.5136, 75.4329, 36.1971, -32.4842, 70.0908, 32.6213, -15.4207, -94.8804, -0.0105743, -12.4222, -98.626, -0.0105743, -5.44217, -100.591, -0.0105743, 6.46525, -100.918, -0.0105743, 11.405, -98.3599, 32.2115, 10.7991, -97.8278, -35.5192, -33.56, -55.0499, -35.5192, -32.4162, -60.3511, -0.0105743, -16.1255, -95.1056, 27.8001, 27.0343, -43.158, 0.0135345, 28.5057, -39.9241, 0.0135345, 29.1672, -35.8715, 0.0135345, 29.6, -7.4211, 0.0135345, 29.0189, 13.579, 32.2115, 2.43428, 102.573, 34.3409, 0.863941, 103.453, -0.0105743, -7.71113, 108.182, -0.0105743, -10.7405, 107.875, -0.0105743, 0.956676, 104.068, -0.0105743, -14.7962, 105.255, -0.0105743, -20.5335, 100.322, 32.3883, -20.0513, 99.8102, -35.5192, -31.5136, 75.4329, -35.5192, -32.4842, 70.0908, -33.5264, -5.48544, -99.7927, -31.8068, -15.4207, -94.8804, -32.4014, -12.1254, -97.5822, -33.5264, 6.26741, -100.223, -31.397, 10.7991, -97.8278, -26.9936, 27.0343, -43.158, 0.0135345, 27.5042, -43.4651, -38.5405, -7.88424, -69.1523, -38.5405, -5.41125, -96.8863, -39.3601, -11.2537, 85.4827, -37.078, -12.9106, -94.4915, -26.7043, 27.8195, -39.7194, -26.4793, 28.3635, -35.8101, -26.1097, 28.9447, -7.70765, -26.3909, 27.7391, 15.9328, -31.397, 2.43428, 102.573, 0.0135345, 28.246, 16.2193, -26.2784, 28.0853, 13.5585, -0.0105743, 2.77432, 103.024, -34.2335, -7.97079, 107.731, -34.2335, -10.5922, 107.281, -33.5264, -14.4809, 104.907, -33.5264, 0.863941, 103.453, -31.5818, -20.0513, 99.8102, -36.2906, -20.0142, 97.702, -38.5405, -13.8936, 102, -39.3601, -10.3016, 104.989, -38.5405, 6.05721, -96.702, -36.0816, 10.9475, -94.4096, -40.5654, 10.6879, 35.4387, -40.3485, 13.9769, 35.2954, -39.2797, 14.657, 36.9123, -38.5405, 0.863941, 101.345, -39.3601, -7.74204, 104.579)
 
 [node name="test_world" type="Node3D"]
 
@@ -74,44 +34,71 @@ light_energy = 2.0
 shadow_enabled = true
 
 [node name="terrain" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -9)
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="terrain"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -0.5, 10)
 use_collision = true
 size = Vector3(30, 1, 30)
-material = SubResource("StandardMaterial3D_67ysu")
+material = ExtResource("1_genfv")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="terrain"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -10)
 use_collision = true
 size = Vector3(10, 1, 10)
-material = SubResource("StandardMaterial3D_gomnb")
+material = ExtResource("1_genfv")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="terrain"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.8, -13)
 use_collision = true
 size = Vector3(4, 0.5, 4)
-material = SubResource("StandardMaterial3D_gomnb")
+material = ExtResource("1_genfv")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="terrain"]
 transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -9.5, 1.2, -10)
 use_collision = true
 size = Vector3(10, 1, 10)
-material = SubResource("StandardMaterial3D_u0sbk")
+material = ExtResource("1_genfv")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="terrain"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3, -15.5)
 use_collision = true
 size = Vector3(19, 8, 1)
-material = SubResource("StandardMaterial3D_7j4uu")
+material = ExtResource("2_exixc")
 
-[node name="CSGSphere3D" type="CSGSphere3D" parent="terrain"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.99626, 0, 0)
-operation = 2
+[node name="CSGBox3D6" type="CSGBox3D" parent="terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503052, 3.5, 19.3632)
+use_collision = true
+size = Vector3(3, 7, 3)
+material = ExtResource("2_exixc")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(3.25, 0.25, 3.25)
+material = ExtResource("1_genfv")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+size = Vector3(3.25, 0.25, 3.25)
+material = ExtResource("1_genfv")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(3.25, 0.25, 3.25)
+material = ExtResource("1_genfv")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+size = Vector3(3.25, 0.25, 3.25)
+material = ExtResource("1_genfv")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(3.25, 0.25, 3.25)
+material = ExtResource("1_genfv")
 
 [node name="PhysicsBody" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.47838, 1.40318, 5.67005)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.47838, 0.40318, 5.67005)
 mass = 5.0
 max_contacts_reported = 6
 contact_monitor = true
@@ -122,4 +109,26 @@ shape = SubResource("BoxShape3D_u8q5f")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody"]
 mesh = SubResource("BoxMesh_n4xt4")
 
+[node name="PhysicsBody2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85632, 0.357488, 5.67005)
+mass = 2000.0
+max_contacts_reported = 6
+contact_monitor = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody2"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_vsegq")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="PhysicsBody2"]
+
+[node name="CarMesh" type="CSGMesh3D" parent="PhysicsBody2/CSGCombiner3D"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("3_aldv4")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="PhysicsBody2"]
+visible = false
+radial_segments = 4
+rings = 4
+
 [connection signal="body_entered" from="PhysicsBody" to="PhysicsBody" method="_on_body_entered"]
+[connection signal="body_entered" from="PhysicsBody2" to="PhysicsBody2" method="_on_body_entered"]

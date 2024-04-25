@@ -59,6 +59,29 @@ func shoot_weapon(collision):
 			collision.apply_impulse(-$WeaponRay.get_collision_normal() * clamp(weapons[current_weapon
 			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_point())	#apply push force
 			
+			if collision.find_child("CSGCombiner3D") != null:
+				#if collision.get_node("CSGCombiner3D").find_child("Timer") == null:
+					#var _timer = Timer.new()
+					#_timer.wait_time = 0.2
+					#_timer.one_shot = true
+					#collision.get_node("CSGCombiner3D").add_child(_timer)
+				
+				if collision.get_node("CSGCombiner3D").get_child_count() < 20:
+						
+					
+					var sphere = CSGSphere3D.new()
+					sphere.operation = CSGShape3D.OPERATION_SUBTRACTION
+					sphere.radius = 0.25
+					sphere.radial_segments = 4
+					sphere.rings = 4
+					sphere.snap = 0.01
+					
+					collision.get_node("CSGCombiner3D").add_child(sphere)
+					sphere.global_position = $WeaponRay.get_collision_point()
+					
+					#collision.get_node("CSGCombiner3D").get_node("Timer").start()
+					
+			
 	#if we run out of bullets in our mag
 	elif weapons[current_weapon]["mag"] <= 0:
 		reload_weapon()
