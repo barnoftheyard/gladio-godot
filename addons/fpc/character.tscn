@@ -385,10 +385,9 @@ libraries = {
 
 [node name="Weapon" parent="Head" instance=ExtResource("2_5kqqr")]
 
-[node name="UserInterface" parent="." instance=ExtResource("3_wdmg4")]
-visible = false
-
 [node name="Reticle" parent="." instance=ExtResource("5_lek5e")]
+
+[node name="UserInterface" parent="." instance=ExtResource("3_wdmg4")]
 
 [node name="CrouchCeilingDetection" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

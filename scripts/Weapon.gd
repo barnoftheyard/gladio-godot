@@ -100,13 +100,15 @@ func reload_weapon():
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
+		
 		if timer <= 0:
-			if Input.is_action_pressed("fire"):
-				shoot_weapon($WeaponRay.get_collider())
-				
-			if (Input.is_action_just_pressed("reload") and 
-			!viewmodel.get_node("AnimationPlayer").is_playing()):
-				reload_weapon()
+			if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+				if Input.is_action_pressed("fire"):
+					shoot_weapon($WeaponRay.get_collider())
+					
+				if (Input.is_action_just_pressed("reload") and 
+				!viewmodel.get_node("AnimationPlayer").is_playing()):
+					reload_weapon()
 		else:
 			timer -= delta
 			

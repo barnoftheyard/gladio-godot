@@ -1,7 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbr8vsvckbpm6"]
+[gd_scene load_steps=7 format=3 uid="uid://bbr8vsvckbpm6"]
 
 [ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="1_4m6lg"]
+[ext_resource type="Script" path="res://scripts/UserInterface.gd" id="1_g1r2y"]
 [ext_resource type="Script" path="res://addons/fpc/debug.gd" id="2_j2w1a"]
+
+[sub_resource type="Animation" id="Animation_22xpp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.2, 0.2, 0.2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_i5h5i"]
+resource_name = "fade"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.2, 0.2, 0.2, 0), Color(0.2, 0.2, 0.2, 0.607843)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l62vd"]
+_data = {
+"RESET": SubResource("Animation_22xpp"),
+"fade": SubResource("Animation_i5h5i")
+}
 
 [node name="UserInterface" type="Control"]
 layout_mode = 3
@@ -11,8 +49,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+script = ExtResource("1_g1r2y")
 
 [node name="DebugPanel" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
@@ -26,3 +66,52 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel/MarginContainer"]
 layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 0)
+
+[node name="VSplitContainer" type="VSplitContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.5
+offset_top = -20.0
+offset_right = 27.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButton" type="MenuButton" parent="ColorRect/VSplitContainer"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "MENU"
+item_count = 2
+popup/item_0/text = "YES"
+popup/item_0/id = 0
+popup/item_1/text = "NO"
+popup/item_1/id = 1
+
+[node name="QuitButton" type="MenuButton" parent="ColorRect/VSplitContainer"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "QUIT"
+item_count = 2
+popup/item_0/text = "YES"
+popup/item_0/id = 0
+popup/item_1/text = "NO"
+popup/item_1/id = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l62vd")
+}

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnos31t86a0dr"]
+[gd_scene load_steps=6 format=3 uid="uid://cnos31t86a0dr"]
 
 [ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
 [ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
 [ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="2_s6dxf"]
 [ext_resource type="Script" path="res://scripts/Settings.gd" id="3_5lr76"]
+[ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="3_bppuo"]
 
 [node name="Root" type="Node"]
 script = ExtResource("1_c7ueb")
@@ -11,14 +12,32 @@ player_scene = ExtResource("2_s6dxf")
 
 [node name="Title" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Title"]
 layout_mode = 1
-offset_right = 421.0
-offset_bottom = 319.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -151.0
+offset_top = -152.5
+offset_right = 151.0
+offset_bottom = 152.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_bppuo")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer"]
 layout_mode = 2
@@ -29,8 +48,9 @@ layout_mode = 2
 
 [node name="HostButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
-text = "Host"
+text = "HOST"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -50,8 +70,9 @@ layout_mode = 2
 
 [node name="JoinButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
-text = "Join"
+text = "JOIN"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -81,8 +102,9 @@ layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
-text = "Settings"
+text = "SETTINGS"
 
 [node name="Settings" type="PopupMenu" parent="Title"]
 title = "Settings"
@@ -91,6 +113,7 @@ size = Vector2i(512, 256)
 unresizable = false
 borderless = false
 transparent = true
+theme = ExtResource("3_bppuo")
 hide_on_item_selection = false
 hide_on_checkable_item_selection = false
 allow_search = false

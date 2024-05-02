@@ -159,7 +159,7 @@ func _physics_process(delta):
 
 
 func handle_jumping():
-	if jumping_enabled and is_multiplayer_authority():
+	if !immobile and jumping_enabled and is_multiplayer_authority():
 		if continuous_jumping:
 			if Input.is_action_pressed(JUMP) and is_on_floor() and !low_ceiling:
 				if jump_animation:
@@ -195,7 +195,7 @@ func handle_movement(delta, input_dir):
 
 
 func handle_state(moving):
-	if sprint_enabled and is_multiplayer_authority():
+	if !immobile and sprint_enabled and is_multiplayer_authority():
 		if sprint_mode == 0:
 			if Input.is_action_pressed(SPRINT) and state != "crouching":
 				if moving:
@@ -220,7 +220,7 @@ func handle_state(moving):
 			elif state == "sprinting":
 				enter_normal_state()
 	
-	if crouch_enabled and is_multiplayer_authority():
+	if !immobile and crouch_enabled and is_multiplayer_authority():
 		if crouch_mode == 0:
 			if Input.is_action_pressed(CROUCH) and state != "sprinting":
 				if state != "crouching":
@@ -301,8 +301,13 @@ func _process(delta):
 	if Input.is_action_just_pressed(PAUSE) and is_multiplayer_authority():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			$UserInterface/AnimationPlayer.play("fade")
+			$UserInterface/ColorRect.show()
+			immobile = true
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			$UserInterface/ColorRect.hide()
+			immobile = false
 	
 	#clamp camera rotation to 90 degrees
 	HEAD.rotation.x = clamp(HEAD.rotation.x, deg_to_rad(-90), deg_to_rad(90))
