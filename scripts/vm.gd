@@ -1,8 +1,6 @@
 @tool
 extends EditorScript
 
-var memory: PackedByteArray
-
 #empty global variable for the program
 var program = ""
 
@@ -10,9 +8,10 @@ var debug_mode = true
 
 #the instruction list
 var instructions = ["and", "add", "sub", "mul", "div", "inc", "dec", "goto", "print", "jmpie", 
-	"set", "mod", "jmpine"]
+	"set", "mod", "jmpine", "let"]
 
-var registers = {"a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "pc": 0}
+#dictionary for variables
+var variables = {}
 
 #the dictionary for tags
 var tags = {}
@@ -22,35 +21,35 @@ var literals = {}
 
 #math operation function template
 func math_operation(line, line_count, token_count, dest, operand1, operand2, operation):
-	if line[1] in registers:
+	if line[1] in variables:
 		dest = line[1]
 	else:
-		print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
+		print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
 		return
 	
 	if line.size() > 2:
-		if line[2] in registers:
-			operand1 = registers[line[2]]  
+		if line[2] in variables:
+			operand1 = variables[line[2]]  
 		elif line[2].is_valid_int():
 			operand1 = int(line[2])
 	
 	match operation:
 		"+":
-			registers[dest] += operand1
+			variables[dest] += operand1
 		"-":
-			registers[dest] -= operand1
+			variables[dest] -= operand1
 		"*":
-			registers[dest] *= operand1
+			variables[dest] *= operand1
 		"/":
-			registers[dest] /= operand1
+			variables[dest] /= operand1
 		"%":
-			registers[dest] %= operand1
+			variables[dest] %= operand1
 		"++":
-			registers[dest] += 1
+			variables[dest] += 1
 		"--":
-			registers[dest] -= 1
+			variables[dest] -= 1
 		"=":
-			registers[dest] = operand1
+			variables[dest] = operand1
 
 func tokenizer(input):
 	#split the program by lines
@@ -135,8 +134,8 @@ func lexer(input, branch_point):
 							print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 							return
 					"print":
-						if line[1] in registers:
-							print(registers[line[1]])
+						if line[1] in variables:
+							print(variables[line[1]])
 						else:
 							print(literals[line_count])
 							
@@ -165,42 +164,69 @@ func lexer(input, branch_point):
 						math_operation(line, line_count, token_count, dest, operand1,
 						operand2, "%")
 					"jmpie":
-						if line[1] in registers:
-							dest = registers[line[1]]
-						else:
-							print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
-							return
-							
-						if line[2] in registers:
-							operand1 = registers[line[2]]  
-						else:
-							operand1 = int(line[2])
-						
-						if int(dest) == int(operand1):
-							if line[3] in tags:
-								#print("compare jumping to " + str(tags[line[3]]))
-								line_count = int(tags[line[3]])
-								token_count = 0
-								lexer(tokenizer(program), int(tags[line[3]]))
-								return
+						if line.size() > 3:
+							if line[1] in variables:
+								dest = variables[line[1]]
 							else:
-								print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+								print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
 								return
+								
+							if line[2] in variables:
+								operand1 = variables[line[2]]  
+							else:
+								operand1 = int(line[2])
+							
+							if int(dest) == int(operand1):
+								if line[3] in tags:
+									#print("compare jumping to " + str(tags[line[3]]))
+									line_count = int(tags[line[3]])
+									token_count = 0
+									lexer(tokenizer(program), int(tags[line[3]]))
+									return
+								else:
+									print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+									return
+						else:
+							print("invalid jump declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
+					"let":
+						#see if we have three operands to our function
+						if line.size() > 3:
+							#see if we dont already have an existing variable
+							if !line[2] in variables:
+								if line[3] != null:
+									match line[1]:
+										"int":
+											variables[line[2]] = int(line[3])
+										"string":
+											variables[line[2]] = literals[line_count]
+										_:
+											print("need valid type for variable. " +
+											"break at " + str(line_count) + ", " + str(token_count))
+											return
+							else:
+								print("variable already exists. " +
+								"break at " + str(line_count) + ", " + str(token_count))
+								return
+						else:
+							print("invalid variable declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
 					
 			token_count += 1
 		line_count += 1
 		#update the program counter
-		registers["pc"] = line_count
+		variables["pc"] = line_count
 						
 # Called when the node enters the scene tree for the first time.
 func _run():
-	memory.resize(65535)
 	
 	var file = FileAccess.open("res://bvm/fizzbuzz.bvm", FileAccess.READ)
 	program = file.get_as_text()
 	
 	lexer(tokenizer(program), 0)
 	if debug_mode:
-		print(registers)
+		print(variables)
 	
 	return
