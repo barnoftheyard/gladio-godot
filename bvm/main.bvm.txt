@@ -1,9 +1,0 @@
-SET Y 100
-LOOP:
-INC X
-JMPIE X Y END
-GOTO LOOP
-
-END:
-PRINT "Success! Result is"
-PRINT X
