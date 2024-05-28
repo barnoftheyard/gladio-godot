@@ -6,31 +6,30 @@ let int e 0
 let int f 0
 
 set b 100
-add b 1									; set offset by 1
 
 loop:
 inc a									; increment accumulator
 set c a									; set compare register
 
-jmpie a b end							; if accumulator is equal to b, jump to end
+if gt a b end							; if accumulator is greater than b, jump to end
 
 mod c 3									; moduluo 3
 set d c
 set c a
 
-jmpie d 0 fizz							; jump to fizz
+if eq d 0 fizz							; jump to fizz
 
 mod c 5
 set e c
 set c a
 
-jmpie e 0 buzz
+if eq e 0 buzz
 
 mod c 15
 set f c
 set c a
 
-jmpie f 0 fizzbuzz
+if eq f 0 fizzbuzz
 
 print a									; if not moduluo 3, 5, or 15, print the number
 

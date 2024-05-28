@@ -16,7 +16,7 @@ const instructions = [
 	"dec", 
 	"goto", 
 	"print", 
-	"jmpie", 
+	"if", 
 	"set", 
 	"mod", 
 	"jmpine", 
@@ -131,6 +131,7 @@ func tokenizer(input):
 var line_count = 0
 var token_count = 0
 	
+	
 func lexer(input, branch_point):
 	var expression = Expression.new()
 	
@@ -186,29 +187,92 @@ func lexer(input, branch_point):
 					"mod":
 						math_operation(line, line_count, token_count, dest, operand1,
 						operand2, "%")
-					"jmpie":
-						if line.size() > 3:
-							if line[1] in variables:
-								dest = variables[line[1]]
+					"if":
+						if line.size() > 4:
+							if line[2] in variables:
+								dest = variables[line[2]]
 							else:
 								print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
 								return
 								
-							if line[2] in variables:
-								operand1 = variables[line[2]]  
-							else:
-								operand1 = int(line[2])
+							if line[3] in variables:
+								operand1 = variables[line[3]]  
+							elif line[3].is_valid_int():
+								operand1 = int(line[3])
+							elif line[3].is_valid_float():
+								operand1 = float(line[3])
+								
+								
+							match line[1]:
+								"eq":
+									if dest == operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+								"neq":
+									if dest != operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+								"gt":
+									if dest > operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+								"lt":
+									if dest < operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+								"gte":
+									if dest >= operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+								"lte":
+									if dest <= operand1:
+										if line[4] in tags:
+											#print("compare jumping to " + str(tags[line[3]]))
+											line_count = int(tags[line[4]])
+											token_count = 0
+											lexer(tokenizer(program), int(tags[line[4]]))
+											return
+										else:
+											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											return
+										
 							
-							if int(dest) == int(operand1):
-								if line[3] in tags:
-									#print("compare jumping to " + str(tags[line[3]]))
-									line_count = int(tags[line[3]])
-									token_count = 0
-									lexer(tokenizer(program), int(tags[line[3]]))
-									return
-								else:
-									print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
-									return
+									
 						else:
 							print("invalid jump declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))

@@ -4,6 +4,5 @@
 
 [node name="vm" type="Node"]
 script = ExtResource("1_yiajf")
-file_path = "res://bvm/float.txt"
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
