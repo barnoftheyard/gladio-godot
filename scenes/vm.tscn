@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://7mh7rvjv3dmo"]
 
-[ext_resource type="Script" path="res://scripts/vm.gd" id="1_yiajf"]
+[ext_resource type="Script" path="res://addons/bvm/vm.gd" id="1_yiajf"]
 
 [node name="vm" type="Node"]
 script = ExtResource("1_yiajf")
