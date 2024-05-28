@@ -222,7 +222,7 @@ func lexer(input, branch_point):
 # Called when the node enters the scene tree for the first time.
 func _run():
 	
-	var file = FileAccess.open("res://bvm/fizzbuzz.bvm", FileAccess.READ)
+	var file = FileAccess.open("res://bvm/fizzbuzz.txt", FileAccess.READ)
 	program = file.get_as_text()
 	
 	lexer(tokenizer(program), 0)
