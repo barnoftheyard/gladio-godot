@@ -1,5 +1,4 @@
-@tool
-extends EditorScript
+extends Node
 
 #empty global variable for the program
 var program = ""
@@ -7,17 +6,33 @@ var program = ""
 var debug_mode = true
 
 #the instruction list
-var instructions = ["and", "add", "sub", "mul", "div", "inc", "dec", "goto", "print", "jmpie", 
-	"set", "mod", "jmpine", "let"]
+const instructions = [
+	"and", 
+	"add", 
+	"sub", 
+	"mul", 
+	"div", 
+	"inc", 
+	"dec", 
+	"goto", 
+	"print", 
+	"jmpie", 
+	"set", 
+	"mod", 
+	"jmpine", 
+	"let",
+	"godot"
+]
 
 #dictionary for variables
-var variables = {}
+var variables = {"pc": 0, "delta": 0.0}
 
 #the dictionary for tags
 var tags = {}
 #the dictionary for string literals
 var literals = {}
 
+@export var file_path : String = "res://bvm/fizzbuzz.txt"
 
 #math operation function template
 func math_operation(line, line_count, token_count, dest, operand1, operand2, operation):
@@ -32,6 +47,8 @@ func math_operation(line, line_count, token_count, dest, operand1, operand2, ope
 			operand1 = variables[line[2]]  
 		elif line[2].is_valid_int():
 			operand1 = int(line[2])
+		elif line[2].is_valid_float():
+			operand1 = float(line[2])
 	
 	match operation:
 		"+":
@@ -43,7 +60,10 @@ func math_operation(line, line_count, token_count, dest, operand1, operand2, ope
 		"/":
 			variables[dest] /= operand1
 		"%":
-			variables[dest] %= operand1
+			if operand1 is int:
+				variables[dest] %= operand1
+			elif operand1 is float:
+				variables[dest] = fmod(variables[dest], variables[dest])
 		"++":
 			variables[dest] += 1
 		"--":
@@ -112,6 +132,9 @@ var line_count = 0
 var token_count = 0
 	
 func lexer(input, branch_point):
+	var expression = Expression.new()
+	
+	#process line starting at the branch point (the line specified to start from)
 	for line in input.slice(int(branch_point)):
 		for token in line:
 			if token in instructions:
@@ -199,6 +222,8 @@ func lexer(input, branch_point):
 									match line[1]:
 										"int":
 											variables[line[2]] = int(line[3])
+										"float":
+											variables[line[2]] = float(line[3])
 										"string":
 											variables[line[2]] = literals[line_count]
 										_:
@@ -213,16 +238,31 @@ func lexer(input, branch_point):
 							print("invalid variable declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
+					"godot":
+						if line.size() > 1:
+							var arguments = []
+							var values = []
+							
+							for value in line.slice(2):
+								if value in variables:
+									arguments.append(value)
+									values.append(variables[value])
+							
+							expression.parse(literals[line_count], arguments)
+							expression.execute([values], self)
 					
 			token_count += 1
 		line_count += 1
 		#update the program counter
 		variables["pc"] = line_count
-						
-# Called when the node enters the scene tree for the first time.
-func _run():
+		
+func _process(delta):
+	variables["delta"] = delta
 	
-	var file = FileAccess.open("res://bvm/fizzbuzz.txt", FileAccess.READ)
+# Called when the node enters the scene tree for the first time.
+func _on_tree_entered():
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
 	program = file.get_as_text()
 	
 	lexer(tokenizer(program), 0)

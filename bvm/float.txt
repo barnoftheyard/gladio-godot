@@ -1,0 +1,5 @@
+let float x 5.2
+add x 23.5
+print x
+
+godot "print('Result is: ' + str(x))" x
