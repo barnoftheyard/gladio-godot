@@ -1,0 +1,12 @@
+let float amount 0.0
+let float speed 50.0
+
+
+let float y 0.0
+let vec3 rotation "0 y 0"
+
+parse "print('fart')"
+
+rotate:
+	
+	node MeshInstance3D rotation_degrees rotation

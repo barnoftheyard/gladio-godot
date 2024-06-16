@@ -7,21 +7,20 @@ var debug_mode = true
 
 #the instruction list
 const instructions = [
-	"and", 
-	"add", 
-	"sub", 
-	"mul", 
-	"div", 
-	"inc", 
-	"dec", 
-	"goto", 
-	"print", 
-	"if", 
-	"set", 
-	"mod", 
-	"jmpine", 
-	"let",
-	"godot"
+	"add", 		#numerical addition
+	"sub", 		#numerical subtraction
+	"mul", 		#numerical multiplication
+	"div", 		#numerical division
+	"inc", 		#numerical incrementation
+	"dec", 		#numerical decrementation
+	"mod", 		#moduluo
+	"print", 	#prints string literals
+	"goto", 	#jump to tag
+	"if", 		#compare and jump
+	"set", 		#variable adjustment
+	"let",		#variable declaration
+	"parse",	#godot expression function calling
+	"node"
 ]
 
 #dictionary for variables
@@ -60,6 +59,7 @@ func math_operation(line, line_count, token_count, dest, operand1, operand2, ope
 		"/":
 			variables[dest] /= operand1
 		"%":
+			#moduluo operator only works on ints so we have to use fmod on floats
 			if operand1 is int:
 				variables[dest] %= operand1
 			elif operand1 is float:
@@ -86,7 +86,7 @@ func tokenizer(input):
 		#remove any tabs that we may have
 		program_lines[index] = program_lines[index].replace("\t", "")
 		
-		#string finder
+		#string literal finder
 		var buffer = ""
 		var add_stuff = false
 		
@@ -133,7 +133,6 @@ var token_count = 0
 	
 	
 func lexer(input, branch_point):
-	var expression = Expression.new()
 	
 	#process line starting at the branch point (the line specified to start from)
 	for line in input.slice(int(branch_point)):
@@ -202,7 +201,8 @@ func lexer(input, branch_point):
 							elif line[3].is_valid_float():
 								operand1 = float(line[3])
 								
-								
+							#this code is messy due to it not working when put into a function,
+							#likes to recurse infinitely for some reason
 							match line[1]:
 								"eq":
 									if dest == operand1:
@@ -270,9 +270,6 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-										
-							
-									
 						else:
 							print("invalid jump declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
@@ -290,6 +287,12 @@ func lexer(input, branch_point):
 											variables[line[2]] = float(line[3])
 										"string":
 											variables[line[2]] = literals[line_count]
+										#"vec3":
+											#var xyz = literals[line_count].split(" ", false)
+											#if xyz.size() == 3:
+												#for number in xyz:
+														#
+												#variables[line[2]] = Vector3(xyz[0], xyz[1], xyz[2])
 										_:
 											print("need valid type for variable. " +
 											"break at " + str(line_count) + ", " + str(token_count))
@@ -302,18 +305,33 @@ func lexer(input, branch_point):
 							print("invalid variable declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
-					"godot":
+					"parse":
 						if line.size() > 1:
+							var expression = Expression.new()
+							
+							#arguments is the name of the variables that we'll be using whilst the
+							#values is the array of the values of those specific variables
 							var arguments = []
 							var values = []
 							
+							#get all tokens after the string literal and see if they're in the
+							#variable list
 							for value in line.slice(2):
 								if value in variables:
 									arguments.append(value)
 									values.append(variables[value])
 							
 							expression.parse(literals[line_count], arguments)
-							expression.execute([values], self)
+							expression.execute([values], Node3D)
+						else:
+							print("invalid parse declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
+					"node":
+						if line.size() > 3:
+							var node = get_node(line[1])
+							if line[2] in node:
+								node.set(line[2], line[3])
 					
 			token_count += 1
 		line_count += 1
@@ -327,6 +345,10 @@ func _process(delta):
 func _on_tree_entered():
 	
 	var file = FileAccess.open(file_path, FileAccess.READ)
+	if file == null:
+		print("Unable to access file: " + str(file.get_open_error()))
+		return
+		
 	program = file.get_as_text()
 	
 	lexer(tokenizer(program), 0)

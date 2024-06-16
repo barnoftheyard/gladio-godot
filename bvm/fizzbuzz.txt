@@ -1,11 +1,9 @@
 let int a 0
-let int b 0
+let int b 100
 let int c 0
 let int d 0
 let int e 0
 let int f 0
-
-set b 100
 
 loop:
 inc a									; increment accumulator
