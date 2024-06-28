@@ -5,6 +5,9 @@ var program = ""
 
 var debug_mode = true
 
+var clock_speed = 0.0
+var clock = 0.0
+
 #the instruction list
 const instructions = [
 	"add", 		#numerical addition
@@ -133,9 +136,11 @@ var token_count = 0
 	
 	
 func lexer(input, branch_point):
-	
 	#process line starting at the branch point (the line specified to start from)
 	for line in input.slice(int(branch_point)):
+		#makes the script fire at clock rate
+		await get_tree().process_frame
+		
 		for token in line:
 			if token in instructions:
 				var dest = null
@@ -287,12 +292,8 @@ func lexer(input, branch_point):
 											variables[line[2]] = float(line[3])
 										"string":
 											variables[line[2]] = literals[line_count]
-										#"vec3":
-											#var xyz = literals[line_count].split(" ", false)
-											#if xyz.size() == 3:
-												#for number in xyz:
-														#
-												#variables[line[2]] = Vector3(xyz[0], xyz[1], xyz[2])
+										"vec3":
+											variables[line[2]] = Vector3(float(line[3]), float(line[4]), float(line[5]))
 										_:
 											print("need valid type for variable. " +
 											"break at " + str(line_count) + ", " + str(token_count))
@@ -331,8 +332,11 @@ func lexer(input, branch_point):
 						if line.size() > 3:
 							var node = get_node(line[1])
 							if line[2] in node:
-								node.set(line[2], line[3])
-					
+								node.set(line[2], variables[line[3]])
+							else:
+								print("node not found. " +
+								"break at " + str(line_count) + ", " + str(token_count))
+								return
 			token_count += 1
 		line_count += 1
 		#update the program counter
@@ -340,6 +344,10 @@ func lexer(input, branch_point):
 		
 func _process(delta):
 	variables["delta"] = delta
+	clock -= delta
+	
+	if clock < 0:
+		clock = clock_speed
 	
 # Called when the node enters the scene tree for the first time.
 func _on_tree_entered():
