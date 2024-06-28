@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://7mh7rvjv3dmo"]
+[gd_scene load_steps=3 format=3 uid="uid://7mh7rvjv3dmo"]
 
 [ext_resource type="Script" path="res://addons/bvm/vm.gd" id="1_yiajf"]
+[ext_resource type="Texture2D" uid="uid://7g7ov0hcnpqq" path="res://textures/editor/scripted_sentence.png" id="2_d4ute"]
 
-[node name="vm" type="Node"]
+[node name="vm" type="Node3D"]
 script = ExtResource("1_yiajf")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+billboard = 1
+texture = ExtResource("2_d4ute")
+
+[node name="Label3D" type="Label3D" parent="."]
+billboard = 1
+double_sided = false
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]

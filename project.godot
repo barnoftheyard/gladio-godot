@@ -121,6 +121,12 @@ zoom={
 ]
 }
 
+[layer_names]
+
+3d_render/layer_1="Main"
+3d_render/layer_2="Weapon Viewmodel"
+3d_render/layer_3="HUD"
+
 [rendering]
 
 anti_aliasing/quality/msaa_2d=1

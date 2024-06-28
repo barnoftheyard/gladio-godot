@@ -1,4 +1,4 @@
-extends Node
+extends Node3D
 
 #empty global variable for the program
 var program = ""
@@ -163,9 +163,11 @@ func lexer(input, branch_point):
 							return
 					"print":
 						if line[1] in variables:
-							print(variables[line[1]])
+							#print(variables[line[1]])
+							$Label3D.text = str(variables[line[1]])
 						else:
-							print(literals[line_count])
+							#print(literals[line_count])
+							$Label3D.text = str(literals[line_count])
 							
 					"add":
 						math_operation(line, line_count, token_count, dest, operand1,

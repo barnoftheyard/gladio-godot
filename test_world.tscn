@@ -134,12 +134,16 @@ radial_segments = 4
 rings = 4
 
 [node name="vm" parent="." instance=ExtResource("4_tdyee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
 file_path = "res://bvm/rotate.txt"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="vm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 mesh = SubResource("BoxMesh_riae2")
 skeleton = NodePath("../..")
+
+[node name="vm2" parent="." instance=ExtResource("4_tdyee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -2)
 
 [connection signal="body_entered" from="PhysicsBody" to="PhysicsBody" method="_on_body_entered"]
 [connection signal="body_entered" from="PhysicsBody2" to="PhysicsBody2" method="_on_body_entered"]
