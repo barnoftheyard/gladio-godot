@@ -1,10 +1,12 @@
 let vec3 rotation 0 0 0
-let vec3 y 0 20 0
+let vec3 y 0 5 0
 
 rotate:
-	add rotation y
 	
-	node MeshInstance3D rotation_degrees rotation
-	print "rotating"
+	node_get MeshInstance3D rotation_degrees rotation
+	add rotation y
+	node_set MeshInstance3D rotation_degrees rotation
+	
+	print rotation
 
 goto rotate

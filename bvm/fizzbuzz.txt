@@ -5,9 +5,6 @@ let int d 0
 let int e 0
 let int f 0
 
-let vec3 test 360 360 360
-print test
-
 loop:
 inc a									; increment accumulator
 set c a									; set compare register

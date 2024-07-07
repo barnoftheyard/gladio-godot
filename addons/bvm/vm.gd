@@ -23,7 +23,8 @@ const instructions = [
 	"set", 		#variable adjustment
 	"let",		#variable declaration
 	"parse",	#godot expression function calling
-	"node"
+	"node_set",
+	"node_get"
 ]
 
 #dictionary for variables
@@ -133,13 +134,14 @@ func tokenizer(input):
 	
 var line_count = 0
 var token_count = 0
-	
+
 	
 func lexer(input, branch_point):
+	#makes the script fire at clock rate
+	await get_tree().process_frame
+	
 	#process line starting at the branch point (the line specified to start from)
 	for line in input.slice(int(branch_point)):
-		#makes the script fire at clock rate
-		await get_tree().process_frame
 		
 		for token in line:
 			if token in instructions:
@@ -330,15 +332,32 @@ func lexer(input, branch_point):
 							print("invalid parse declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
-					"node":
+					"node_set":
 						if line.size() > 3:
 							var node = get_node(line[1])
 							if line[2] in node:
 								node.set(line[2], variables[line[3]])
 							else:
-								print("node not found. " +
+								print("property not found. " +
 								"break at " + str(line_count) + ", " + str(token_count))
 								return
+						else:
+							print("invalid node set declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
+					"node_get":
+						if line.size() > 3:
+							var node = get_node(line[1])
+							if line[2] in node:
+								variables[line[3]] = node.get(line[2])
+							else:
+								print("property not found. " +
+								"break at " + str(line_count) + ", " + str(token_count))
+								return
+						else:
+							print("invalid node set declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
 			token_count += 1
 		line_count += 1
 		#update the program counter
