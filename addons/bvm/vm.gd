@@ -213,7 +213,7 @@ func lexer(input, branch_point):
 							#this code is messy due to it not working when put into a function,
 							#likes to recurse infinitely for some reason
 							match line[1]:
-								"eq":
+								"==":
 									if dest == operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))
@@ -224,7 +224,7 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-								"neq":
+								"!=":
 									if dest != operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))
@@ -235,7 +235,7 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-								"gt":
+								">":
 									if dest > operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))
@@ -246,7 +246,7 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-								"lt":
+								"<":
 									if dest < operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))
@@ -257,7 +257,7 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-								"gte":
+								">=":
 									if dest >= operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))
@@ -268,7 +268,7 @@ func lexer(input, branch_point):
 										else:
 											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
-								"lte":
+								"<=":
 									if dest <= operand1:
 										if line[4] in tags:
 											#print("compare jumping to " + str(tags[line[3]]))

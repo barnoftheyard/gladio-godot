@@ -9,25 +9,25 @@ loop:
 inc a									; increment accumulator
 set c a									; set compare register
 
-if gt a b end							; if accumulator is greater than b, jump to end
+if > a b end							; if accumulator is greater than b, jump to end
 
 mod c 3									; moduluo 3
 set d c
 set c a
 
-if eq d 0 fizz							; jump to fizz
+if == d 0 fizz							; jump to fizz
 
 mod c 5
 set e c
 set c a
 
-if eq e 0 buzz
+if == e 0 buzz
 
 mod c 15
 set f c
 set c a
 
-if eq f 0 fizzbuzz
+if == f 0 fizzbuzz
 
 print a									; if not moduluo 3, 5, or 15, print the number
 
