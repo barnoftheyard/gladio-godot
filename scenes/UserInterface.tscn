@@ -109,6 +109,39 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Enter"
 
+[node name="ChatPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -32.0
+offset_right = 583.0
+grow_vertical = 0
+theme = ExtResource("1_4m6lg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ChatPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="LineEdit" type="LineEdit" parent="ChatPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(512, 0)
+layout_mode = 2
+placeholder_text = "Enter here"
+max_length = 512
+flat = true
+caret_blink = true
+
+[node name="Timer" type="Timer" parent="ChatPanel"]
+wait_time = 3.0
+one_shot = true
+
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
 layout_mode = 1
@@ -157,3 +190,6 @@ popup/item_1/id = 1
 libraries = {
 "": SubResource("AnimationLibrary_l62vd")
 }
+
+[connection signal="text_submitted" from="ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="ChatPanel/Timer" to="." method="_on_timer_timeout"]

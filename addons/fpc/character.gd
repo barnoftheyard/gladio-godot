@@ -296,29 +296,6 @@ func headbob_animation(moving):
 
 func _process(delta):
 	
-	#misc nop-player character input
-	if Input.is_action_just_pressed(PAUSE) and is_multiplayer_authority():
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			$UserInterface/AnimationPlayer.play("fade")
-			$UserInterface/ColorRect.show()
-			immobile = true
-		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			$UserInterface/ColorRect.hide()
-			immobile = false
-			
-	if Input.is_action_just_pressed("debug") and is_multiplayer_authority():
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			$UserInterface/AnimationPlayer.play("console")
-			$UserInterface/DebugPanel.show()
-			immobile = true
-		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			$UserInterface/DebugPanel.hide()
-			immobile = false
-	
 	#clamp camera rotation to 90 degrees
 	HEAD.rotation.x = clamp(HEAD.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	
