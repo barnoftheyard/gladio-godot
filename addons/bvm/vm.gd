@@ -138,7 +138,10 @@ var token_count = 0
 	
 func lexer(input, branch_point):
 	#makes the script fire at clock rate
-	await get_tree().process_frame
+	if is_inside_tree():
+		await get_tree().process_frame
+	else:
+		return
 	
 	#process line starting at the branch point (the line specified to start from)
 	for line in input.slice(int(branch_point)):

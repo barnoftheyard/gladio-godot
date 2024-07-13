@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1h161t0v6hau"
-path="res://.godot/imported/red.png-3cad0ca19141406d60f5fd2311159a86.ctex"
+uid="uid://cur62i68e3u2v"
+path="res://.godot/imported/shack.png-91218f19da80eacd4f56dcc7b5c4fb4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/red.png"
-dest_files=["res://.godot/imported/red.png-3cad0ca19141406d60f5fd2311159a86.ctex"]
+source_file="res://textures/Metal/shack.png"
+dest_files=["res://.godot/imported/shack.png-91218f19da80eacd4f56dcc7b5c4fb4e.ctex"]
 
 [params]
 

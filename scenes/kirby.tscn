@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3hns4tc2wsyy"]
+
+[ext_resource type="Texture2D" uid="uid://b28hg757eoi4w" path="res://textures/Game Boy Advance - Kirby Nightmare in Dream Land - Kirby.png" id="1_k4csi"]
+
+[sub_resource type="Animation" id="Animation_2kury"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_ge0rq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5e1ou"]
+_data = {
+"RESET": SubResource("Animation_ge0rq"),
+"walk": SubResource("Animation_2kury")
+}
+
+[node name="kirby" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+modulate = Color(0.235294, 1, 0.870588, 1)
+pixel_size = 0.05
+billboard = 2
+alpha_cut = 2
+texture_filter = 0
+texture = ExtResource("1_k4csi")
+hframes = 10
+region_enabled = true
+region_rect = Rect2(4, 99, 239, 19)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5e1ou")
+}

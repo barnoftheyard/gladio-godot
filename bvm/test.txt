@@ -1,5 +1,1 @@
-let int a 0
-loop:
-	inc a
-	print a
-goto loop
+print "Hello Tabitha!"

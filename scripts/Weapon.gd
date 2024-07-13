@@ -1,6 +1,7 @@
 extends Node3D
 
 @export var sway = 3
+@export var create_deformation = false
 @onready var viewmodel = $SubViewportContainer/SubViewport/smg
 @onready var initial_position = viewmodel.position
 
@@ -66,7 +67,7 @@ func shoot_weapon(collision):
 					#_timer.one_shot = true
 					#collision.get_node("CSGCombiner3D").add_child(_timer)
 				
-				if collision.get_node("CSGCombiner3D").get_child_count() < 20:
+				if collision.get_node("CSGCombiner3D").get_child_count() < 20 and create_deformation:
 						
 					
 					var sphere = CSGSphere3D.new()

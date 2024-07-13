@@ -36,6 +36,7 @@ extends CharacterBody3D
 @export var PAUSE : String = "escape"
 @export var CROUCH : String = "crouch"
 @export var SPRINT : String = "sprint"
+@export var DEBUG : String = "debug"
 
 # Uncomment if you want full controller support
 #@export var LOOK_LEFT : String
@@ -100,9 +101,6 @@ func _ready():
 
 func _physics_process(delta):
 	current_speed = Vector3.ZERO.distance_to(get_real_velocity())
-	
-	if is_multiplayer_authority():
-		update_ui()
 	
 	# Gravity
 	#gravity = ProjectSettings.get_setting("physics/3d/default_gravity") # If the gravity changes during your game, uncomment this code
@@ -193,7 +191,7 @@ func handle_movement(delta, input_dir):
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
 
-
+#handles character states
 func handle_state(moving):
 	if !immobile and sprint_enabled and is_multiplayer_authority():
 		if sprint_mode == 0:
@@ -298,6 +296,7 @@ func headbob_animation(moving):
 
 func _process(delta):
 	
+	#misc nop-player character input
 	if Input.is_action_just_pressed(PAUSE) and is_multiplayer_authority():
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -307,6 +306,17 @@ func _process(delta):
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$UserInterface/ColorRect.hide()
+			immobile = false
+			
+	if Input.is_action_just_pressed("debug") and is_multiplayer_authority():
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			$UserInterface/AnimationPlayer.play("console")
+			$UserInterface/DebugPanel.show()
+			immobile = true
+		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			$UserInterface/DebugPanel.hide()
 			immobile = false
 	
 	#clamp camera rotation to 90 degrees
@@ -332,27 +342,6 @@ func footsteps(moving):
 		
 func damage(amount):
 	health -= amount
-	
-func update_ui():
-	$UserInterface/DebugPanel.add_property("SPEED", str(snappedf(current_speed * 3, 0.001)) + " KPH")
-	#$UserInterface/DebugPanel.add_property("Target speed", speed, 2)
-	#var cv : Vector3 = get_real_velocity()
-	#var vd : Array[float] = [
-		#snappedf(cv.x, 0.001),
-		#snappedf(cv.y, 0.001),
-		#snappedf(cv.z, 0.001)
-	#]
-	#var readable_velocity : String = "X: " + str(vd[0]) + " Y: " + str(vd[1]) + " Z: " + str(vd[2])
-	#$UserInterface/DebugPanel.add_property("Velocity", readable_velocity, 3)
-	#
-	#$UserInterface/DebugPanel.add_property("FPS", Performance.get_monitor(Performance.TIME_FPS), 0)
-	#var status : String = state
-	#if !is_on_floor():
-		#status += " in the air"
-	$UserInterface/DebugPanel.add_property("STATE", state.to_upper())
-	$UserInterface/DebugPanel.add_property("INTEGRITY", health)
-	$UserInterface/DebugPanel.add_property("MAG", $Head/Weapon.current_weapon_mag)
-	$UserInterface/DebugPanel.add_property("AMMO", $Head/Weapon.current_weapon_ammo)
 
 func _on_footsteps_timer_timeout():
 	#adjust the timing of the steps to our current player speed

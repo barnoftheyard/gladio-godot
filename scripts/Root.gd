@@ -16,7 +16,7 @@ func _ready():
 	
 	
 var toggle = false
-#global input
+#global input for keypresses
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.is_pressed() and !toggle:
@@ -36,21 +36,40 @@ func _unhandled_input(event):
 		elif event.is_released():
 			toggle = false
 
+#hosts the a game for the server host. Updating player variables over the network is handled by
+#the multiplayerSpawner
 func _on_host_pressed():
 	$Title.hide()
 	
 	peer.create_server(int(host_port_entry.text))
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_add_player)
+	multiplayer.peer_disconnected.connect(remove_player)
+	
 	print("Hosting server on port " + host_port_entry.text)
 	
 	_add_player(multiplayer.get_unique_id())
 	
+	upnp_setup()
+
+#the function for the signal that adds the player
 func _add_player(id):
 	var player = player_scene.instantiate()
+	#player nodes are named by their multiplayer ID
 	player.name = str(id)
 	$test_world.call_deferred("add_child", player)
+	
+	print("Player " + str(id) + " has connected.")
 
+#the function for the signal that removes the player
+func remove_player(id):
+	var player = $test_world.get_node_or_null(str(id))
+	if player:
+		player.queue_free()
+		
+	print("Player " + str(id) + " has disconnected.")
+
+#the function that joins a hosted game
 func _on_join_pressed():
 	$Title.hide()
 	
@@ -58,6 +77,17 @@ func _on_join_pressed():
 	multiplayer.multiplayer_peer = peer
 	
 	print("Joining server " + join_ip_entry.text + ": " + join_port_entry.text)
+	
+func upnp_setup():
+	var upnp = UPNP.new()
+	var discover_result = upnp.discover()
+	
+	assert(discover_result == UPNP.UPNP_RESULT_SUCCESS, "UPNP Discover failed. %s" % discover_result)
+	
+	var gateway = upnp.get_gateway()
+	assert(gateway and gateway.is_valid_gateway(), "UPNP Discover failed. %s" % discover_result)
+	
+	print("UPNP success. Host join address is " + upnp.query_external_address())
 
 
 func _on_settings_button_pressed():
