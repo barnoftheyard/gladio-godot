@@ -25,7 +25,6 @@ extends Control
 
 @onready var health = 0
 
-
 func _physics_process(_delta):
 	$dot.position = self.size / 2
 	$SubViewportContainer/SubViewport/Compass.rotation.y = character.get_node("Head").rotation.y
@@ -63,8 +62,8 @@ func update_reticle_settings():
 		$SubViewportContainer/SubViewport/CSGCombiner3D2/CSGBox3D.position.x = remap(character.health, 0, 100, 0.28, 0.72)
 		health = character.health
 		
-	$HSplitContainer/mag.text = str(character.get_node("Head/Weapon").current_weapon_mag)
-	$HSplitContainer/ammo.text = str(character.get_node("Head/Weapon").current_weapon_ammo)
+	$HSplitContainer/mag.text = str(character.get_node("Head/Weapon").current_weapon_mag) + " "
+	$HSplitContainer/ammo.text = " " + str(character.get_node("Head/Weapon").current_weapon_ammo)
 	
 	# Lines
 	for line in reticle_lines:

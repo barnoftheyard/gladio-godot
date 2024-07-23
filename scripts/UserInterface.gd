@@ -65,3 +65,13 @@ func _on_line_edit_text_submitted(new_text):
 
 func _on_timer_timeout():
 	$ChatPanel.hide()
+
+
+func _on_timer_2_timeout():
+	var systolic = clamp(get_parent().health + 20, 60, 140)  + randi_range(0, 10)
+	var dystolic = clamp(get_parent().health - 20, 40, 120) + randi_range(0, 10)
+	
+	var heartrate = clamp(get_parent().health, 50, 160) + randi_range(0, 10)
+	
+	$VBoxContainer/HBoxContainer/bp.text = str(systolic) + "\n" + str(dystolic)
+	$VBoxContainer/HBoxContainer2/hr.text = str(heartrate)
