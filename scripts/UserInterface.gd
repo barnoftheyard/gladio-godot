@@ -3,7 +3,8 @@ extends Control
 
 func _process(_delta):
 	#misc nop-player character input
-	if Input.is_action_just_pressed(get_parent().PAUSE) and is_multiplayer_authority():
+	if Input.is_action_just_pressed(get_parent().PAUSE) and is_multiplayer_authority() \
+	and !$Info.visible:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			$AnimationPlayer.play("fade")
@@ -12,6 +13,18 @@ func _process(_delta):
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$ColorRect.hide()
+			get_parent().immobile = false
+			
+	if Input.is_action_just_pressed("info") and is_multiplayer_authority() and \
+	!$ColorRect.visible:
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			#$AnimationPlayer.play("fade")
+			$Info.show()
+			get_parent().immobile = true
+		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			$Info.hide()
 			get_parent().immobile = false
 			
 	if Input.is_action_just_pressed("debug") and is_multiplayer_authority():
@@ -73,5 +86,5 @@ func _on_timer_2_timeout():
 	
 	var heartrate = clamp(get_parent().health, 50, 160) + randi_range(0, 10)
 	
-	$VBoxContainer/HBoxContainer/bp.text = str(systolic) + "\n" + str(dystolic)
-	$VBoxContainer/HBoxContainer2/hr.text = str(heartrate)
+	$Info/VBoxContainer/HBoxContainer/bp.text = str(systolic) + "\n" + str(dystolic)
+	$Info/VBoxContainer/HBoxContainer2/hr.text = str(heartrate)
