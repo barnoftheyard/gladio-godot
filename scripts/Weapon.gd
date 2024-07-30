@@ -3,6 +3,8 @@ extends Node3D
 @export var sway = 3
 @export var create_deformation = false
 @onready var viewmodel = $SubViewportContainer/SubViewport/smg
+var inital_arm_rot = null
+
 @onready var initial_position = viewmodel.position
 
 var timer = 0
@@ -41,8 +43,24 @@ func _ready():
 		set_all_meshes_layer_mask(viewmodel, 1, false)
 		set_all_meshes_layer_mask(viewmodel, 2, true)
 		
+		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 1, false)
+		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 2, true)
+		
 	#connect the reload animation finishing to this script
 	viewmodel.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
+
+#creates the decals for bullet holes
+func create_bullet_decal(object, decal_position, time):
+	var decal = Decal.new()
+	decal.size = Vector3(0.2, 0.2, 0.2)
+	
+	decal.texture_albedo = load("res://icon.svg")
+	
+	object.add_child(decal)
+	decal.global_position = decal_position
+	
+	await get_tree().create_timer(time).timeout
+	decal.queue_free()
 		
 func shoot_weapon(collision):
 	if weapons[current_weapon]["mag"] > 0:
@@ -60,6 +78,8 @@ func shoot_weapon(collision):
 			collision.apply_impulse(-$WeaponRay.get_collision_normal() * clamp(weapons[current_weapon
 			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_point())	#apply push force
 			
+			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
+			
 			if collision.find_child("CSGCombiner3D") != null:
 				#if collision.get_node("CSGCombiner3D").find_child("Timer") == null:
 					#var _timer = Timer.new()
@@ -67,6 +87,7 @@ func shoot_weapon(collision):
 					#_timer.one_shot = true
 					#collision.get_node("CSGCombiner3D").add_child(_timer)
 				
+				#create some CSG deformation
 				if collision.get_node("CSGCombiner3D").get_child_count() < 20 and create_deformation:
 						
 					
@@ -82,6 +103,8 @@ func shoot_weapon(collision):
 					
 					#collision.get_node("CSGCombiner3D").get_node("Timer").start()
 					
+		elif collision is StaticBody3D or collision is CSGShape3D:
+			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
 			
 	#if we run out of bullets in our mag
 	elif weapons[current_weapon]["mag"] <= 0:
@@ -121,6 +144,11 @@ func _physics_process(delta):
 		
 		#breathing-esque effect on the weapon
 		viewmodel.position.y += cos(delta * 2) * 0.0005
+		
+		var arms_bone = viewmodel.get_node("arms/Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D")
+		arms_bone.global_position = viewmodel.get_node("Armature/Bone").global_position + Vector3(0.025, 0.15, 0.2)
+		arms_bone.rotation.z = viewmodel.get_node("Armature/Bone").rotation.z + 1.267
+		
 
 #this function actually reloads our gun
 func _on_animation_finished(anim_name):
