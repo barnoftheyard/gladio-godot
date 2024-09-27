@@ -3,9 +3,10 @@ extends Node3D
 @export var sway = 3
 @export var create_deformation = false
 @onready var viewmodel = $SubViewportContainer/SubViewport/smg
-var inital_arm_rot = null
-
 @onready var initial_position = viewmodel.position
+
+const ARM_ANIM_POSITION_OFFSET = Vector3(-0.234,-0.275, 1.267)
+const ARM_ANIM_ROTATION_OFFSET = Vector3(-13.6, 11.1, 79.3)
 
 var timer = 0
 var mouse_accel = Vector3.ZERO
@@ -146,8 +147,8 @@ func _physics_process(delta):
 		viewmodel.position.y += cos(delta * 2) * 0.0005
 		
 		var arms_bone = viewmodel.get_node("arms/Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D")
-		arms_bone.global_position = viewmodel.get_node("Armature/Bone").global_position + Vector3(0.025, 0.15, 0.2)
-		arms_bone.rotation.z = viewmodel.get_node("Armature/Bone").rotation.z + 1.267
+		arms_bone.global_position = viewmodel.get_node("Armature/Bone").global_position
+		#arms_bone.global_rotation = viewmodel.get_node("Armature/Bone").rotation - ARM_ANIM_ROTATION_OFFSET
 		
 
 #this function actually reloads our gun

@@ -5,7 +5,6 @@
 [node name="arms" instance=ExtResource("1_en26f")]
 
 [node name="Skeleton3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 bones/3/rotation = Quaternion(-0.605155, -0.345862, -0.356135, 0.622363)
 bones/4/rotation = Quaternion(-0.0296616, -0.732336, 0.680149, 0.0142187)
 bones/5/rotation = Quaternion(0.0213082, 0.355723, 0.260349, 0.897343)
@@ -64,17 +63,53 @@ bone_name = "ik_hand.R_029"
 bone_idx = 30
 override_pose = true
 
-[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D" index="2"]
-transform = Transform3D(-0.833001, -0.0594329, 0.550069, 0.0182729, -0.996626, -0.08001, 0.55297, -0.0565965, 0.831277, -0.218084, -0.00939778, 1.28217)
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="0"]
+transform = Transform3D(-0.241842, -0.94533, -0.218676, 0.894759, -0.130087, -0.427183, 0.375384, -0.298973, 0.877304, 0.248267, 0.036486, 0.091663)
 bone_name = "forearm.R_08"
 bone_idx = 8
 override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
 
-[node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D" index="3"]
-transform = Transform3D(-0.451893, -0.0746434, 0.888944, -0.387422, -0.881191, -0.270938, 0.803553, -0.466831, 0.369286, -0.1953, 0.242812, 1.40257)
+[node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="1"]
+transform = Transform3D(-0.552455, -0.810533, -0.194389, 0.513321, -0.147103, -0.845497, 0.656708, -0.566883, 0.497333, 0.464086, 0.0756079, 0.257862)
 bone_name = "upper_arm.R_07"
 bone_idx = 7
 override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
+
+[node name="BoneAttachment3D4" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="2"]
+transform = Transform3D(0.0402437, 0.276244, 0.960237, 0.27016, -0.928251, 0.255695, 0.961974, 0.249129, -0.111984, -0.123997, -0.0456641, 0.0188735)
+bone_name = "f_index.03.R_034"
+bone_idx = 35
+override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
+
+[node name="BoneAttachment3D5" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="3"]
+transform = Transform3D(-0.290746, 0.878343, 0.379473, 0.137705, -0.35407, 0.925016, 0.94684, 0.3212, -0.0180046, -0.114885, -0.057514, -0.00643492)
+bone_name = "f_middle.03.R_041"
+bone_idx = 42
+override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
+
+[node name="BoneAttachment3D6" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="4"]
+transform = Transform3D(-0.316124, 0.860636, 0.399233, 0.151117, -0.369772, 0.916742, 0.936606, 0.350136, -0.0131619, -0.106566, -0.0595463, -0.0298569)
+bone_name = "f_ring.03.R_045"
+bone_idx = 46
+override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
+
+[node name="BoneAttachment3D7" type="BoneAttachment3D" parent="Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D" index="5"]
+transform = Transform3D(-0.503073, 0.763933, 0.404156, -0.0592525, -0.49704, 0.865696, 0.86221, 0.41156, 0.295307, -0.0954878, -0.0466607, -0.0551742)
+bone_name = "f_pinky.03.R_049"
+bone_idx = 50
+override_pose = true
+use_external_skeleton = true
+external_skeleton = NodePath("../..")
 
 [node name="AnimationPlayer" parent="." index="1"]
 autoplay = "arms_armature|Hands_below"
