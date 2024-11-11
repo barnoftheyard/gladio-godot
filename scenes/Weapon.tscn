@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0fbdoho2psn5"]
+[gd_scene load_steps=5 format=3 uid="uid://b0fbdoho2psn5"]
 
 [ext_resource type="Script" path="res://scripts/Weapon.gd" id="1_tk8kd"]
 [ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_nryhr"]
+[ext_resource type="PackedScene" uid="uid://coujrvkdglup4" path="res://scenes/arms.tscn" id="3_anh8k"]
 [ext_resource type="AudioStream" uid="uid://c7l8rb5v4ngxh" path="res://sounds/lmg.mp3" id="3_kaanv"]
 
 [node name="Weapon" type="Node3D"]
@@ -27,6 +28,9 @@ cull_mask = 1048570
 
 [node name="smg" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_nryhr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
+
+[node name="arms" parent="SubViewportContainer/SubViewport/smg" instance=ExtResource("3_anh8k")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.638521, -3.91618, 1.29766)
 
 [node name="WeaponRay" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -2048)

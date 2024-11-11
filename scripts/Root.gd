@@ -13,6 +13,9 @@ func _ready():
 	host_port_entry.text = str(4764)
 	join_port_entry.text = str(4764)
 	join_ip_entry.text = "localhost"
+	#set the multiplayer_peer to null if we had the peer previous set to something
+	#I.E if we disconnected from a server previously
+	multiplayer.multiplayer_peer = null
 	
 	
 var toggle = false
@@ -50,7 +53,8 @@ func _on_host_pressed():
 	
 	_add_player(multiplayer.get_unique_id())
 	
-	upnp_setup()
+	if $Title/PanelContainer/VBoxContainer/CheckBox.button_pressed:
+		upnp_setup()
 
 #the function for the signal that adds the player
 func _add_player(id):

@@ -106,7 +106,12 @@ theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
 text = "SETTINGS"
 
+[node name="CheckBox" type="CheckBox" parent="Title/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "UPNP"
+
 [node name="Settings" type="PopupMenu" parent="Title"]
+transparent_bg = true
 title = "Settings"
 initial_position = 1
 size = Vector2i(512, 256)
@@ -119,7 +124,6 @@ hide_on_checkable_item_selection = false
 allow_search = false
 item_count = 8
 item_0/text = "Video"
-item_0/id = 0
 item_0/separator = true
 item_1/text = "Fullscreen"
 item_1/checkable = 1
@@ -131,7 +135,6 @@ item_3/id = 2
 item_3/separator = true
 item_4/text = "Player Name"
 item_4/id = 3
-item_5/text = ""
 item_5/id = 4
 item_5/separator = true
 item_6/text = "Save"

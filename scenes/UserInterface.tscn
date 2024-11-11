@@ -86,6 +86,7 @@ visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_right = 1152.0
 offset_bottom = 32.0
 grow_horizontal = 2
 theme = ExtResource("1_4m6lg")
@@ -143,6 +144,68 @@ caret_blink = true
 wait_time = 3.0
 one_shot = true
 
+[node name="Info" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_4d3cc")
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Info"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 4.0
+offset_right = 219.0
+offset_bottom = 87.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Info/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "BP:"
+
+[node name="bp" type="Label" parent="Info/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "126
+82"
+horizontal_alignment = 1
+
+[node name="line" type="Label" parent="Info/VBoxContainer/HBoxContainer/bp"]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 32.0
+text = "___"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Info/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "HR:"
+
+[node name="hr" type="Label" parent="Info/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("1_4m6lg")
+text = "70"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Timer" type="Timer" parent="Info"]
+wait_time = 5.0
+autostart = true
+
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
 layout_mode = 1
@@ -192,66 +255,6 @@ libraries = {
 "": SubResource("AnimationLibrary_l62vd")
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("4_4d3cc")
-
-[node name="Timer2" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 143.0
-offset_top = 4.0
-offset_right = 188.0
-offset_bottom = 69.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme = ExtResource("1_4m6lg")
-text = "BP:"
-
-[node name="bp" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme = ExtResource("1_4m6lg")
-text = "126
-82"
-horizontal_alignment = 1
-
-[node name="line" type="Label" parent="VBoxContainer/HBoxContainer/bp"]
-layout_mode = 0
-offset_top = 8.0
-offset_right = 40.0
-offset_bottom = 32.0
-text = "___"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-theme = ExtResource("1_4m6lg")
-text = "HR:"
-
-[node name="hr" type="Label" parent="VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-theme = ExtResource("1_4m6lg")
-text = "70"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
 [connection signal="text_submitted" from="ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="timeout" from="ChatPanel/Timer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]
+[connection signal="timeout" from="Info/Timer" to="." method="_on_timer_2_timeout"]
