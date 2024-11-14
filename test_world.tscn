@@ -112,8 +112,8 @@ material = ExtResource("1_genfv")
 [node name="PhysicsBody" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.47838, 0.40318, 5.67005)
 mass = 5.0
-max_contacts_reported = 6
 contact_monitor = true
+max_contacts_reported = 6
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody"]
 shape = SubResource("BoxShape3D_u8q5f")
@@ -124,8 +124,8 @@ mesh = SubResource("BoxMesh_n4xt4")
 [node name="PhysicsBody2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85632, 0.357488, 5.67005)
 mass = 2000.0
-max_contacts_reported = 6
 contact_monitor = true
+max_contacts_reported = 6
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody2"]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)

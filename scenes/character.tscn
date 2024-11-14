@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://cc1m2a1obsyn4"]
 
-[ext_resource type="Script" path="res://addons/fpc/character.gd" id="1_0t4e8"]
+[ext_resource type="Script" path="res://scripts/character.gd" id="1_0t4e8"]
 [ext_resource type="PackedScene" uid="uid://b0fbdoho2psn5" path="res://scenes/Weapon.tscn" id="2_5kqqr"]
 [ext_resource type="PackedScene" uid="uid://jnpofrhieie4" path="res://models/male/male.tscn" id="3_51y7w"]
 [ext_resource type="PackedScene" uid="uid://bbr8vsvckbpm6" path="res://scenes/UserInterface.tscn" id="3_wdmg4"]
@@ -352,10 +352,11 @@ JUMP_ANIMATION = NodePath("Head/JumpAnimation")
 CROUCH_ANIMATION = NodePath("Head/CrouchAnimation")
 COLLISION_MESH = NodePath("Collision")
 RETICLE = NodePath("Reticle")
+crouch_enabled = false
 health = 85
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_uy03j")
 
 [node name="male" parent="." instance=ExtResource("3_51y7w")]

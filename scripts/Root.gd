@@ -56,12 +56,15 @@ func _on_host_pressed():
 	if $Title/PanelContainer/VBoxContainer/CheckBox.button_pressed:
 		upnp_setup()
 
+
 #the function for the signal that adds the player
 func _add_player(id):
 	var player = player_scene.instantiate()
+	player.set_multiplayer_authority(id)
+	
 	#player nodes are named by their multiplayer ID
 	player.name = str(id)
-	$test_world.call_deferred("add_child", player)
+	$test_world.call_deferred("add_child", player, true)
 	
 	print("Player " + str(id) + " has connected.")
 

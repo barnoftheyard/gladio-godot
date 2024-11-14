@@ -96,8 +96,10 @@ func _ready():
 		
 		$male.hide()
 		
+	#if this player node is not the main player remove the GUI
 	else:
 		$UserInterface.queue_free()
+		$Reticle.queue_free()
 
 func _physics_process(delta):
 	current_speed = Vector3.ZERO.distance_to(get_real_velocity())
@@ -131,7 +133,7 @@ func _physics_process(delta):
 	#match player model rotation and also rotate
 	$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
 	$male.character_animation(input_dir, is_on_floor(), state, delta)
-	$male/Armature/GeneralSkeleton/SpineOverride.rotation_degrees.x = -HEAD.rotation_degrees.x
+	$male/Armature/Skeleton3D/SpineOverride.rotation_degrees.x = -HEAD.rotation_degrees.x
 	
 	#do the footstep sounds
 	footsteps(input_dir)
@@ -247,7 +249,7 @@ func enter_normal_state():
 
 func enter_crouch_state():
 	#print("entering crouch state")
-	var prev_state = state
+	var _prev_state = state
 	state = "crouching"
 	speed = crouch_speed
 	CROUCH_ANIMATION.play("crouch")
@@ -294,7 +296,7 @@ func headbob_animation(moving):
 		HEADBOB_ANIMATION.play("RESET", 0.25)
 		HEADBOB_ANIMATION.speed_scale = 1
 
-func _process(delta):
+func _process(_delta):
 	
 	#clamp camera rotation to 90 degrees
 	HEAD.rotation.x = clamp(HEAD.rotation.x, deg_to_rad(-90), deg_to_rad(90))

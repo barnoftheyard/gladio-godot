@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
 [ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
-[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="2_s6dxf"]
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://scenes/character.tscn" id="2_s6dxf"]
 [ext_resource type="Script" path="res://scripts/Settings.gd" id="3_5lr76"]
 [ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="3_bppuo"]
 
@@ -161,7 +161,7 @@ caret_blink = true
 [node name="test_world" parent="." instance=ExtResource("2_a25eh")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://addons/fpc/character.tscn")
+_spawnable_scenes = PackedStringArray("res://scenes/character.tscn")
 spawn_path = NodePath("../test_world")
 
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]

@@ -2,8 +2,8 @@ extends Node3D
 
 func character_animation(moving, is_on_floor, state, delta):
 	
-	$Armature/GeneralSkeleton/SpineOverride.rotation_degrees.x = clamp(
-		$Armature/GeneralSkeleton/SpineOverride.rotation_degrees.x, -60, 60)
+	$Armature/Skeleton3D/SpineOverride.rotation_degrees.x = clamp(
+		$Armature/Skeleton3D/SpineOverride.rotation_degrees.x, -60, 60)
 	
 	var interpolate = func(parameters : String, to, time):
 		get_node("AnimationTree")[parameters] = lerp(
