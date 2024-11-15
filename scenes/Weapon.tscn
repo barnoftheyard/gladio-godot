@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Weapon.gd" id="1_tk8kd"]
 [ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_nryhr"]
-[ext_resource type="PackedScene" uid="uid://coujrvkdglup4" path="res://scenes/arms.tscn" id="3_anh8k"]
+[ext_resource type="PackedScene" path="res://scenes/arms.tscn" id="3_anh8k"]
 [ext_resource type="AudioStream" uid="uid://c7l8rb5v4ngxh" path="res://sounds/lmg.mp3" id="3_kaanv"]
 
 [node name="Weapon" type="Node3D"]

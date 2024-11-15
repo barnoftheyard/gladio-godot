@@ -64,12 +64,18 @@ func create_bullet_decal(object, decal_position, time):
 	decal.queue_free()
 		
 func shoot_weapon(collision):
+	
+	
 	if weapons[current_weapon]["mag"] > 0:
 		weapons[current_weapon]["mag"] -= 1
 		
 		#stop the animation first so we can play it again
 		viewmodel.get_node("AnimationPlayer").stop()
 		viewmodel.get_node("AnimationPlayer").play("fire")
+		
+		var thirdperson_gun = get_parent().get_parent().get_node_or_null("male/AnimationPlayer2")
+		if thirdperson_gun != null:
+			thirdperson_gun.play("shoot")
 		
 		$WeaponSound.play()
 		timer = weapons[current_weapon]["rate"]
