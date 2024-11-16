@@ -85,6 +85,7 @@ func shoot_weapon(collision):
 			collision.apply_impulse(-$WeaponRay.get_collision_normal() * clamp(weapons[current_weapon
 			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_point())	#apply push force
 			
+			#create a bullet hole decal
 			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
 			
 			if collision.find_child("CSGCombiner3D") != null:

@@ -59,6 +59,7 @@ alignment = 2
 
 [node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 text = "Port: "
 
 [node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
@@ -81,6 +82,7 @@ alignment = 2
 
 [node name="IPLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 text = "IP: "
 
 [node name="IPLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
@@ -94,6 +96,7 @@ alignment = 2
 
 [node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("3_bppuo")
 text = "Port: "
 
 [node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]

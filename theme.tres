@@ -10,8 +10,8 @@ border_color = Color(0, 0, 0, 1)
 border_blend = true
 
 [resource]
-default_font = ExtResource("1_kxkpr")
 default_font_size = 20
 Label/colors/font_color = Color(0.980392, 0.843137, 0, 0.862745)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0.333333)
+Label/fonts/font = ExtResource("1_kxkpr")
 Panel/styles/panel = SubResource("StyleBoxFlat_a2sy1")
