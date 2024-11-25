@@ -65,7 +65,6 @@ func create_bullet_decal(object, decal_position, time):
 		
 func shoot_weapon(collision):
 	
-	
 	if weapons[current_weapon]["mag"] > 0:
 		weapons[current_weapon]["mag"] -= 1
 		
@@ -113,6 +112,10 @@ func shoot_weapon(collision):
 					
 		elif collision is StaticBody3D or collision is CSGShape3D:
 			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
+			
+		elif collision is CharacterBody3D:
+			print(collision.name)
+			collision.damage.rpc(15, get_multiplayer_authority())
 			
 	#if we run out of bullets in our mag
 	elif weapons[current_weapon]["mag"] <= 0:

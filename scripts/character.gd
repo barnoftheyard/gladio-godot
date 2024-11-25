@@ -318,9 +318,18 @@ func footsteps(moving):
 	#function has to the only floor variant to prevent bug
 	elif !moving or !is_on_floor_only():
 		$Footsteps/FootstepsTimer.stop()
-		
-func damage(amount):
+
+#dont use call_local
+@rpc("any_peer", "reliable")
+func damage(amount, killer_id):
 	health -= amount
+	
+	if health <= 0:
+		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
+		get_node("/root/Root").players[killer_id]["kills"] += 1
+		
+		health = 100
+		position = Vector3.ZERO
 
 func _on_footsteps_timer_timeout():
 	#adjust the timing of the steps to our current player speed

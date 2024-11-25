@@ -86,13 +86,12 @@ visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_right = 1152.0
-offset_bottom = 32.0
+offset_bottom = 36.0
 grow_horizontal = 2
 theme = ExtResource("1_4m6lg")
 script = ExtResource("2_j2w1a")
 
-[node name="CodeEdit" type="CodeEdit" parent="DebugPanel"]
+[node name="PlayerList" type="VBoxContainer" parent="DebugPanel"]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DebugPanel"]
@@ -104,7 +103,7 @@ custom_minimum_size = Vector2(1024, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-text = "Welcome to REPL!"
+text = "Player List"
 
 [node name="Button" type="Button" parent="DebugPanel/HBoxContainer"]
 layout_mode = 2
@@ -236,7 +235,6 @@ theme = ExtResource("1_4m6lg")
 text = "MENU"
 item_count = 2
 popup/item_0/text = "YES"
-popup/item_0/id = 0
 popup/item_1/text = "NO"
 popup/item_1/id = 1
 
@@ -246,7 +244,6 @@ theme = ExtResource("1_4m6lg")
 text = "QUIT"
 item_count = 2
 popup/item_0/text = "YES"
-popup/item_0/id = 0
 popup/item_1/text = "NO"
 popup/item_1/id = 1
 

@@ -7,6 +7,8 @@ var peer = ENetMultiplayerPeer.new()
 @onready var join_port_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/PortLineEdit
 @onready var join_ip_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/IPLineEdit
 
+@export var players = {}
+
 func _ready():
 	print("Welcome to Project Gladio!")
 	
@@ -16,6 +18,7 @@ func _ready():
 	#set the multiplayer_peer to null if we had the peer previous set to something
 	#I.E if we disconnected from a server previously
 	multiplayer.multiplayer_peer = null
+	
 	
 	
 var toggle = false
@@ -47,7 +50,7 @@ func _on_host_pressed():
 	peer.create_server(int(host_port_entry.text))
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_add_player)
-	multiplayer.peer_disconnected.connect(remove_player)
+	multiplayer.peer_disconnected.connect(_remove_player)
 	
 	print("Hosting server on port " + host_port_entry.text)
 	
@@ -58,9 +61,20 @@ func _on_host_pressed():
 
 
 #the function for the signal that adds the player
+@rpc("any_peer", "reliable")
+func set_player_data(id):
+	players[id] = {
+		"name": $Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit.text, 
+		"kills": 0, 
+		"deaths": 0
+	}
+
+
 func _add_player(id):
 	var player = player_scene.instantiate()
 	player.set_multiplayer_authority(id)
+	
+	set_player_data(id)
 	
 	#player nodes are named by their multiplayer ID
 	player.name = str(id)
@@ -69,10 +83,11 @@ func _add_player(id):
 	print("Player " + str(id) + " has connected.")
 
 #the function for the signal that removes the player
-func remove_player(id):
+func _remove_player(id):
 	var player = $test_world.get_node_or_null(str(id))
 	if player:
 		player.queue_free()
+		players.erase(id)
 		
 	print("Player " + str(id) + " has disconnected.")
 

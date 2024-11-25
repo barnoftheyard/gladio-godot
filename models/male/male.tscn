@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://jnpofrhieie4"]
+[gd_scene load_steps=31 format=3 uid="uid://jnpofrhieie4"]
 
 [ext_resource type="PackedScene" uid="uid://c0ong1s2d6xsj" path="res://models/male/male.glb" id="1_jjuqy"]
 [ext_resource type="Script" path="res://models/male/male.gd" id="2_tujp7"]
@@ -8,11 +8,17 @@
 [ext_resource type="Texture2D" uid="uid://djcxodeoi5b1e" path="res://models/heads/head.png" id="6_mins8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s00kw"]
-diffuse_mode = 3
+diffuse_mode = 2
 albedo_texture = ExtResource("4_atwdc")
+normal_scale = -16.0
 rim = 0.15
+anisotropy = 1.0
+backlight = Color(1, 1, 1, 1)
 uv1_scale = Vector3(0.5, 0.5, 0.5)
-uv1_world_triplanar = true
+grow_amount = -0.173
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ksjir"]
+albedo_color = Color(0.886219, 0.780421, 0.676911, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4wq04"]
 albedo_texture = ExtResource("6_mins8")
@@ -191,8 +197,8 @@ _data = {
 script = ExtResource("2_tujp7")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/rotation = Quaternion(-7.44674e-05, -0.0461742, -1.92725e-06, 0.998933)
-bones/1/position = Vector3(-1.94428e-05, 0.251341, -0.000984631)
+bones/0/rotation = Quaternion(-0.00763456, -0.0482925, -0.000197587, 0.998804)
+bones/1/position = Vector3(0.000122411, 0.251288, 0.00526709)
 bones/1/rotation = Quaternion(-0.0847872, 3.31821e-08, -3.078e-09, 0.996399)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/rotation = Quaternion(0.0772662, 0.0399568, -0.0062272, 0.99619)
@@ -221,14 +227,14 @@ bones/16/scale = Vector3(1, 1, 1)
 bones/17/rotation = Quaternion(0.10334, 0.0286594, 0.00780448, 0.994203)
 bones/18/rotation = Quaternion(-0.188895, -0.0511396, -0.16043, 0.967453)
 bones/18/scale = Vector3(1, 1, 1)
-bones/19/rotation = Quaternion(0.286839, 0.0115113, 0.950902, -0.115655)
+bones/19/rotation = Quaternion(0.288076, 0.00313886, 0.950435, -0.116944)
 bones/19/scale = Vector3(0.999522, 0.999911, 0.993478)
-bones/20/rotation = Quaternion(-0.199082, 0.00682415, -0.0654312, 0.977772)
+bones/20/rotation = Quaternion(-0.196512, 0.00682972, -0.0645867, 0.978348)
 bones/20/scale = Vector3(0.999912, 1.00052, 0.99958)
-bones/21/rotation = Quaternion(0.535119, -0.103098, 0.00777314, 0.838426)
+bones/21/rotation = Quaternion(0.533781, -0.103367, 0.00764604, 0.839246)
 bones/21/scale = Vector3(0.998703, 1.00153, 0.999822)
 bones/22/rotation = Quaternion(0.397866, -3.29551e-06, 1.42478e-06, 0.917444)
-bones/23/rotation = Quaternion(0.102645, 0.245955, 0.957514, 0.110166)
+bones/23/rotation = Quaternion(0.10546, 0.239319, 0.959013, 0.109087)
 bones/23/scale = Vector3(0.999041, 1.0001, 0.993612)
 bones/24/rotation = Quaternion(-0.297637, -0.000424674, 0.0568081, 0.952987)
 bones/24/scale = Vector3(0.99999, 1.00084, 0.999305)
@@ -257,23 +263,25 @@ bone_idx = 15
 transform = Transform3D(0.229899, 0.0022864, -0.00641482, -0.0064153, 1.8517e-05, -0.229911, -0.00228499, 0.229989, 8.22827e-05, 0.00437476, 0.109149, 0.0471845)
 
 [node name="ChestAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="3" groups=["Bones"]]
-transform = Transform3D(0.998521, 0.0483479, -0.0248721, -0.0522133, 0.980265, -0.190665, 0.015163, 0.191682, 0.98134, 0.01003, 1.36877, -0.0409589)
+transform = Transform3D(0.99852, 0.048348, -0.0248721, -0.0522133, 0.980265, -0.190665, 0.015163, 0.191682, 0.98134, 0.01003, 1.36877, -0.0409589)
 bone_name = "Chest"
 bone_idx = 2
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ChestAttachment" index="0" groups=["Mesh"]]
-transform = Transform3D(1.275, 0, 0, 0, 1.515, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1.415, 0, 0, 0, 1.515, 0, 0, 0, 1.14, 0, 0, 0)
 radius = 0.123872
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="SpineAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="4" groups=["Bones"]]
-transform = Transform3D(0.994197, 0.0453851, -0.0975292, -0.0488229, 0.998257, -0.0331552, 0.0958545, 0.0377245, 0.99468, 7.72438e-05, 1.14986, -0.0492317)
+transform = Transform3D(0.994197, 0.0453851, -0.0975292, -0.0488229, 0.998257, -0.0331552, 0.0958545, 0.0377245, 0.99468, 7.72435e-05, 1.14986, -0.0492317)
 bone_name = "Spine"
 bone_idx = 1
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/SpineAttachment" index="0" groups=["Mesh"]]
-transform = Transform3D(1.125, 0, 0, 0, 1.605, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1.12, 0, 0, 0, 1.605, 0, 0, 0, 1, 0, 0, 0)
 radius = 0.145
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="HeadAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="5" groups=["Bones"]]
@@ -284,101 +292,111 @@ bone_idx = 4
 [node name="CSGSphere3D2" type="CSGSphere3D" parent="Armature/Skeleton3D/HeadAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.91038e-11, -0.0472782, -0.0188257)
 radius = 0.0595987
-material = SubResource("StandardMaterial3D_s00kw")
+radial_segments = 6
+material = SubResource("StandardMaterial3D_ksjir")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="Armature/Skeleton3D/HeadAttachment" index="1"]
-transform = Transform3D(-5.90104e-09, 0, -0.135, 0, 0.135, 0, 0.135, 0, -5.90104e-09, 7.85803e-11, 0.0397642, 1.7928e-10)
+transform = Transform3D(-2.79397e-09, -9.8953e-10, -0.15, -4.19095e-09, 0.15, -1.33878e-09, 0.15, 4.65661e-10, -5.58794e-09, -0.00182794, 0.0781279, -0.00157735)
 mesh = ExtResource("5_lu7q2")
 material = SubResource("StandardMaterial3D_4wq04")
 
 [node name="HipAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6" groups=["Bones"]]
-transform = Transform3D(0.995736, 1.07273e-05, -0.0922499, 3.02655e-06, 1, 0.000148954, 0.0922499, -0.000148598, 0.995736, -1.23003e-17, 0.89852, -0.0481702)
+transform = Transform3D(0.995336, 0.00113208, -0.0964665, 0.000342683, 0.999883, 0.0152699, 0.0964725, -0.0152318, 0.995219, -1.23003e-17, 0.89852, -0.0481702)
 bone_name = "Hips"
 bone_idx = 0
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/HipAttachment" index="0" groups=["Mesh"]]
-transform = Transform3D(1.275, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0, 0)
-radius = 0.114929
+transform = Transform3D(1.275, -0.000215433, -0.00223642, 0.000217515, 1.40996, 0.00796599, 0.00284977, -0.0112326, 0.999966, 3.09008e-05, 0.0528765, 0.00130098)
+radius = 0.125563
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="ThighLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="7" groups=["Bones"]]
-transform = Transform3D(-0.855409, 0.229661, 0.460466, -0.213168, -0.972902, 0.0877906, 0.471041, -0.0232204, 0.875935, 0.0919083, 0.945337, -0.00393912)
+transform = Transform3D(-0.855646, 0.22786, 0.460914, -0.212262, -0.97329, 0.0856954, 0.47102, -0.0246803, 0.875907, 0.0917726, 0.945902, -0.00425991)
 bone_name = "Thigh.L"
 bone_idx = 19
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ThighLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1.00004, 0, 0, 0, 2.57309, 0, 0, 0, 1.00068, 1.96882e-05, 0.230846, -0.0387984)
 radius = 0.0964837
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="ShinLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="8" groups=["Bones"]]
-transform = Transform3D(-0.872087, -0.077356, 0.479227, -0.0830706, -0.948901, -0.305343, 0.481086, -0.304145, 0.815616, 0.19545, 0.506709, -0.0144079)
+transform = Transform3D(-0.872218, -0.0751498, 0.479332, -0.0838207, -0.949777, -0.302414, 0.480718, -0.302036, 0.816615, 0.194502, 0.507099, -0.0153869)
 bone_name = "Shin.L"
 bone_idx = 20
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ShinLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(0.999998, -0.00625339, 2.38121e-05, 0.00185679, 3.36002, -0.00518356, -8.40425e-06, 0.0173209, 0.999967, -0.000617206, 0.175561, -0.0282181)
 radius = 0.080066
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="ThighRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="9" groups=["Bones"]]
-transform = Transform3D(-0.962791, -0.205362, 0.169462, 0.261232, -0.854751, 0.445659, 0.0536123, 0.476893, 0.871744, -0.103012, 0.915814, -0.065315)
+transform = Transform3D(-0.962765, -0.205509, 0.169435, 0.261392, -0.854332, 0.446359, 0.0533071, 0.47758, 0.87139, -0.102919, 0.915662, -0.0660118)
 bone_name = "Thigh.R"
 bone_idx = 23
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ThighRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, -0.000827737, -0.000299178, 0.000320964, 2.575, 0.000814348, 0.000302132, -0.00212479, 1, 0.00222263, 0.211762, 0.0181685)
 radius = 0.0964837
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="ShinRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="10" groups=["Bones"]]
-transform = Transform3D(-0.984448, -0.159925, 0.0562461, 0.15207, -0.979672, -0.127107, 0.076248, -0.111135, 0.985263, -0.195598, 0.530453, 0.14969)
+transform = Transform3D(-0.984437, -0.160032, 0.0561397, 0.152251, -0.979745, -0.126299, 0.076031, -0.110339, 0.985373, -0.195571, 0.530491, 0.149303)
 bone_name = "Shin.R"
 bone_idx = 24
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ShinRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1.00057, 0, 0, 0, 3.36637, 0, 0, 0, 0.997584, -6.5521e-09, 0.177952, -4.64536e-10)
 radius = 0.080066
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="FootLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="11" groups=["Bones"]]
-transform = Transform3D(-0.758096, 0.504569, 0.407559, -0.0442325, -0.669622, 0.742542, 0.647344, 0.54211, 0.525311, 0.1617, 0.0927099, -0.147104)
+transform = Transform3D(-0.758087, 0.504598, 0.407532, -0.0442801, -0.669609, 0.742557, 0.647352, 0.542079, 0.525332, 0.161715, 0.0927178, -0.147163)
 bone_name = "Foot.L"
 bone_idx = 21
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/FootLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(0.999998, -0.00279437, 1.79754e-05, 0.00185679, 1.50498, -0.00515479, -8.40425e-06, 0.00775816, 0.999967, -0.000349163, 0.0312915, -0.00766809)
-radius = 0.05
+radius = 0.055
+radial_segments = 6
 material = SubResource("StandardMaterial3D_xylsg")
 
 [node name="FootRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="12" groups=["Bones"]]
-transform = Transform3D(-0.902781, -0.282304, -0.317849, 0.0118216, -0.760216, 0.649362, -0.420272, 0.581974, 0.689246, -0.265372, 0.103029, 0.101202)
+transform = Transform3D(-0.902741, -0.282449, -0.317835, 0.0115827, -0.759701, 0.64997, -0.420365, 0.582576, 0.68868, -0.265393, 0.103034, 0.101162)
 bone_name = "Foot.R"
 bone_idx = 25
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/FootRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0.00020457, 0.000229238, -0.000135759, 1.505, -0.000731587, -0.000229336, 0.00110099, 1, -0.0182879, 0.0554842, -0.000859511)
-radius = 0.05
+radius = 0.055
+radial_segments = 6
 material = SubResource("StandardMaterial3D_xylsg")
 
 [node name="ToesLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="13" groups=["Bones"]]
-transform = Transform3D(-0.758093, 0.642363, -0.089823, -0.0442272, 0.0844613, 0.996307, 0.647348, 0.753976, -0.0367645, 0.230845, 0.000945956, -0.0728145)
+transform = Transform3D(-0.758084, 0.642363, -0.0898628, -0.0442748, 0.0844817, 0.996308, 0.647355, 0.753969, -0.0367277, 0.230864, 0.000955716, -0.0728776)
 bone_name = "Toes.L"
 bone_idx = 22
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ToesLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 2.195, 0, 0, 0, 0.99998, -0.000220381, -0.0380675, 0.027)
 radius = 0.05
+radial_segments = 6
 material = SubResource("StandardMaterial3D_xylsg")
 
 [node name="ToesRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="14" groups=["Bones"]]
-transform = Transform3D(-0.902779, -0.424975, -0.0111315, 0.0118167, -0.0454758, 0.998765, -0.420277, 0.900898, 0.0461687, -0.304059, -0.00115008, 0.180955)
+transform = Transform3D(-0.902738, -0.425064, -0.0110155, 0.0115778, -0.0446798, 0.998804, -0.42037, 0.900896, 0.0453417, -0.304099, -0.00107388, 0.180998)
 bone_name = "Toes.R"
 bone_idx = 26
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/ToesRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 2.195, 0, 0, 0, 1, -0.0182973, -0.0138759, 0.027)
 radius = 0.05
+radial_segments = 6
 material = SubResource("StandardMaterial3D_xylsg")
 
 [node name="CollarLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="15" groups=["Bones"]]
@@ -387,28 +405,31 @@ bone_name = "Coller.L"
 bone_idx = 5
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/CollarLAttachment" index="0" groups=["Mesh"]]
-transform = Transform3D(1, 0, 0, 0, 2.45, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1.225, 2.52388e-07, 8.9407e-08, 7.82311e-08, 2.45, -1.11759e-08, 5.96046e-08, 0, 1, 0.0103754, 0.00234085, 0.00213444)
 radius = 0.0548551
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="CollarRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="16" groups=["Bones"]]
-transform = Transform3D(-0.112147, -0.993585, 0.0145638, 0.973094, -0.11278, -0.200921, 0.201274, -0.00836077, 0.979499, -0.0521075, 1.53487, -0.010622)
+transform = Transform3D(-0.112147, -0.993585, 0.0145638, 0.973094, -0.11278, -0.200921, 0.201274, -0.00836074, 0.979499, -0.0521075, 1.53487, -0.010622)
 bone_name = "Coller.R"
 bone_idx = 12
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/CollarRAttachment" index="0" groups=["Mesh"]]
-transform = Transform3D(1, 0, 0, 0, 2.45, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1.225, -1.02911e-07, -5.96046e-08, -8.42847e-08, 2.45, 3.53903e-08, -4.47035e-08, 6.89179e-08, 1, -0.0105562, 0.00122343, 0.00217959)
 radius = 0.0548551
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="UpperArmLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="17" groups=["Bones"]]
-transform = Transform3D(-0.836141, -0.353944, -0.419036, -0.327973, -0.289732, 0.89916, -0.43966, 0.889257, 0.126172, 0.212539, 1.50005, -0.00574631)
+transform = Transform3D(-0.836141, -0.353944, -0.419036, -0.327974, -0.289732, 0.89916, -0.43966, 0.889258, 0.126172, 0.212539, 1.50005, -0.00574632)
 bone_name = "Upper Arm.L"
 bone_idx = 6
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/UpperArmLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 2.815, 0, 0, 0, 1, 0, 0.152966, 1.11759e-08)
 radius = 0.0629645
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="LowerArmLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="18" groups=["Bones"]]
@@ -419,6 +440,7 @@ bone_idx = 7
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/LowerArmLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 3.115, 0, 0, 0, 1, 2.32831e-10, 0.114719, 1.11759e-08)
 radius = 0.0528415
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="UpperArmRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="19" groups=["Bones"]]
@@ -429,16 +451,18 @@ bone_idx = 13
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/UpperArmRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 2.815, 0, 0, 0, 1, 0, 0.152966, 1.11759e-08)
 radius = 0.0629645
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="LowerArmRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="20" groups=["Bones"]]
-transform = Transform3D(-0.916966, 0.39896, 0.00217721, 0.237467, 0.541391, 0.806539, 0.320598, 0.740086, -0.591177, -0.222683, 1.23548, 0.0641898)
+transform = Transform3D(-0.916966, 0.39896, 0.00217725, 0.237467, 0.541391, 0.806539, 0.320598, 0.740086, -0.591177, -0.222683, 1.23548, 0.0641898)
 bone_name = "Lower Arm.R"
 bone_idx = 14
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/LowerArmRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 3.115, 0, 0, 0, 1, 2.32831e-10, 0.114719, 1.11759e-08)
 radius = 0.0528415
+radial_segments = 6
 material = SubResource("StandardMaterial3D_s00kw")
 
 [node name="HandLAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="21" groups=["Bones"]]
@@ -448,8 +472,9 @@ bone_idx = 8
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/HandLAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.98492e-10, 0.0374541, 1.49012e-08)
-radius = 0.0528415
-material = SubResource("StandardMaterial3D_xylsg")
+radius = 0.04
+radial_segments = 6
+material = SubResource("StandardMaterial3D_ksjir")
 
 [node name="HandRAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="22" groups=["Bones"]]
 transform = Transform3D(-0.998745, 0.0121539, 0.0485835, 0.0500756, 0.256122, 0.965347, -0.000710718, 0.966568, -0.256409, -0.12474, 1.36839, 0.245878)
@@ -458,8 +483,9 @@ bone_idx = 15
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Armature/Skeleton3D/HandRAttachment" index="0" groups=["Mesh"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.74623e-10, 0.0532683, 1.0943e-08)
-radius = 0.0528415
-material = SubResource("StandardMaterial3D_xylsg")
+radius = 0.04
+radial_segments = 6
+material = SubResource("StandardMaterial3D_ksjir")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="1"]
 tree_root = SubResource("AnimationNodeBlendTree_n245d")
