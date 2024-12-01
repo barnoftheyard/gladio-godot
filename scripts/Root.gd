@@ -8,6 +8,7 @@ var peer = ENetMultiplayerPeer.new()
 @onready var join_ip_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/IPLineEdit
 
 @export var players = {}
+@export var chat_text = ""
 
 func _ready():
 	print("Welcome to Project Gladio!")
@@ -61,26 +62,26 @@ func _on_host_pressed():
 
 
 #the function for the signal that adds the player
-@rpc("any_peer", "reliable")
-func set_player_data(id):
+@rpc("any_peer", "call_local", "reliable")
+func set_player_data(id, new_player):
 	players[id] = {
 		"name": $Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit.text, 
 		"kills": 0, 
 		"deaths": 0
 	}
-
+	
 
 func _add_player(id):
 	var player = player_scene.instantiate()
 	player.set_multiplayer_authority(id)
 	
-	set_player_data(id)
+	set_player_data.rpc(id, players)
 	
 	#player nodes are named by their multiplayer ID
 	player.name = str(id)
 	$test_world.call_deferred("add_child", player, true)
 	
-	print("Player " + str(id) + " has connected.")
+	print(players[id]["name"] + " (" + str(id) + ")" + " has connected.")
 
 #the function for the signal that removes the player
 func _remove_player(id):

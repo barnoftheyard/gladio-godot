@@ -128,6 +128,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 8
 

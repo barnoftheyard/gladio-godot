@@ -96,9 +96,9 @@ func _ready():
 		
 		$male.hide()
 		
-	#if this player node is not the main player remove the GUI
+	#if this player node is not the main player hide the GUI
 	else:
-		$UserInterface.queue_free()
+		$UserInterface.hide()
 		$Reticle.queue_free()
 
 func _physics_process(delta):
@@ -319,14 +319,16 @@ func footsteps(moving):
 	elif !moving or !is_on_floor_only():
 		$Footsteps/FootstepsTimer.stop()
 
-#dont use call_local
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func damage(amount, killer_id):
 	health -= amount
 	
 	if health <= 0:
 		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
 		get_node("/root/Root").players[killer_id]["kills"] += 1
+		
+		print(get_node("/root/Root").players[get_multiplayer_authority()]["name"] + 
+		" got fragged by " + get_node("/root/Root").players[killer_id]["name"])
 		
 		health = 100
 		position = Vector3.ZERO

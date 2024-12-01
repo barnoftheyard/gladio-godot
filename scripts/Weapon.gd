@@ -114,7 +114,7 @@ func shoot_weapon(collision):
 			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
 			
 		elif collision is CharacterBody3D:
-			print(collision.name)
+			#print(collision.name)
 			collision.damage.rpc(15, get_multiplayer_authority())
 			
 	#if we run out of bullets in our mag

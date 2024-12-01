@@ -6,10 +6,13 @@
 [ext_resource type="Script" path="res://scripts/Settings.gd" id="3_5lr76"]
 [ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="3_bppuo"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_nrahs"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vf1c8"]
 properties/0/path = NodePath(".:players")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:chat_text")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Root" type="Node"]
 script = ExtResource("1_c7ueb")
@@ -189,7 +192,7 @@ _spawnable_scenes = PackedStringArray("res://scenes/character.tscn")
 spawn_path = NodePath("../test_world")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_nrahs")
+replication_config = SubResource("SceneReplicationConfig_vf1c8")
 
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/JoinButton" to="." method="_on_join_pressed"]
