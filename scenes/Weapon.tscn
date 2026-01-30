@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0fbdoho2psn5"]
+[gd_scene format=3 uid="uid://b0fbdoho2psn5"]
 
-[ext_resource type="Script" path="res://scripts/Weapon.gd" id="1_tk8kd"]
+[ext_resource type="Script" uid="uid://bd23xbvk0w2fd" path="res://scripts/Weapon.gd" id="1_tk8kd"]
 [ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_nryhr"]
-[ext_resource type="PackedScene" path="res://scenes/arms.tscn" id="3_anh8k"]
+[ext_resource type="PackedScene" uid="uid://coujrvkdglup4" path="res://scenes/arms.tscn" id="3_anh8k"]
 [ext_resource type="AudioStream" uid="uid://c7l8rb5v4ngxh" path="res://sounds/lmg.mp3" id="3_kaanv"]
 
-[node name="Weapon" type="Node3D"]
+[node name="Weapon" type="Node3D" unique_id=71187924]
 script = ExtResource("1_tk8kd")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1117130622]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -17,23 +17,23 @@ size_flags_vertical = 4
 stretch = true
 metadata/_edit_use_anchors_ = true
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1304889542]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
-[node name="WeaponViewmodel" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+[node name="WeaponViewmodel" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=572840936]
 cull_mask = 1048570
 
-[node name="smg" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_nryhr")]
+[node name="smg" parent="SubViewportContainer/SubViewport" unique_id=593447548 instance=ExtResource("2_nryhr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
 
-[node name="arms" parent="SubViewportContainer/SubViewport/smg" instance=ExtResource("3_anh8k")]
+[node name="arms" parent="SubViewportContainer/SubViewport/smg" unique_id=1894086370 instance=ExtResource("3_anh8k")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.638521, -3.91618, 1.29766)
 
-[node name="WeaponRay" type="RayCast3D" parent="."]
+[node name="WeaponRay" type="RayCast3D" parent="." unique_id=869462007]
 target_position = Vector3(0, 0, -2048)
 
-[node name="WeaponSound" type="AudioStreamPlayer3D" parent="."]
+[node name="WeaponSound" type="AudioStreamPlayer3D" parent="." unique_id=311168532]
 stream = ExtResource("3_kaanv")

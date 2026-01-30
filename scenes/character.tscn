@@ -1,6 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://cc1m2a1obsyn4"]
+[gd_scene format=3 uid="uid://cc1m2a1obsyn4"]
 
-[ext_resource type="Script" path="res://scripts/character.gd" id="1_0t4e8"]
+[ext_resource type="Script" uid="uid://chs6urvr2lo3c" path="res://scripts/character.gd" id="1_0t4e8"]
 [ext_resource type="PackedScene" uid="uid://b0fbdoho2psn5" path="res://scenes/Weapon.tscn" id="2_5kqqr"]
 [ext_resource type="PackedScene" uid="uid://jnpofrhieie4" path="res://models/male/male.tscn" id="3_51y7w"]
 [ext_resource type="PackedScene" uid="uid://bbr8vsvckbpm6" path="res://scenes/UserInterface.tscn" id="3_wdmg4"]
@@ -126,9 +126,9 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o0unb"]
 _data = {
-"RESET": SubResource("Animation_gh776"),
-"sprint": SubResource("Animation_8ku67"),
-"walk": SubResource("Animation_lrqmv")
+&"RESET": SubResource("Animation_gh776"),
+&"sprint": SubResource("Animation_8ku67"),
+&"walk": SubResource("Animation_lrqmv")
 }
 
 [sub_resource type="Animation" id="Animation_fvvjq"]
@@ -232,10 +232,10 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qeg5r"]
 _data = {
-"RESET": SubResource("Animation_fvvjq"),
-"jump": SubResource("Animation_s07ye"),
-"land_left": SubResource("Animation_l1rph"),
-"land_right": SubResource("Animation_vsknp")
+&"RESET": SubResource("Animation_fvvjq"),
+&"jump": SubResource("Animation_s07ye"),
+&"land_left": SubResource("Animation_l1rph"),
+&"land_right": SubResource("Animation_vsknp")
 }
 
 [sub_resource type="Animation" id="Animation_gno45"]
@@ -319,8 +319,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c4gsr"]
 _data = {
-"RESET": SubResource("Animation_gno45"),
-"crouch": SubResource("Animation_in1ml")
+&"RESET": SubResource("Animation_gno45"),
+&"crouch": SubResource("Animation_in1ml")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_k4wwl"]
@@ -342,7 +342,7 @@ properties/4/path = NodePath(".:health")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
-[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("HEAD", "CAMERA", "HEADBOB_ANIMATION", "JUMP_ANIMATION", "CROUCH_ANIMATION", "COLLISION_MESH", "RETICLE")]
+[node name="Character" type="CharacterBody3D" unique_id=1894427855 node_paths=PackedStringArray("HEAD", "CAMERA", "HEADBOB_ANIMATION", "JUMP_ANIMATION", "CROUCH_ANIMATION", "COLLISION_MESH", "RETICLE")]
 script = ExtResource("1_0t4e8")
 base_speed = 6.0
 sprint_speed = 10.0
@@ -358,66 +358,60 @@ RETICLE = NodePath("Reticle")
 crouch_enabled = false
 health = 85
 
-[node name="Collision" type="CollisionShape3D" parent="."]
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=818847784]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_uy03j")
 
-[node name="male" parent="." instance=ExtResource("3_51y7w")]
+[node name="male" parent="." unique_id=1271876207 instance=ExtResource("3_51y7w")]
 transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
 
-[node name="Head" type="Node3D" parent="."]
+[node name="Head" type="Node3D" parent="." unique_id=852066632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="Camera" type="Camera3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 0.999391, -0.0348995, 0, 0.0348995, 0.999391, 0, 0, 0)
+[node name="Camera" type="Camera3D" parent="Head" unique_id=120471997]
+transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.99939096, 0, 0, 0)
 cull_mask = 1048569
 
-[node name="HeadbobAnimation" type="AnimationPlayer" parent="Head"]
-libraries = {
-"": SubResource("AnimationLibrary_o0unb")
-}
+[node name="HeadbobAnimation" type="AnimationPlayer" parent="Head" unique_id=1281146137]
+libraries/ = SubResource("AnimationLibrary_o0unb")
 blend_times = [&"RESET", &"RESET", 0.5, &"RESET", &"walk", 0.5, &"walk", &"RESET", 0.5]
 
-[node name="JumpAnimation" type="AnimationPlayer" parent="Head"]
-libraries = {
-"": SubResource("AnimationLibrary_qeg5r")
-}
+[node name="JumpAnimation" type="AnimationPlayer" parent="Head" unique_id=1154850560]
+libraries/ = SubResource("AnimationLibrary_qeg5r")
 speed_scale = 4.0
 
-[node name="CrouchAnimation" type="AnimationPlayer" parent="Head"]
+[node name="CrouchAnimation" type="AnimationPlayer" parent="Head" unique_id=1102730851]
 reset_on_save = false
-libraries = {
-"": SubResource("AnimationLibrary_c4gsr")
-}
+libraries/ = SubResource("AnimationLibrary_c4gsr")
 
-[node name="Weapon" parent="Head" instance=ExtResource("2_5kqqr")]
+[node name="Weapon" parent="Head" unique_id=1999578160 instance=ExtResource("2_5kqqr")]
 
-[node name="Reticle" parent="." instance=ExtResource("5_lek5e")]
+[node name="Reticle" parent="." unique_id=1461377774 instance=ExtResource("5_lek5e")]
 
-[node name="UserInterface" parent="." instance=ExtResource("3_wdmg4")]
+[node name="UserInterface" parent="." unique_id=1216162826 instance=ExtResource("3_wdmg4")]
 
-[node name="CrouchCeilingDetection" type="ShapeCast3D" parent="."]
+[node name="CrouchCeilingDetection" type="ShapeCast3D" parent="." unique_id=1496402295]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_k4wwl")
 target_position = Vector3(0, 0.5, 0)
 
-[node name="Footsteps" type="Node3D" parent="."]
+[node name="Footsteps" type="Node3D" parent="." unique_id=1605878297]
 
-[node name="FootstepsTimer" type="Timer" parent="Footsteps"]
+[node name="FootstepsTimer" type="Timer" parent="Footsteps" unique_id=1988676053]
 wait_time = 0.6
 one_shot = true
 
-[node name="FootstepsSounds" type="Node3D" parent="Footsteps"]
+[node name="FootstepsSounds" type="Node3D" parent="Footsteps" unique_id=2061267098]
 
-[node name="step0" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds"]
+[node name="step0" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds" unique_id=972694937]
 stream = ExtResource("5_q1r4f")
 max_db = 1.0
 
-[node name="step1" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds"]
+[node name="step1" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds" unique_id=690632331]
 stream = ExtResource("6_ocaur")
 max_db = 1.0
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1436005100]
 replication_config = SubResource("SceneReplicationConfig_ltoef")
 
 [connection signal="timeout" from="Footsteps/FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]

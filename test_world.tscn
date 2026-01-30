@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cvd1w35jx46ep"]
+[gd_scene format=3 uid="uid://cvd1w35jx46ep"]
 
 [ext_resource type="Material" uid="uid://dpllmvhj7glh2" path="res://textures/gray.tres" id="1_genfv"]
 [ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
@@ -6,17 +6,16 @@
 [ext_resource type="Texture2D" uid="uid://difa2dtk1ek14" path="res://textures/Concrete/conrete.png" id="3_tyhjx"]
 [ext_resource type="PackedScene" uid="uid://7mh7rvjv3dmo" path="res://scenes/vm.tscn" id="4_tdyee"]
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_edcox"]
-ground_color = Color(0.160784, 0.815686, 0.905882, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lf0gk"]
 
-[sub_resource type="Sky" id="Sky_2iust"]
-sky_material = SubResource("PhysicalSkyMaterial_edcox")
+[sub_resource type="Sky" id="Sky_cnaw2"]
+sky_material = SubResource("ProceduralSkyMaterial_lf0gk")
 
-[sub_resource type="Environment" id="Environment_20rw3"]
+[sub_resource type="Environment" id="Environment_kt6p6"]
 background_mode = 2
-sky = SubResource("Sky_2iust")
-tonemap_mode = 1
-ssao_enabled = true
+sky = SubResource("Sky_cnaw2")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00p1e"]
 albedo_texture = ExtResource("3_tyhjx")
@@ -35,126 +34,118 @@ points = PackedVector3Array(41.5246, 10.7559, 35.4387, 39.347, -5.41125, -96.886
 
 [sub_resource type="BoxMesh" id="BoxMesh_riae2"]
 
-[node name="test_world" type="Node3D"]
+[node name="test_world" type="Node3D" unique_id=665985900]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_20rw3")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=223548464]
+environment = SubResource("Environment_kt6p6")
 
-[node name="sun" type="DirectionalLight3D" parent="."]
+[node name="sun" type="DirectionalLight3D" parent="." unique_id=1302222749]
 transform = Transform3D(0.87959, -0.436605, 0.188936, 0, 0.397148, 0.917755, -0.475732, -0.807248, 0.349328, 0, 0, 0)
 light_energy = 2.0
 shadow_enabled = true
 
-[node name="terrain" type="CSGCombiner3D" parent="."]
+[node name="terrain" type="CSGCombiner3D" parent="." unique_id=1991633689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -9)
 use_collision = true
 
-[node name="CSGBox3D" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D" type="CSGBox3D" parent="terrain" unique_id=2076277725]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -0.5, 10)
 use_collision = true
 size = Vector3(30, 1, 30)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="terrain" unique_id=2079500390]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -10)
 use_collision = true
 size = Vector3(10, 1, 10)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="terrain" unique_id=876324376]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.8, -13)
 use_collision = true
 size = Vector3(4, 0.5, 4)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="terrain" unique_id=1091820428]
 transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -9.5, 1.2, -10)
 use_collision = true
 size = Vector3(10, 1, 10)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="terrain" unique_id=2143375272]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3, -15.5)
 use_collision = true
 size = Vector3(19, 8, 1)
 material = ExtResource("2_exixc")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="terrain"]
+[node name="CSGBox3D6" type="CSGBox3D" parent="terrain" unique_id=1083325773]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503052, 3.5, 19.3632)
 use_collision = true
 size = Vector3(3, 7, 3)
 material = SubResource("StandardMaterial3D_00p1e")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+[node name="CSGBox3D" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=1543572518]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 size = Vector3(3.25, 0.25, 3.25)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=544080271]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 size = Vector3(3.25, 0.25, 3.25)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=1921040740]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 size = Vector3(3.25, 0.25, 3.25)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=989604555]
 size = Vector3(3.25, 0.25, 3.25)
 material = ExtResource("1_genfv")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="terrain/CSGBox3D6"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=976546832]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 size = Vector3(3.25, 0.25, 3.25)
 material = ExtResource("1_genfv")
 
-[node name="PhysicsBody" type="RigidBody3D" parent="."]
+[node name="PhysicsBody" type="RigidBody3D" parent="." unique_id=2073690001]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.47838, 0.40318, 5.67005)
 mass = 5.0
 contact_monitor = true
 max_contacts_reported = 6
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody" unique_id=711290740]
 shape = SubResource("BoxShape3D_u8q5f")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody" unique_id=434163922]
 mesh = SubResource("BoxMesh_n4xt4")
 
-[node name="PhysicsBody2" type="RigidBody3D" parent="."]
+[node name="PhysicsBody2" type="RigidBody3D" parent="." unique_id=1821903237]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85632, 0.357488, 5.67005)
 mass = 2000.0
 contact_monitor = true
 max_contacts_reported = 6
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicsBody2" unique_id=17515578]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_vsegq")
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="PhysicsBody2"]
-
-[node name="CarMesh" type="CSGMesh3D" parent="PhysicsBody2/CSGCombiner3D"]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody2" unique_id=1365107803]
 mesh = ExtResource("3_aldv4")
 
-[node name="CSGSphere3D" type="CSGSphere3D" parent="PhysicsBody2"]
-visible = false
-radial_segments = 4
-rings = 4
-
-[node name="vm" parent="." instance=ExtResource("4_tdyee")]
+[node name="vm" parent="." unique_id=1354450809 instance=ExtResource("4_tdyee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
 file_path = "res://bvm/rotate.txt"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="vm"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="vm" unique_id=1158081401]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 mesh = SubResource("BoxMesh_riae2")
 skeleton = NodePath("../..")
 
-[node name="vm2" parent="." instance=ExtResource("4_tdyee")]
+[node name="vm2" parent="." unique_id=1331193927 instance=ExtResource("4_tdyee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -2)
 
-[node name="vm3" parent="." instance=ExtResource("4_tdyee")]
+[node name="vm3" parent="." unique_id=344356887 instance=ExtResource("4_tdyee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
 file_path = "res://bvm/test.txt"
 
