@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
 [ext_resource type="ArrayMesh" uid="uid://dmr3t7go1eqva" path="res://models/aud/ref1.obj" id="3_aldv4"]
 [ext_resource type="Texture2D" uid="uid://difa2dtk1ek14" path="res://textures/Concrete/conrete.png" id="3_tyhjx"]
-[ext_resource type="PackedScene" uid="uid://7mh7rvjv3dmo" path="res://scenes/vm.tscn" id="4_tdyee"]
+[ext_resource type="PackedScene" uid="uid://7mh7rvjv3dmo" path="res://addons/smplscript/simplscript.tscn" id="4_tdyee"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lf0gk"]
 
@@ -133,21 +133,24 @@ shape = SubResource("ConvexPolygonShape3D_vsegq")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody2" unique_id=1365107803]
 mesh = ExtResource("3_aldv4")
 
-[node name="vm" parent="." unique_id=1354450809 instance=ExtResource("4_tdyee")]
+[node name="smplscript" parent="." unique_id=1354450809 instance=ExtResource("4_tdyee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
-file_path = "res://bvm/rotate.txt"
+file_path = "res://addons/smplscript/examples/rotate.txt"
+show_icon = false
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="vm" unique_id=1158081401]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="smplscript" unique_id=1158081401]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 mesh = SubResource("BoxMesh_riae2")
 skeleton = NodePath("../..")
 
-[node name="vm2" parent="." unique_id=1331193927 instance=ExtResource("4_tdyee")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -2)
-
-[node name="vm3" parent="." unique_id=344356887 instance=ExtResource("4_tdyee")]
+[node name="smplscript3" parent="." unique_id=344356887 instance=ExtResource("4_tdyee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
-file_path = "res://bvm/test.txt"
+file_path = "res://addons/smplscript/examples/test.txt"
+show_icon = false
+
+[node name="smplscript2" parent="." unique_id=255019543 instance=ExtResource("4_tdyee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3179731, 0.35264683, 0)
+file_path = "res://addons/smplscript/examples/fizzbuzz.txt"
 
 [connection signal="body_entered" from="PhysicsBody" to="PhysicsBody" method="_on_body_entered"]
 [connection signal="body_entered" from="PhysicsBody2" to="PhysicsBody2" method="_on_body_entered"]

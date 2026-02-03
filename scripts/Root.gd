@@ -63,7 +63,7 @@ func _on_host_pressed():
 
 #the function for the signal that adds the player
 @rpc("any_peer", "call_local", "reliable")
-func set_player_data(id, new_player):
+func set_player_data(id, _new_player):
 	players[id] = {
 		"name": $Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit.text, 
 		"kills": 0, 

@@ -3,7 +3,7 @@ extends Node3D
 #empty global variable for the program
 var program = ""
 
-var debug_mode = true
+@export var debug_mode = false
 
 var clock_speed = 0.0
 var clock = 0.0
@@ -23,8 +23,8 @@ const instructions = [
 	"set", 		#variable adjustment
 	"let",		#variable declaration
 	"parse",	#godot expression function calling
-	"node_set",
-	"node_get"
+	"node_set",	#godot node setting
+	"node_get"	#node node getting
 ]
 
 #dictionary for variables
@@ -35,7 +35,9 @@ var tags = {}
 #the dictionary for string literals
 var literals = {}
 
-@export var file_path : String = "res://bvm/fizzbuzz.txt"
+@export_file("*.txt") var file_path = ""
+@export var show_label = true
+@export var show_icon = true
 
 #math operation function template
 func math_operation(line, line_count, token_count, dest, operand1, operand2, operation):
@@ -81,14 +83,15 @@ func tokenizer(input):
 	var index = 0
 	
 	var output = []
+	var delimiters = [";", ",", "\t"]
 	
 	for line in program_lines:
-		#remove comments
+		#remove semi-colon and the comment following it
 		program_lines[index] = line.split(";", true, 1)[0]
-		#remove any commas that we have
-		program_lines[index] = program_lines[index].replace(",", "")
-		#remove any tabs that we may have
-		program_lines[index] = program_lines[index].replace("\t", "")
+		
+		#remove any unwanted characters
+		for character in delimiters:
+			program_lines[index] = program_lines[index].replace(character, "")
 		
 		#string literal finder
 		var buffer = ""
@@ -168,11 +171,15 @@ func lexer(input, branch_point):
 							return
 					"print":
 						if line[1] in variables:
-							#print(variables[line[1]])
-							$Label3D.text = str(variables[line[1]])
+							if show_label:
+								$Label3D.text = str(variables[line[1]])
+							else:
+								print(variables[line[1]])
 						else:
-							#print(literals[line_count])
-							$Label3D.text = str(literals[line_count])
+							if show_label:
+								$Label3D.text = str(literals[line_count])
+							else:
+								print(literals[line_count])
 							
 					"add":
 						math_operation(line, line_count, token_count, dest, operand1,
@@ -375,6 +382,11 @@ func _process(delta):
 	
 # Called when the node enters the scene tree for the first time.
 func _on_tree_entered():
+	
+	if !show_icon:
+		$Sprite3D.hide()
+	if !show_label:
+		$Label3D.hide()
 	
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if file == null:

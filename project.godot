@@ -26,7 +26,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/koala_time/plugin.cfg")
+enabled=PackedStringArray("res://addons/asset_placer/plugin.cfg", "res://addons/koala_time/plugin.cfg", "res://addons/post_processing/plugin.cfg", "res://addons/smplscript/plugin.cfg")
 
 [input]
 
