@@ -1,0 +1,5 @@
+let string free_var "Test 1"
+print free_var
+set free_var "Test 2"
+free free_var
+print free_var

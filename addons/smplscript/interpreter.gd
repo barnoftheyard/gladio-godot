@@ -1,4 +1,6 @@
+@tool
 extends Node3D
+class_name SmplscriptInterpreter
 
 #empty global variable for the program
 var program = ""
@@ -7,6 +9,11 @@ var program = ""
 
 var clock_speed = 0.0
 var clock = 0.0
+
+var stdout = ""
+
+var sprite = null
+var label = null
 
 #the instruction list
 const instructions = [
@@ -22,6 +29,7 @@ const instructions = [
 	"if", 		#compare and jump
 	"set", 		#variable adjustment
 	"let",		#variable declaration
+	"free",		#variable freeing
 	"parse",	#godot expression function calling
 	"node_set",	#godot node setting
 	"node_get"	#node node getting
@@ -38,13 +46,21 @@ var literals = {}
 @export_file("*.txt") var file_path = ""
 @export var show_label = true
 @export var show_icon = true
+@export var quiet = false
+
+func error_print(string):
+	print(string)
+	label.modulate = Color(1, 0, 0)
+	sprite.modulate = Color(1, 0, 0)
+	label.text = string
+	label = null
 
 #math operation function template
 func math_operation(line, line_count, token_count, dest, operand1, operand2, operation):
 	if line[1] in variables:
 		dest = line[1]
 	else:
-		print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
+		error_print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
 		return
 	
 	if line.size() > 2:
@@ -163,23 +179,27 @@ func lexer(input, branch_point):
 							#count to zero
 							line_count = int(tags[line[1]])
 							token_count = 0
-							#
+							#branch out to a new tag
 							lexer(tokenizer(program), int(tags[line[1]]))
 							return
 						else:
-							print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+							error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 							return
 					"print":
 						if line[1] in variables:
-							if show_label:
-								$Label3D.text = str(variables[line[1]])
-							else:
-								print(variables[line[1]])
-						else:
-							if show_label:
-								$Label3D.text = str(literals[line_count])
-							else:
+							stdout = str(variables[line[1]])
+							if !quiet:
+								print(str(variables[line[1]]))
+						
+						#ho lee phuk this took way too much time to fix	
+						elif literals.find_key(line[1].replace("\"", "")) != null:
+							stdout = literals[line_count]
+							if !quiet:
 								print(literals[line_count])
+								
+						else:
+							error_print("invalid print input. " + str(line_count) + ", " + str(token_count))
+							return
 							
 					"add":
 						math_operation(line, line_count, token_count, dest, operand1,
@@ -210,7 +230,7 @@ func lexer(input, branch_point):
 							if line[2] in variables:
 								dest = variables[line[2]]
 							else:
-								print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
+								error_print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
 								return
 								
 							if line[3] in variables:
@@ -229,10 +249,11 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 								"!=":
 									if dest != operand1:
@@ -240,10 +261,11 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 								">":
 									if dest > operand1:
@@ -251,10 +273,11 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 								"<":
 									if dest < operand1:
@@ -262,10 +285,11 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 								">=":
 									if dest >= operand1:
@@ -273,10 +297,11 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 								"<=":
 									if dest <= operand1:
@@ -284,13 +309,14 @@ func lexer(input, branch_point):
 											#print("compare jumping to " + str(tags[line[3]]))
 											line_count = int(tags[line[4]])
 											token_count = 0
+											#branch out to a tag
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
 											return
 						else:
-							print("invalid jump declaration. " +
+							error_print("invalid jump declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
 					"let":
@@ -309,18 +335,27 @@ func lexer(input, branch_point):
 										"vec3":
 											variables[line[2]] = Vector3(float(line[3]), float(line[4]), float(line[5]))
 										_:
-											print("need valid type for variable. " +
+											error_print("need valid type for variable. " +
 											"break at " + str(line_count) + ", " + str(token_count))
 											return
 							else:
-								print("variable already exists. " +
+								error_print("variable already exists. " +
 								"break at " + str(line_count) + ", " + str(token_count))
 								return
 						else:
-							print("invalid variable declaration. " +
+							error_print("invalid variable declaration. " +
+							"break at " + str(line_count) + ", " + str(token_count))
+							return
+					"free":
+						if line.size() > 1:
+							if line[1] in variables:
+								variables.erase(line[1])
+						else:
+							error_print("invalid variable free. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
 					"parse":
+						#the first part of the line is the operation itself
 						if line.size() > 1:
 							var expression = Expression.new()
 							
@@ -339,7 +374,7 @@ func lexer(input, branch_point):
 							expression.parse(literals[line_count], arguments)
 							expression.execute([values], Node3D)
 						else:
-							print("invalid parse declaration. " +
+							error_print("invalid parse declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
 					"node_set":
@@ -348,11 +383,11 @@ func lexer(input, branch_point):
 							if line[2] in node:
 								node.set(line[2], variables[line[3]])
 							else:
-								print("property not found. " +
+								error_print("property not found. " +
 								"break at " + str(line_count) + ", " + str(token_count))
 								return
 						else:
-							print("invalid node set declaration. " +
+							error_print("invalid node set declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
 					"node_get":
@@ -361,11 +396,11 @@ func lexer(input, branch_point):
 							if line[2] in node:
 								variables[line[3]] = node.get(line[2])
 							else:
-								print("property not found. " +
+								error_print("property not found. " +
 								"break at " + str(line_count) + ", " + str(token_count))
 								return
 						else:
-							print("invalid node set declaration. " +
+							error_print("invalid node set declaration. " +
 							"break at " + str(line_count) + ", " + str(token_count))
 							return
 			token_count += 1
@@ -374,28 +409,56 @@ func lexer(input, branch_point):
 		variables["pc"] = line_count
 		
 func _process(delta):
+	#both pc(int) and delta(float) are always present within the variables
 	variables["delta"] = delta
 	clock -= delta
 	
 	if clock < 0:
 		clock = clock_speed
 	
+	if label != null:
+		label.text = stdout
+	
 # Called when the node enters the scene tree for the first time.
-func _on_tree_entered():
+func _enter_tree():
 	
+	#create the little icon and label
+	sprite = Sprite3D.new()
+	label = Label3D.new()
+	
+	add_child(sprite)
+	add_child(label)
+	
+	sprite.set_billboard_mode(BaseMaterial3D.BILLBOARD_ENABLED)
+	sprite.position.y += 1
+	sprite.texture = load("res://addons/smplscript/logic_auto.png")
+		
+	label.set_billboard_mode(BaseMaterial3D.BILLBOARD_ENABLED)
+	label.double_sided = false
+	
+	
+	#show the icons/labels through the options
 	if !show_icon:
-		$Sprite3D.hide()
+		sprite.hide()
+	else:
+		sprite.show()
+		
 	if !show_label:
-		$Label3D.hide()
+		label.hide()
+	else:
+		label.show()
 	
+	#if it can't access the file path
 	var file = FileAccess.open(file_path, FileAccess.READ)
-	if file == null:
-		print("Unable to access file: " + str(file.get_open_error()))
+	if file == null and file_path != "":
+		error_print("Unable to access file: " + str(file.get_open_error()))
 		return
 		
 	program = file.get_as_text()
 	
+	#the big finale!
 	lexer(tokenizer(program), 0)
+	
 	if debug_mode:
 		print(variables)
 	
