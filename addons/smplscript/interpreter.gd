@@ -229,7 +229,7 @@ func lexer(input, branch_point):
 							if line[2] in variables:
 								dest = variables[line[2]]
 							else:
-								error_print("not valid destination. break at " + str(line_count) + ", " + str(token_count))
+								error_print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
 								return
 								
 							if line[3] in variables:
