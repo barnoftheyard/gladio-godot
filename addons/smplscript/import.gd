@@ -9,6 +9,9 @@ func _get_visible_name():
 
 func _get_recognized_extensions():
 	return ["smplscript", "smpl"]
+	
+func _get_resource_type():
+	return "Script"
 
 func _get_save_extension():
 	return "smpl"
