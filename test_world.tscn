@@ -137,14 +137,14 @@ mesh = ExtResource("3_aldv4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3404961, 0.5148986, -3.4917293)
 script = ExtResource("6_cnaw2")
 debug_mode = true
-file_path = "res://addons/smplscript/examples/fizzbuzz.txt"
+file_path = "res://addons/smplscript/examples/fizzbuzz.smpl"
 quiet = true
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
 [node name="SmplscriptInterpreter2" type="Node3D" parent="." unique_id=341707123]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9426298, 0.8773068, 0)
 script = ExtResource("6_cnaw2")
-file_path = "res://addons/smplscript/examples/rotate.txt"
+file_path = "res://addons/smplscript/examples/rotate.smpl"
 quiet = true
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
@@ -155,7 +155,7 @@ mesh = SubResource("BoxMesh_lf0gk")
 [node name="SmplscriptInterpreter3" type="Node3D" parent="." unique_id=332828016]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4908628, 0.80996037, 0)
 script = ExtResource("6_cnaw2")
-file_path = "res://addons/smplscript/examples/error test.txt"
+file_path = "res://addons/smplscript/examples/error test.smpl"
 quiet = true
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 

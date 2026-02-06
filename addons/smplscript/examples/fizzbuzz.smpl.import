@@ -1,0 +1,12 @@
+[remap]
+
+importer="smplscript"
+uid="uid://ds6k6pbpehp55"
+valid=false
+
+[deps]
+
+source_file="res://addons/smplscript/examples/fizzbuzz.smpl"
+
+[params]
+

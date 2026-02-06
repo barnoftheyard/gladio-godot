@@ -1,0 +1,12 @@
+[remap]
+
+importer="smplscript"
+uid="uid://dcw06r7lwuafn"
+valid=false
+
+[deps]
+
+source_file="res://addons/smplscript/examples/rotate.smpl"
+
+[params]
+

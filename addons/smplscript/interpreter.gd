@@ -1,4 +1,3 @@
-@tool
 extends Node3D
 class_name SmplscriptInterpreter
 
@@ -43,7 +42,7 @@ var tags = {}
 #the dictionary for string literals
 var literals = {}
 
-@export_file("*.txt") var file_path = ""
+@export_file("*.smpl") var file_path = ""
 @export var show_label = true
 @export var show_icon = true
 @export var quiet = false
@@ -431,7 +430,7 @@ func _enter_tree():
 	
 	sprite.set_billboard_mode(BaseMaterial3D.BILLBOARD_ENABLED)
 	sprite.position.y += 1
-	sprite.texture = load("res://addons/smplscript/logic_auto.png")
+	sprite.texture = load("res://addons/smplscript/icon.png")
 		
 	label.set_billboard_mode(BaseMaterial3D.BILLBOARD_ENABLED)
 	label.double_sided = false

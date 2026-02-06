@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://7mh7rvjv3dmo"]
 
-[ext_resource type="Script" uid="uid://c6f3elr45vaag" path="res://addons/smplscript/interpreter.gd" id="1_yexqd"]
+[ext_resource type="Script" uid="uid://c6f3elr45vaag" path="res://addons/smplscript/interpreter.gd" id="1_i6kot"]
 
 [node name="Example Scene" type="Node3D" unique_id=621874087]
 
 [node name="SmplscriptInterpreter" type="Node3D" parent="." unique_id=978070521]
-script = ExtResource("1_yexqd")
-file_path = "res://addons/smplscript/examples/fizzbuzz.txt"
+script = ExtResource("1_i6kot")
+file_path = "uid://2j4wkeoid4y1"
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1468663591]

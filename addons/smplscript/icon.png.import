@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4vj7a7f4el6k"
-path.s3tc="res://.godot/imported/logic_auto.png-fa0e7f56bcc1a04709b294884e415c51.s3tc.ctex"
+path.s3tc="res://.godot/imported/icon.png-fa632874acca665633aea1481943a5df.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/smplscript/logic_auto.png"
-dest_files=["res://.godot/imported/logic_auto.png-fa0e7f56bcc1a04709b294884e415c51.s3tc.ctex"]
+source_file="res://addons/smplscript/icon.png"
+dest_files=["res://.godot/imported/icon.png-fa632874acca665633aea1481943a5df.s3tc.ctex"]
 
 [params]
 
