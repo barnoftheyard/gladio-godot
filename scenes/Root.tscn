@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnos31t86a0dr"]
+[gd_scene format=3 uid="uid://cnos31t86a0dr"]
 
-[ext_resource type="Script" path="res://scripts/Root.gd" id="1_c7ueb"]
+[ext_resource type="Script" uid="uid://k8805d7qe1ca" path="res://scripts/Root.gd" id="1_c7ueb"]
 [ext_resource type="PackedScene" uid="uid://cvd1w35jx46ep" path="res://test_world.tscn" id="2_a25eh"]
 [ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://scenes/character.tscn" id="2_s6dxf"]
-[ext_resource type="Script" path="res://scripts/Settings.gd" id="3_5lr76"]
+[ext_resource type="Script" uid="uid://d30ahlu0fm52c" path="res://scripts/Settings.gd" id="3_5lr76"]
 [ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="3_bppuo"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vf1c8"]
@@ -14,11 +14,11 @@ properties/1/path = NodePath(".:chat_text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1761811171]
 script = ExtResource("1_c7ueb")
 player_scene = ExtResource("2_s6dxf")
 
-[node name="Title" type="Control" parent="."]
+[node name="Title" type="Control" parent="." unique_id=996207588]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -32,7 +32,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Title"]
+[node name="PanelContainer" type="PanelContainer" parent="Title" unique_id=1808500683]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -47,110 +47,109 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_bppuo")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer" unique_id=747837454]
 layout_mode = 2
 alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer" unique_id=73405046]
 layout_mode = 2
 
-[node name="HostButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+[node name="HostButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer" unique_id=1853907696]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
 text = "HOST"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer" unique_id=1526628577]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 2
 
-[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=326135912]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 text = "Port: "
 
-[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1810089006]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Title/PanelContainer/VBoxContainer" unique_id=1017864507]
 layout_mode = 2
 
-[node name="JoinButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="JoinButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2" unique_id=996408461]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
 text = "JOIN"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2" unique_id=1806702361]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 2
 
-[node name="IPLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="IPLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=681119991]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 text = "IP: "
 
-[node name="IPLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="IPLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1551700798]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2" unique_id=921779696]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 2
 
-[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="PortLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1007086989]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 text = "Port: "
 
-[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="PortLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1786150538]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
-[node name="SettingsButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="SettingsButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2" unique_id=2132095376]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
 text = "SETTINGS"
 
-[node name="CheckBox" type="CheckBox" parent="Title/PanelContainer/VBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="Title/PanelContainer/VBoxContainer" unique_id=65742511]
 layout_mode = 2
 text = "UPNP"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Title/PanelContainer/VBoxContainer" unique_id=1410351031]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 2
 
-[node name="NameLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="NameLabel" type="Label" parent="Title/PanelContainer/VBoxContainer/HBoxContainer3" unique_id=1655609701]
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 text = "Name: "
 
-[node name="NameLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="NameLineEdit" type="LineEdit" parent="Title/PanelContainer/VBoxContainer/HBoxContainer3" unique_id=423655095]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 text = "Player"
 max_length = 16
 
-[node name="Settings" type="PopupMenu" parent="Title"]
-transparent_bg = true
+[node name="Settings" type="PopupMenu" parent="Title" unique_id=1084552233]
 title = "Settings"
 initial_position = 1
 size = Vector2i(512, 256)
 unresizable = false
 borderless = false
-transparent = true
 theme = ExtResource("3_bppuo")
 hide_on_item_selection = false
 hide_on_checkable_item_selection = false
 allow_search = false
 item_count = 8
 item_0/text = "Video"
+item_0/id = 0
 item_0/separator = true
 item_1/text = "Fullscreen"
 item_1/checkable = 1
@@ -170,13 +169,13 @@ item_7/text = "Cancel"
 item_7/id = 6
 script = ExtResource("3_5lr76")
 
-[node name="PlayerNamePopup" type="PopupPanel" parent="Title/Settings"]
+[node name="PlayerNamePopup" type="PopupPanel" parent="Title/Settings" unique_id=1203198160]
 title = "Enter new player name:"
 initial_position = 1
 size = Vector2i(256, 64)
 borderless = false
 
-[node name="LineEdit" type="LineEdit" parent="Title/Settings/PlayerNamePopup"]
+[node name="LineEdit" type="LineEdit" parent="Title/Settings/PlayerNamePopup" unique_id=1343669485]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 252.0
@@ -185,13 +184,13 @@ text = "Placeholder"
 max_length = 32
 caret_blink = true
 
-[node name="test_world" parent="." instance=ExtResource("2_a25eh")]
+[node name="test_world" parent="." unique_id=392106886 instance=ExtResource("2_a25eh")]
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/character.tscn")
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=861910924]
+_spawnable_scenes = PackedStringArray("uid://cc1m2a1obsyn4")
 spawn_path = NodePath("../test_world")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=586980797]
 replication_config = SubResource("SceneReplicationConfig_vf1c8")
 
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]

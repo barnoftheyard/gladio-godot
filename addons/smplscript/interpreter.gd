@@ -48,7 +48,9 @@ var literals = {}
 @export var quiet = false
 
 func error_print(string):
-	print(string)
+	print(string + str(line_count - 1) + ", " + str(token_count))
+	
+	#affects only the label and icon
 	label.modulate = Color(1, 0, 0)
 	sprite.modulate = Color(1, 0, 0)
 	label.text = string
@@ -59,7 +61,7 @@ func math_operation(line, line_count, token_count, dest, operand1, operand2, ope
 	if line[1] in variables:
 		dest = line[1]
 	else:
-		error_print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
+		error_print("not valid variable. break at ")
 		return
 	
 	if line.size() > 2:
@@ -182,7 +184,7 @@ func lexer(input, branch_point):
 							lexer(tokenizer(program), int(tags[line[1]]))
 							return
 						else:
-							error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+							error_print("not valid tag. break at ")
 							return
 					"print":
 						if line[1] in variables:
@@ -197,7 +199,7 @@ func lexer(input, branch_point):
 								print(literals[line_count])
 								
 						else:
-							error_print("invalid print input. " + str(line_count) + ", " + str(token_count))
+							error_print("invalid print input. ")
 							return
 							
 					"add":
@@ -229,7 +231,7 @@ func lexer(input, branch_point):
 							if line[2] in variables:
 								dest = variables[line[2]]
 							else:
-								error_print("not valid variable. break at " + str(line_count) + ", " + str(token_count))
+								error_print("not valid variable. break at ")
 								return
 								
 							if line[3] in variables:
@@ -252,7 +254,7 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 								"!=":
 									if dest != operand1:
@@ -264,7 +266,7 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 								">":
 									if dest > operand1:
@@ -276,7 +278,7 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 								"<":
 									if dest < operand1:
@@ -288,7 +290,7 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 								">=":
 									if dest >= operand1:
@@ -300,7 +302,7 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 								"<=":
 									if dest <= operand1:
@@ -312,11 +314,11 @@ func lexer(input, branch_point):
 											lexer(tokenizer(program), int(tags[line[4]]))
 											return
 										else:
-											error_print("not valid tag. break at " + str(line_count) + ", " + str(token_count))
+											error_print("not valid tag. break at ")
 											return
 						else:
 							error_print("invalid jump declaration. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 					"let":
 						#see if we have three operands to our function
@@ -335,15 +337,15 @@ func lexer(input, branch_point):
 											variables[line[2]] = Vector3(float(line[3]), float(line[4]), float(line[5]))
 										_:
 											error_print("need valid type for variable. " +
-											"break at " + str(line_count) + ", " + str(token_count))
+											"break at ")
 											return
 							else:
 								error_print("variable already exists. " +
-								"break at " + str(line_count) + ", " + str(token_count))
+								"break at ")
 								return
 						else:
 							error_print("invalid variable declaration. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 					"free":
 						if line.size() > 1:
@@ -351,7 +353,7 @@ func lexer(input, branch_point):
 								variables.erase(line[1])
 						else:
 							error_print("invalid variable free. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 					"parse":
 						#the first part of the line is the operation itself
@@ -374,7 +376,7 @@ func lexer(input, branch_point):
 							expression.execute([values], Node3D)
 						else:
 							error_print("invalid parse declaration. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 					"node_set":
 						if line.size() > 3:
@@ -383,11 +385,11 @@ func lexer(input, branch_point):
 								node.set(line[2], variables[line[3]])
 							else:
 								error_print("property not found. " +
-								"break at " + str(line_count) + ", " + str(token_count))
+								"break at ")
 								return
 						else:
 							error_print("invalid node set declaration. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 					"node_get":
 						if line.size() > 3:
@@ -396,11 +398,11 @@ func lexer(input, branch_point):
 								variables[line[3]] = node.get(line[2])
 							else:
 								error_print("property not found. " +
-								"break at " + str(line_count) + ", " + str(token_count))
+								"break at ")
 								return
 						else:
 							error_print("invalid node set declaration. " +
-							"break at " + str(line_count) + ", " + str(token_count))
+							"break at ")
 							return
 			token_count += 1
 		line_count += 1
