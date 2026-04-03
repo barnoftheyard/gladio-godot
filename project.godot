@@ -19,6 +19,10 @@ run/main_scene="res://scenes/Root.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/mode=2
+
 [editor]
 
 version_control/plugin_name="GitPlugin"
@@ -26,7 +30,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/asset_placer/plugin.cfg", "res://addons/koala_time/plugin.cfg", "res://addons/post_processing/plugin.cfg", "res://addons/smplscript/plugin.cfg")
+enabled=PackedStringArray("res://addons/koala_time/plugin.cfg", "res://addons/post_processing/plugin.cfg", "res://addons/smplscript/plugin.cfg")
 
 [input]
 

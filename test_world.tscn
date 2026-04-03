@@ -3,7 +3,6 @@
 [ext_resource type="Material" uid="uid://dpllmvhj7glh2" path="res://textures/gray.tres" id="1_genfv"]
 [ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
 [ext_resource type="ArrayMesh" uid="uid://dmr3t7go1eqva" path="res://models/aud/ref1.obj" id="3_aldv4"]
-[ext_resource type="Texture2D" uid="uid://difa2dtk1ek14" path="res://textures/Concrete/conrete.png" id="3_tyhjx"]
 [ext_resource type="Script" uid="uid://c6f3elr45vaag" path="res://addons/smplscript/interpreter.gd" id="6_cnaw2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lf0gk"]
@@ -16,14 +15,6 @@ background_mode = 2
 sky = SubResource("Sky_cnaw2")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00p1e"]
-albedo_texture = ExtResource("3_tyhjx")
-metallic = 0.81
-metallic_specular = 0.2
-roughness = 0.5
-uv1_triplanar = true
-uv1_triplanar_sharpness = 0.000850145
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8q5f"]
 
@@ -41,6 +32,7 @@ environment = SubResource("Environment_kt6p6")
 
 [node name="sun" type="DirectionalLight3D" parent="." unique_id=1302222749]
 transform = Transform3D(0.87959, -0.436605, 0.188936, 0, 0.397148, 0.917755, -0.475732, -0.807248, 0.349328, 0, 0, 0)
+layers = 7
 light_energy = 2.0
 shadow_enabled = true
 
@@ -77,36 +69,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3, -15.5)
 use_collision = true
 size = Vector3(19, 8, 1)
 material = ExtResource("2_exixc")
-
-[node name="CSGBox3D6" type="CSGBox3D" parent="terrain" unique_id=1083325773]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503052, 3.5, 19.3632)
-use_collision = true
-size = Vector3(3, 7, 3)
-material = SubResource("StandardMaterial3D_00p1e")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=1543572518]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-size = Vector3(3.25, 0.25, 3.25)
-material = ExtResource("1_genfv")
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=544080271]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-size = Vector3(3.25, 0.25, 3.25)
-material = ExtResource("1_genfv")
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=1921040740]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-size = Vector3(3.25, 0.25, 3.25)
-material = ExtResource("1_genfv")
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=989604555]
-size = Vector3(3.25, 0.25, 3.25)
-material = ExtResource("1_genfv")
-
-[node name="CSGBox3D5" type="CSGBox3D" parent="terrain/CSGBox3D6" unique_id=976546832]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-size = Vector3(3.25, 0.25, 3.25)
-material = ExtResource("1_genfv")
 
 [node name="PhysicsBody" type="RigidBody3D" parent="." unique_id=2073690001]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.47838, 0.40318, 5.67005)

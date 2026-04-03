@@ -21,7 +21,7 @@ var current_weapon = "smg"
 var current_weapon_mag = weapons[current_weapon]["mag"]
 var current_weapon_ammo = weapons[current_weapon]["ammo"]
 
-#function that recursives finds any meshes inside a scene and sets their layer mask
+#function that recursively finds any meshes inside a scene and sets their layer mask
 func set_all_meshes_layer_mask(node, value, boolean):
 	for n in node.get_children():
 		if n.get_child_count() > 0:
@@ -55,7 +55,7 @@ func create_bullet_decal(object, decal_position, time):
 	var decal = Decal.new()
 	decal.size = Vector3(0.2, 0.2, 0.2)
 	
-	decal.texture_albedo = load("res://icon.svg")
+	decal.texture_albedo = load("res://textures/editor/bullseye.png")
 	
 	object.add_child(decal)
 	decal.global_position = decal_position
@@ -146,7 +146,8 @@ func _physics_process(delta):
 					reload_weapon()
 		else:
 			timer -= delta
-			
+		
+		#transitional sway
 		viewmodel.position = viewmodel.position.lerp(mouse_accel + initial_position, sway * delta)
 		
 		#rotational sway
