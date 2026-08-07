@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://chs6urvr2lo3c" path="res://scripts/character.gd" id="1_0t4e8"]
 [ext_resource type="PackedScene" uid="uid://b0fbdoho2psn5" path="res://scenes/Weapon.tscn" id="2_5kqqr"]
-[ext_resource type="PackedScene" uid="uid://jnpofrhieie4" path="res://models/male/male.tscn" id="3_51y7w"]
 [ext_resource type="PackedScene" uid="uid://bbr8vsvckbpm6" path="res://scenes/UserInterface.tscn" id="3_wdmg4"]
 [ext_resource type="PackedScene" uid="uid://3mij3cjhkwsm" path="res://addons/fpc/reticles/reticle_1.tscn" id="5_lek5e"]
 [ext_resource type="AudioStream" uid="uid://dnt8qud2ucxju" path="res://sounds/step0.wav" id="5_q1r4f"]
@@ -361,9 +360,6 @@ health = 85
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=818847784]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_uy03j")
-
-[node name="male" parent="." unique_id=1271876207 instance=ExtResource("3_51y7w")]
-transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
 
 [node name="Head" type="Node3D" parent="." unique_id=852066632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

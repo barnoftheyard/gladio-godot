@@ -94,7 +94,7 @@ func _ready():
 	if is_multiplayer_authority():
 		$Head/Camera.current = is_multiplayer_authority()
 		
-		$male.hide()
+		#$male.hide()
 		
 	#if this player node is not the main player hide the GUI
 	else:
@@ -131,9 +131,9 @@ func _physics_process(delta):
 	
 	#code for the character animation
 	#match player model rotation and also rotate
-	$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
-	$male.character_animation(input_dir, is_on_floor(), state, delta)
-	$male/Armature/Skeleton3D/SpineOverride.rotation_degrees.x = -HEAD.rotation_degrees.x
+	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
+	#$male.character_animation(input_dir, is_on_floor(), state, delta)
+	#$male/Armature/Skeleton3D/SpineOverride.rotation_degrees.x = -HEAD.rotation_degrees.x
 	
 	#do the footstep sounds
 	footsteps(input_dir)
