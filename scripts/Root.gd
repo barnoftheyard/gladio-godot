@@ -80,7 +80,7 @@ func _on_join_pressed():
 
 
 #the function for the signal that adds the player
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _register_player(new_player_info):
 	var new_player_id = multiplayer.get_remote_sender_id()
 	players[new_player_id] = new_player_info
@@ -92,6 +92,9 @@ func _add_player(id):
 	
 	_register_player.rpc_id(id, player_info)
 	
+	if not multiplayer.is_server():
+		return
+		
 	var player = player_scene.instantiate()
 	player.set_multiplayer_authority(id)
 	#player nodes are named by their multiplayer ID

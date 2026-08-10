@@ -133,7 +133,7 @@ func _physics_process(delta):
 		$Head/Weapon/SubViewportContainer/SubViewport/WeaponViewmodel.transform = $Head/Camera.transform
 	
 	#code for the character animation
-	$BodyMesh/smg.rotation.y = $Head/Camera.rotation.y
+	$BodyMesh/smg.rotation = $Head/Camera/HeadMesh.rotation
 	
 	#match player model rotation and also rotate
 	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
@@ -323,12 +323,7 @@ func footsteps(moving):
 	#function has to the only floor variant to prevent bug
 	elif !moving or !is_on_floor_only():
 		$Footsteps/FootstepsTimer.stop()
-
-@rpc("any_peer", "call_local", "reliable")
-func send_client_info():
-	get_node("/root/Root").players[get_multiplayer_authority()]["name"] = get_node("
-	/root/Root/Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit").text
-
+		
 
 @rpc("any_peer", "call_local", "reliable")
 func damage(amount, killer_id):
