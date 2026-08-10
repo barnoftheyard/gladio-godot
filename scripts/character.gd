@@ -311,6 +311,8 @@ func _process(_delta):
 		var controller_view_rotation = Input.get_vector("look_left", "look_right", "look_up", "look_down")
 		HEAD.rotation_degrees.y -= controller_view_rotation.x * controller_sensitivity
 		HEAD.rotation_degrees.x -= controller_view_rotation.y * controller_sensitivity
+		
+	$DeathLabel.text = str(int($DeathTimer.time_left))
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and is_multiplayer_authority():
@@ -332,6 +334,8 @@ func damage(amount, killer_id):
 	$DamageSound.pitch_scale = randf_range(0.5, 1.25)
 	$DamageSound.play()
 	
+	$DamageAnimation.play("damage")
+	
 	if health <= 0:
 		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
 		get_node("/root/Root").players[killer_id]["kills"] += 1
@@ -339,8 +343,12 @@ func damage(amount, killer_id):
 		print(get_node("/root/Root").players[get_multiplayer_authority()]["name"] + 
 		" got fragged by " + get_node("/root/Root").players[killer_id]["name"])
 		
-		health = 100
-		position = Vector3.ZERO
+		$Collision.disabled = true
+		immobile = true
+		$DamageAnimation.play("death")
+		$DeathTimer.start()
+		$DeathLabel.show()
+		$Reticle.hide()
 
 func _on_footsteps_timer_timeout():
 	#adjust the timing of the steps to our current player speed
@@ -348,3 +356,13 @@ func _on_footsteps_timer_timeout():
 	#get all sounds and play the sounds randomly
 	var sounds = $Footsteps/FootstepsSounds.get_children()
 	sounds[randi() % sounds.size()].play()
+
+
+func _on_death_timer_timeout() -> void:
+	health = 100
+	position = Vector3.ZERO
+	$Collision.disabled = false
+	immobile = false
+	$DamageAnimation.play("RESET")
+	$DeathLabel.hide()
+	$Reticle.show()

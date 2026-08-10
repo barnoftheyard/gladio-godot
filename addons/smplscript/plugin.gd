@@ -23,7 +23,7 @@ func _enter_tree():
 	text_file_extensions = settings.get_setting("docks/filesystem/textfile_extensions")
 	
 	#add our custom text file script extension
-	settings.set_setting("docks/filesystem/textfile_extensions", (text_file_extensions + ",smpl"))
+	settings.set_setting("docks/filesystem/textfile_extensions", (text_file_extensions + ",txt"))
 
 
 #cleans up plugin deactivation

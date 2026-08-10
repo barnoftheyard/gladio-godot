@@ -3,6 +3,7 @@
 [ext_resource type="Material" uid="uid://dpllmvhj7glh2" path="res://textures/gray.tres" id="1_genfv"]
 [ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
 [ext_resource type="ArrayMesh" uid="uid://dmr3t7go1eqva" path="res://models/aud/ref1.obj" id="3_aldv4"]
+[ext_resource type="PackedScene" uid="uid://0vhinhkrgqpx" path="res://scenes/dust_2.tscn" id="5_lf0gk"]
 [ext_resource type="Script" uid="uid://c6f3elr45vaag" path="res://addons/smplscript/interpreter.gd" id="6_cnaw2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lf0gk"]
@@ -15,6 +16,8 @@ background_mode = 2
 sky = SubResource("Sky_cnaw2")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+fog_light_color = Color(0.75332165, 0.7774729, 0.81504613, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8q5f"]
 
@@ -38,6 +41,7 @@ shadow_enabled = true
 
 [node name="terrain" type="CSGCombiner3D" parent="." unique_id=1991633689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -9)
+visible = false
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="terrain" unique_id=2076277725]
@@ -99,14 +103,14 @@ mesh = ExtResource("3_aldv4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3404961, 0.5148986, -3.4917293)
 script = ExtResource("6_cnaw2")
 debug_mode = true
-file_path = "res://addons/smplscript/examples/fizzbuzz.smpl"
+file_path = "res://addons/smplscript/examples/fizzbuzz.txt"
 quiet = true
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
 [node name="SmplscriptInterpreter2" type="Node3D" parent="." unique_id=341707123]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9426298, 0.8773068, 0)
 script = ExtResource("6_cnaw2")
-file_path = "res://addons/smplscript/examples/rotate.smpl"
+file_path = "res://addons/smplscript/examples/rotate.txt"
 quiet = true
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
@@ -114,11 +118,13 @@ metadata/_custom_type_script = "uid://c6f3elr45vaag"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.3184385)
 mesh = SubResource("BoxMesh_lf0gk")
 
-[node name="SmplscriptInterpreter3" type="Node3D" parent="." unique_id=332828016]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4908628, 0.80996037, 0)
+[node name="Dust2" parent="." unique_id=2036558206 instance=ExtResource("5_lf0gk")]
+
+[node name="SmplscriptInterpreter3" type="Node3D" parent="." unique_id=1614529561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.129648, 0.9042803, 0)
 script = ExtResource("6_cnaw2")
-file_path = "res://addons/smplscript/examples/error test.smpl"
-quiet = true
+debug_mode = true
+file_path = "res://addons/smplscript/examples/float.txt"
 metadata/_custom_type_script = "uid://c6f3elr45vaag"
 
 [connection signal="body_entered" from="PhysicsBody" to="PhysicsBody" method="_on_body_entered"]

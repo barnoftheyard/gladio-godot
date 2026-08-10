@@ -12,9 +12,15 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uy03j"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6nb6r"]
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vgqh4"]
+material = SubResource("StandardMaterial3D_6nb6r")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b7ogh"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ye2cy"]
+material = SubResource("StandardMaterial3D_b7ogh")
 
 [sub_resource type="Animation" id="Animation_gh776"]
 resource_name = "RESET"
@@ -348,6 +354,204 @@ properties/4/path = NodePath(".:health")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
+[sub_resource type="Animation" id="Animation_0dpix"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyMesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Head/Camera/HeadMesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Head/Camera/HeadMesh:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0017453292, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BodyMesh:mesh:material:albedo_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Head/Camera/HeadMesh:mesh:material:albedo_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("BodyMesh:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.75, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2hyy3"]
+resource_name = "damage"
+length = 0.13333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyMesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.03333333, 0.07, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, -0.26179937), Vector3(0, 0, 0.2617994), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Head/Camera/HeadMesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03333333, 0.07, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.37423086, 0, 0), Vector3(-0.374, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Head/Camera/HeadMesh:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.03333333, 0.07, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.0025801607, -0.013173768, -0.38681033), Vector3(0.0017453292, 0.013962634, 0.3874631), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BodyMesh:mesh:material:albedo_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.54879797, 0.4848585, 1), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Head/Camera/HeadMesh:mesh:material:albedo_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.54879797, 0.4848585, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_irmqu"]
+resource_name = "death"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyMesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 1.5707964)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodyMesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 5.0982447),
+"update": 0,
+"values": [Vector3(0, 0.75, 0), Vector3(-1, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Head/Camera/HeadMesh:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 5.0982447),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-2.245, -1.999, 0.07)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Head/Camera/HeadMesh:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 5.0982447),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.03488533, 0.03492786, 1.5695777)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_irmqu"]
+_data = {
+&"RESET": SubResource("Animation_0dpix"),
+&"damage": SubResource("Animation_2hyy3"),
+&"death": SubResource("Animation_irmqu")
+}
+
 [node name="Character" type="CharacterBody3D" unique_id=1894427855 node_paths=PackedStringArray("HEAD", "CAMERA", "HEADBOB_ANIMATION", "JUMP_ANIMATION", "CROUCH_ANIMATION", "COLLISION_MESH", "RETICLE")]
 script = ExtResource("1_0t4e8")
 base_speed = 6.0
@@ -368,7 +572,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("CapsuleShape3D_uy03j")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=1395922927]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(0.99999976, 0, 0, 0, 0.99999976, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("CapsuleMesh_vgqh4")
 
 [node name="smg" parent="BodyMesh" unique_id=1294995745 instance=ExtResource("2_a5ia6")]
@@ -382,6 +586,7 @@ transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.
 cull_mask = 1048569
 
 [node name="HeadMesh" type="MeshInstance3D" parent="Head/Camera" unique_id=1750713182]
+transform = Transform3D(1, 0, 0, 0, 0.99999845, 0.0017453288, 0, -0.0017453283, 0.9999987, 0, 0, 0)
 mesh = SubResource("SphereMesh_ye2cy")
 skeleton = NodePath("../../../BodyMesh")
 
@@ -435,4 +640,28 @@ replication_config = SubResource("SceneReplicationConfig_ltoef")
 [node name="DamageSound" type="AudioStreamPlayer3D" parent="." unique_id=5998640]
 stream = ExtResource("9_0dpix")
 
+[node name="DamageAnimation" type="AnimationPlayer" parent="." unique_id=1534603790]
+libraries/ = SubResource("AnimationLibrary_irmqu")
+autoplay = &"damage"
+
+[node name="DeathTimer" type="Timer" parent="." unique_id=2092893757]
+wait_time = 3.0
+one_shot = true
+
+[node name="DeathLabel" type="Label" parent="." unique_id=843280008]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
 [connection signal="timeout" from="Footsteps/FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]

@@ -12,8 +12,6 @@ rotate:
 	add rotation y
 	node_set MeshInstance3D rotation_degrees rotation
 	
-	;if > rotation limit reset
-	
 	print rotation
 
 goto rotate

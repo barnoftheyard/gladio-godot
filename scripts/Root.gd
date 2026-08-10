@@ -92,6 +92,7 @@ func _add_player(id):
 	
 	_register_player.rpc_id(id, player_info)
 	
+	#if we're not the server then gtfo
 	if not multiplayer.is_server():
 		return
 		
