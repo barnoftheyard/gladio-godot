@@ -13,14 +13,15 @@ func get_placement_point(camera: Camera3D, mouse_position: Vector2) -> Collision
 		var from := camera.project_ray_origin(mouse_position)
 		var to := from + camera.project_ray_normal(mouse_position) * 1000
 		var direction = (to - from).normalized()
-		var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, false)
+		# Using cpu-mode is too inaccurate for most placing.
+		var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, true)
 		if hit_position != Vector3.INF:
 			var data = terrain_3d_node.data
 			var normal = data.get_normal(hit_position)
 			return CollisionHit.new(hit_position, normal)
 		else:
 			var message := "No collision with Terrain3D"
-			AssetPlacerPresenter._instance.show_error.emit(message)
+			AssetPlacerPresenter.instance.show_error.emit(message)
 			return CollisionHit.zero()
 	else:
 		push_error("Provided Node is Not Terrain3D")

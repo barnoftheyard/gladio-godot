@@ -5,31 +5,34 @@ const ADDON_PATH = "res://addons/asset_placer"
 
 var synchronizer: Synchronize
 var overlay: Control
-var plane_placer: PlanePlacer
 var settings_repository: AssetPlacerSettingsRepository
 var current_settings: AssetPlacerSettings
+var asset_palette: AssetPalette:
+	get():
+		return APEditorSettingsManager.get_editor_settings().get_asset_palette()
+
+var palette_session_state: AssetPaletteSessionState
+
 var plugin_path: String:
 	get():
 		return get_script().resource_path.get_base_dir()
 
-var _folder_repository: FolderRepository
 var _presenter: AssetPlacerPresenter
 var _asset_placer: AssetPlacer
-var _assets_repository: AssetsRepository
-var _collection_repository: AssetCollectionRepository
 var _updater: PluginUpdater
 var _async: AssetPlacerAsync
+var _thumbnail_cache_store: ThumbnailCacheStore
+var _thumbnail_render_service: ThumbnailRenderService
+var _thumbnail_coordinator: ThumbnailGenerationCoordinator
 var _asset_placer_window: AssetLibraryPanel
 var _file_system: EditorFileSystem = EditorInterface.get_resource_filesystem()
-var _viewport_overlay_res = preload(
-	"res://addons/asset_placer/ui/viewport_overlay/viewport_overlay.tscn"
-)
 var _plane_preview: Node3D
+var _palette_session_state: AssetPaletteSessionState
+# Actual type is EditorDock
+var _dock: MarginContainer
 var _asset_placer_button: Button
-var _migration_collection_id = load(
-	"res://addons/asset_placer/data/migrations/collection_id_migration.gd"
-)
-var _data_source: AssetLibraryDataSource
+
+var _migration_collection_id = null
 
 
 func _enable_plugin():
@@ -41,9 +44,15 @@ func _disable_plugin():
 
 
 func _enter_tree():
-	_run_migrations()
 	_initialize_data_layer()
+	set_input_event_forwarding_always_enabled()
+	_run_migrations()
+
 	_async = AssetPlacerAsync.new()
+	_thumbnail_cache_store = ThumbnailCacheStore.new()
+	_thumbnail_render_service = ThumbnailRenderService.new()
+	_thumbnail_coordinator = ThumbnailGenerationCoordinator.new()
+	get_tree().root.add_child(_thumbnail_coordinator)
 	_presenter = AssetPlacerPresenter.new()
 	AssetPlacerDockPresenter.new()
 	_updater = PluginUpdater.new(ADDON_PATH + "/plugin.cfg", "")
@@ -51,10 +60,9 @@ func _enter_tree():
 		load("res://addons/asset_placer/ui/plane_preview/plan_preview.tscn").instantiate()
 	)
 	get_tree().root.add_child(_plane_preview)
-	plane_placer = PlanePlacer.new(_presenter, _plane_preview)
 
-	_asset_placer = AssetPlacer.new(get_undo_redo(), plane_placer)
-	synchronizer = Synchronize.new(_folder_repository, _assets_repository)
+	_asset_placer = AssetPlacer.new(get_undo_redo())
+	synchronizer = Synchronize.new()
 	scene_changed.connect(_handle_scene_changed)
 	_init_parent_scene.call_deferred()
 	_presenter.asset_selected.connect(start_placement)
@@ -62,21 +70,30 @@ func _enter_tree():
 	_asset_placer_window = (
 		load("res://addons/asset_placer/ui/asset_library_panel.tscn").instantiate()
 	)
-	_asset_placer_button = add_control_to_bottom_panel(_asset_placer_window, "Asset Placer")
+
+	# Use new dock class in 4.6+
+	if ClassDB.class_exists(&"EditorDock"):
+		_dock = ClassDB.instantiate(&"EditorDock")
+		_dock.title = "Asset Placer"
+		_dock.available_layouts = 6  # Allow bottom and floating modes.
+		_dock.default_slot = 8  # Same value as EditorDock.DOCK_SLOT_BOTTOM
+		_dock.force_show_icon = true
+		_dock.global = false
+		_dock.closable = false
+		_dock.add_child(_asset_placer_window)
+		call("add_dock", _dock)
+	else:
+		_asset_placer_button = add_control_to_bottom_panel(_asset_placer_window, "Asset Placer")
+
 	_asset_placer_window.visibility_changed.connect(_on_dock_visibility_changed)
 
 	_presenter.placement_mode_changed.connect(_asset_placer.set_placement_mode)
 
-	synchronizer.sync_complete.connect(
-		func(added, removed, scanned):
-			var message = (
-				"Asset Placer Sync complete\nAdded: %d Removed: %d Scanned total: %d"
-				% [added, removed, scanned]
-			)
-			EditorToasterCompat.toast(message)
-	)
+	synchronizer.sync_complete.connect(_on_sync_complete)
 
-	self.overlay = _viewport_overlay_res.instantiate()
+	self.overlay = (
+		load("res://addons/asset_placer/ui/viewport_overlay/viewport_overlay.tscn").instantiate()
+	)
 	get_editor_interface().get_editor_viewport_3d().add_child(overlay)
 
 	_file_system.resources_reimported.connect(_react_to_reimorted_files)
@@ -89,21 +106,67 @@ func _enter_tree():
 
 
 func _exit_tree():
-	_updater.updater_up_to_date.disconnect(_show_plugin_up_to_date)
-	_updater.updater_update_available.disconnect(_show_update_available)
-	_updater.update_ready.disconnect(_show_update_available)
-	overlay.queue_free()
-	_plane_preview.queue_free()
-	settings_repository.settings_changed.disconnect(_react_to_settings_change)
-	_file_system.resources_reimported.disconnect(_react_to_reimorted_files)
-	_presenter.asset_selected.disconnect(start_placement)
-	_presenter.asset_deselected.disconnect(_asset_placer.stop_placement)
-	_asset_placer_window.visibility_changed.disconnect(_on_dock_visibility_changed)
-	_asset_placer.stop_placement()
-	scene_changed.disconnect(_handle_scene_changed)
-	remove_control_from_bottom_panel(_asset_placer_window)
-	_asset_placer_window.queue_free()
-	_async.await_completion()
+	if ClassDB.class_exists(&"EditorDock"):
+		if is_instance_valid(_dock):
+			call("remove_dock", _dock)
+			_dock.queue_free()
+		_dock = null
+	else:
+		if is_instance_valid(_asset_placer_window):
+			remove_control_from_bottom_panel(_asset_placer_window)
+	if is_instance_valid(_updater):
+		if _updater.updater_up_to_date.is_connected(_show_plugin_up_to_date):
+			_updater.updater_up_to_date.disconnect(_show_plugin_up_to_date)
+		if _updater.updater_update_available.is_connected(_show_update_available):
+			_updater.updater_update_available.disconnect(_show_update_available)
+		if _updater.update_ready.is_connected(_show_update_available):
+			_updater.update_ready.disconnect(_show_update_available)
+	if is_instance_valid(overlay):
+		overlay.queue_free()
+	if is_instance_valid(_plane_preview):
+		_plane_preview.queue_free()
+
+	if _palette_session_state != null:
+		_palette_session_state.shutdown()
+		_palette_session_state = null
+
+	APEditorSettingsManager.free_settings()
+	AssetLibraryManager.free_library()
+
+	if is_instance_valid(settings_repository):
+		if settings_repository.settings_changed.is_connected(_react_to_settings_change):
+			settings_repository.settings_changed.disconnect(_react_to_settings_change)
+	if _file_system.resources_reimported.is_connected(_react_to_reimorted_files):
+		_file_system.resources_reimported.disconnect(_react_to_reimorted_files)
+	if is_instance_valid(_presenter):
+		if _presenter.asset_selected.is_connected(start_placement):
+			_presenter.asset_selected.disconnect(start_placement)
+		if _presenter.asset_deselected.is_connected(_asset_placer.stop_placement):
+			_presenter.asset_deselected.disconnect(_asset_placer.stop_placement)
+	if is_instance_valid(_asset_placer_window):
+		if _asset_placer_window.visibility_changed.is_connected(_on_dock_visibility_changed):
+			_asset_placer_window.visibility_changed.disconnect(_on_dock_visibility_changed)
+	if is_instance_valid(_asset_placer):
+		_asset_placer.stop_placement()
+	if scene_changed.is_connected(_handle_scene_changed):
+		scene_changed.disconnect(_handle_scene_changed)
+	if is_instance_valid(_asset_placer_window):
+		_asset_placer_window.queue_free()
+
+	if (
+		is_instance_valid(synchronizer)
+		and synchronizer.sync_complete.is_connected(_on_sync_complete)
+	):
+		synchronizer.sync_complete.disconnect(_on_sync_complete)
+	if is_instance_valid(_thumbnail_coordinator):
+		_thumbnail_coordinator.queue_free()
+		_thumbnail_coordinator = null
+	if is_instance_valid(_thumbnail_render_service):
+		_thumbnail_render_service.dispose()
+	_thumbnail_render_service = null
+	_thumbnail_cache_store = null
+	if is_instance_valid(_async):
+		_async.await_completion()
 
 
 func _init_parent_scene():
@@ -124,6 +187,9 @@ func _handle_scene_changed(scene: Node):
 
 
 func _run_migrations():
+	_migration_collection_id = load(
+		"res://addons/asset_placer/data/migrations/collection_id_migration.gd"
+	)
 	_migration_collection_id.new().run()
 
 
@@ -131,10 +197,13 @@ func _initialize_data_layer():
 	settings_repository = AssetPlacerSettingsRepository.new()
 	current_settings = settings_repository.get_settings()
 	settings_repository.settings_changed.connect(_react_to_settings_change)
-	_data_source = AssetLibraryDataSource.new(current_settings.asset_library_path)
-	_folder_repository = FolderRepository.new(_data_source)
-	_assets_repository = AssetsRepository.new(_data_source)
-	_collection_repository = AssetCollectionRepository.new(_data_source)
+	settings_repository.initialize_project_settings(current_settings)
+
+	APEditorSettingsManager.load_editor_settings()
+
+	AssetLibraryManager.load_asset_library(current_settings.asset_library_path)
+	APEditorSettingsManager.get_editor_settings().get_asset_palette()
+	_palette_session_state = AssetPaletteSessionState.new()
 
 
 func _react_to_settings_change(settings: AssetPlacerSettings):
@@ -149,7 +218,7 @@ func _react_to_reimorted_files(_files: PackedStringArray):
 func _on_dock_visibility_changed():
 	if not _asset_placer_window.visible:
 		_presenter.toggle_transformation_mode(AssetPlacerPresenter.TransformMode.None)
-		_presenter.clear_selection()
+		_deactivate_plugin()
 
 
 func start_placement(asset: AssetResource):
@@ -167,8 +236,11 @@ func _handle_in_place_transform():
 	if _presenter.is_node_transform_mode():
 		_presenter.end_node_transform_mode()
 		_asset_placer.stop_placement()
-	# Check if a Node3D is selected and we're not already in asset placement mode
-	elif AssetPlacerContextUtil.is_current_selection_node3d() and not _presenter.plugin_is_active():
+	# Start in-place transform when a Node3D is selected and no placement asset is active.
+	elif (
+		AssetPlacerContextUtil.is_current_selection_node3d()
+		and not _presenter.has_placement_asset_selected()
+	):
 		var selection = EditorInterface.get_selection()
 		var selected_nodes = selection.get_selected_nodes()
 		if selected_nodes.size() == 1 and selected_nodes[0] is Node3D:
@@ -176,12 +248,40 @@ func _handle_in_place_transform():
 			_asset_placer.start_node_transform(selected_nodes[0], _presenter.placement_mode)
 	# If we're in asset placement mode, Tab should also exit it
 	elif _presenter.plugin_is_active() and not _presenter.is_node_transform_mode():
-		_presenter.clear_selection()
-		_asset_placer.stop_placement()
+		_deactivate_plugin()
+
+
+func _deactivate_plugin() -> void:
+	if _presenter.is_node_transform_mode():
+		_presenter.end_node_transform_mode()
+	_presenter.clear_selection()
+	_presenter.set_active(false)
+	_asset_placer.stop_placement()
+
+
+func _show_asset_placer_dock() -> void:
+	if ClassDB.class_exists(&"EditorDock") and is_instance_valid(_dock):
+		_dock.call("make_visible")
+	else:
+		make_bottom_panel_item_visible(_asset_placer_window)
+
+
+func _toggle_plugin_active() -> void:
+	if _presenter.plugin_is_active():
+		_deactivate_plugin()
+	else:
+		EditorInterface.set_main_screen_editor("3D")
+		AssetPlacerContextUtil.select_context()
+		_presenter.set_active(true)
+		_show_asset_placer_dock()
 
 
 # gdlint: disable=max-returns
 func _forward_3d_gui_input(viewport_camera, event):
+	if current_settings.bindings[AssetPlacerSettings.Bindings.TogglePluginActive].is_pressed(event):
+		_toggle_plugin_active()
+		return _handled()
+
 	if current_settings.bindings[AssetPlacerSettings.Bindings.InPlaceTransform].is_pressed(event):
 		_handle_in_place_transform()
 		return _handled()
@@ -192,6 +292,35 @@ func _forward_3d_gui_input(viewport_camera, event):
 
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		return false
+
+	if asset_palette.get_palette_count() > 1:
+		var is_pressed = event.is_pressed()
+		if current_settings.bindings[AssetPlacerSettings.Bindings.PaletteNext].is_pressed(event):
+			if is_pressed:
+				_palette_session_state.next_palette()
+			return _handled()
+		if current_settings.bindings[AssetPlacerSettings.Bindings.PalettePrevious].is_pressed(
+			event
+		):
+			if is_pressed:
+				_palette_session_state.previous_palette()
+			return _handled()
+
+	if (
+		not _presenter.is_node_transform_mode()
+		and event is InputEventKey
+		and event.pressed
+		and not event.echo
+		and not event.ctrl_pressed
+		and not event.meta_pressed
+		and not event.alt_pressed
+	):
+		var slot := _palette_slot_from_key(event as InputEventKey)
+		if slot >= 0:
+			var asset: AssetResource = _palette_session_state.get_asset_at_slot(slot)
+			if asset != null and asset.has_resource():
+				_presenter.toggle_asset(asset)
+				return _handled()
 
 	if current_settings.bindings[AssetPlacerSettings.Bindings.Rotate].is_pressed(event):
 		_presenter.toggle_transformation_mode(AssetPlacerPresenter.TransformMode.Rotate)
@@ -254,14 +383,54 @@ func _forward_3d_gui_input(viewport_camera, event):
 
 
 func _show_plugin_up_to_date():
-	_asset_placer_button.icon = null
+	if ClassDB.class_exists(&"EditorDock"):
+		_dock.icon_name = &""
+	else:
+		_asset_placer_button.icon = null
 
 
 func _show_update_available(_update: PluginUpdate):
-	_asset_placer_button.icon = EditorIconTexture2D.new("MoveUp")
-	_asset_placer_button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	if ClassDB.class_exists(&"EditorDock"):
+		_dock.icon_name = &"MoveUp"
+	else:
+		_asset_placer_button.icon = EditorIconTexture2D.new("MoveUp")
+		_asset_placer_button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+
+
+func _palette_slot_from_key(event: InputEventKey) -> int:
+	match event.keycode:
+		KEY_1, KEY_KP_1:
+			return 0
+		KEY_2, KEY_KP_2:
+			return 1
+		KEY_3, KEY_KP_3:
+			return 2
+		KEY_4, KEY_KP_4:
+			return 3
+		KEY_5, KEY_KP_5:
+			return 4
+		KEY_6, KEY_KP_6:
+			return 5
+		KEY_7, KEY_KP_7:
+			return 6
+		KEY_8, KEY_KP_8:
+			return 7
+		KEY_9, KEY_KP_9:
+			return 8
+		KEY_0, KEY_KP_0:
+			return 9
+		_:
+			return -1
 
 
 func _handled():
 	get_viewport().set_input_as_handled()
 	return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+
+func _on_sync_complete(added, removed, scanned):
+	var message := (
+		"Asset Placer Sync complete\nAdded: %d Removed: %d Scanned total: %d"
+		% [added, removed, scanned]
+	)
+	EditorToasterCompat.toast(message)

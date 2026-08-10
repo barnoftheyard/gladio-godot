@@ -196,6 +196,7 @@ replication_config = SubResource("SceneReplicationConfig_vf1c8")
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer/HostButton" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/JoinButton" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="Title/PanelContainer/VBoxContainer/VBoxContainer2/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="text_changed" from="Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
 [connection signal="id_pressed" from="Title/Settings" to="Title/Settings" method="_on_id_pressed"]
 [connection signal="popup_hide" from="Title/Settings" to="." method="_on_popup_menu_popup_hide"]
 [connection signal="text_submitted" from="Title/Settings/PlayerNamePopup/LineEdit" to="Title/Settings" method="_on_line_edit_text_submitted"]

@@ -4,95 +4,85 @@ extends RefCounted
 signal assets_loaded(assets: Array[AssetResource])
 signal asset_selection_change
 signal show_filter_info(size: int)
-signal show_sync_active(bool)
 signal show_empty_view(type: EmptyType)
 
 enum EmptyType { Search, Collection, All, None }
 
-var library: AssetLibrary
-var folder_repository: FolderRepository
-var assets_repository: AssetsRepository
 var synchronizer: Synchronize
+var is_sort_ascending := true
 
 var _active_collections: Array[AssetCollection] = []
 var _filtered_assets: Array[AssetResource] = []
-var _current_assets: Array[AssetResource]
 var _current_query: String
+var _current_sort_method: AssetSortBy.SortMethod
+
+var _asset_library: AssetLibrary:
+	get:
+		return AssetLibraryManager.get_asset_library()
 
 
 func _init():
-	self.folder_repository = FolderRepository.instance
-	self.assets_repository = AssetsRepository.instance
-	self.synchronizer = Synchronize.instance
+	synchronizer = Synchronize.instance
 
 
 func on_ready():
-	_current_assets = assets_repository.get_all_assets()
 	show_filter_info.emit(0)
-	assets_repository.assets_changed.connect(_filter_by_collections_and_query)
+	_asset_library.assets_changed.connect(_filter_by_collections_and_query)
+	_asset_library.folders_changed.connect(sync)
 	_filter_by_collections_and_query()
-	synchronizer.sync_state_change.connect(func(v): show_sync_active.emit(v))
 
 
-func add_asset_folder(path: String):
-	folder_repository.add(path)
-	var dir_access = DirAccess.open(path)
-	for file in dir_access.get_files():
-		add_asset(path.path_join(file), path)
+func add_folder(path: String):
+	var new_folder := AssetFolder.new(path)
+	_asset_library.add_folder(new_folder)
 
 
 func on_query_change(query: String):
-	self._current_query = query
+	_current_query = query
 	_filter_by_collections_and_query()
 
 
 func add_asset(path: String, folder_path: String):
+	if not AssetResource.is_file_supported(path):
+		push_warning("Creating a Resource for file %s is not supported." % path)
+		return
+
 	var tags: Array[int] = []
 	for collection in _active_collections:
 		tags.push_back(collection.id)
 
 	var id = ResourceIdCompat.path_to_uid(path)
-	if !id:
-		push_error("Error getting id from path %s" % path)
-		return
+	assert(id != path, "Error getting uid from path %s" % path)
 
-	var existing = assets_repository.find_by_uid(id)
+	var existing := _asset_library.get_asset(id)
 	if existing:
-		var new_tags: Array[int] = []
-		for tag in tags:
-			if tag not in existing.tags:
-				new_tags.push_back(tag)
-
-		existing.tags.append_array(new_tags)
-		assets_repository.update(existing)
+		existing.add_tags(tags)
+		_asset_library.update_asset(existing)
 	else:
-		assets_repository.add_asset(path, tags, folder_path)
+		var new_asset := AssetResource.new(
+			id, path.get_file(), tags, folder_path, -1, Time.get_unix_time_from_system()
+		)
+		_asset_library.add_asset(new_asset)
 
 
 func delete_asset(asset: AssetResource):
-	assets_repository.delete(asset.id)
-	_filter_by_collections_and_query()
+	_asset_library.remove_asset(asset)
 
 
 func add_assets_or_folders(files: PackedStringArray):
 	for file in files:
 		if file.get_extension().is_empty():
-			add_asset_folder(file)
-		else:
+			add_folder(file)
+		elif AssetResource.is_file_supported(file):
 			add_asset(file, "")
-
-		_filter_by_collections_and_query()
 
 
 func toggle_asset_collection(asset: AssetResource, collection: AssetCollection, add: bool):
 	if add:
-		asset.tags.append(collection.id)
-		assets_repository.update(asset)
+		asset.add_tag(collection.id)
 	else:
-		asset.tags.erase(collection.id)
-		assets_repository.update(asset)
-
-	_filter_by_collections_and_query()
+		asset.remove_tag(collection.id)
+	_asset_library.update_asset(asset)
 
 
 func toggle_collection_filter(collection: AssetCollection, enabled: bool):
@@ -104,30 +94,58 @@ func toggle_collection_filter(collection: AssetCollection, enabled: bool):
 	_filter_by_collections_and_query()
 
 
+func on_sort_method_change(method: AssetSortBy.SortMethod):
+	_current_sort_method = method
+	_filter_by_collections_and_query()
+
+
 func _filter_by_collections_and_query():
-	var all = assets_repository.get_all_assets()
 	var filtered: Array[AssetResource] = []
 
-	for asset in all:
-		var matches_query = asset.name.containsn(_current_query) || _current_query.is_empty()
-		var belongs_to_collection = (
-			asset.belongs_to_some_collection(_active_collections) || _active_collections.is_empty()
-		)
+	var query_words := Array(_current_query.strip_edges().to_lower().split(" ", false))
+	var include_words: Array[String] = []
+	var exclude_words: Array[String] = []
+	for w: String in query_words:
+		if w.begins_with("-") && w.length() > 1:
+			exclude_words.append(w.substr(1))
+		else:
+			include_words.append(w)
 
-		if matches_query and belongs_to_collection:
+	for asset: AssetResource in _asset_library.get_assets():
+		if (
+			_active_collections.is_empty() == false
+			and asset.belongs_to_some_collection(_active_collections) == false
+		):
+			continue
+
+		var matches_query := true
+		var asset_lower := asset.name.to_lower()
+
+		for w in include_words:
+			if asset_lower.contains(w) == false:
+				matches_query = false
+				break
+
+		if matches_query:
+			for w in exclude_words:
+				if asset_lower.contains(w):
+					matches_query = false
+					break
+
+		if matches_query:
 			filtered.push_back(asset)
 
+	filtered.sort_custom(AssetSortBy.get_sort_function(_current_sort_method, is_sort_ascending))
 	if filtered.is_empty():
 		if _active_collections.is_empty() && _current_query.is_empty():
 			show_empty_view.emit(EmptyType.All)
-		elif not _active_collections.is_empty():
+		elif _active_collections.is_empty() == false:
 			show_empty_view.emit(EmptyType.Collection)
 		else:
 			show_empty_view.emit(EmptyType.Search)
 	else:
 		assets_loaded.emit(filtered)
 		show_empty_view.emit(EmptyType.None)
-
 	_filtered_assets = filtered
 
 

@@ -93,7 +93,6 @@ transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_vsegq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PhysicsBody2" unique_id=1365107803]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
 mesh = ExtResource("3_aldv4")
 
 [node name="SmplscriptInterpreter" type="Node3D" parent="." unique_id=1528875187]

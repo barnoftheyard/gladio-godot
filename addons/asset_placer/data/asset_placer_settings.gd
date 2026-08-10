@@ -12,18 +12,23 @@ enum Bindings {
 	ToggleAxisX,
 	ToggleAxisZ,
 	ToggleAxisY,
-	TogglePlaneMode
+	TogglePlaneMode,
+	PaletteNext,
+	PalettePrevious,
+	TogglePluginActive
 }
 
 enum UpdateChannel { Stable, Beta, Alpha }
 
+const DEFAULT_PREVIEW_MATERIAL := "res://addons/asset_placer/utils/preview_material.tres"
+const DEFAULT_PLANE_MATERIAL := "res://addons/asset_placer/ui/plane_preview/plane_preview_material.tres"
+const DEFAULT_ASSET_LIBRARY_PATH := AssetLibraryParser.DEFAULT_SAVE_PATH
+
 var transform_step: float
 var rotation_step: float
-var preview_material_resource: String
-var plane_material_resource: String
 var bindings: Dictionary
 var ui_scale: float
-var asset_library_path: String
+var palette_item_scale: float
 var update_channel: UpdateChannel
 var binding_positive_transform: APInputOption:
 	get():
@@ -31,6 +36,11 @@ var binding_positive_transform: APInputOption:
 var binding_negative_transform: APInputOption:
 	get():
 		return bindings[Bindings.TransformNegative]
+
+# Project Settings
+var preview_material_resource := DEFAULT_PREVIEW_MATERIAL
+var plane_material_resource := DEFAULT_PLANE_MATERIAL
+var asset_library_path := DEFAULT_ASSET_LIBRARY_PATH
 
 
 static func default() -> AssetPlacerSettings:
@@ -52,11 +62,17 @@ static func default() -> AssetPlacerSettings:
 	settings.bindings[Bindings.ToggleAxisY] = APInputOption.key_press(Key.KEY_Y)
 	settings.bindings[Bindings.ToggleAxisZ] = APInputOption.key_press(Key.KEY_Z)
 	settings.bindings[Bindings.TogglePlaneMode] = APInputOption.key_press(Key.KEY_Q)
-	settings.preview_material_resource = "res://addons/asset_placer/utils/preview_material.tres"
-	settings.plane_material_resource = ("res://addons/asset_placer/ui/plane_preview/plane_preview_material.tres")
+	settings.bindings[Bindings.PaletteNext] = APInputOption.key_press(Key.KEY_TAB)
+	settings.bindings[Bindings.PalettePrevious] = APInputOption.key_press(
+		Key.KEY_TAB, KeyModifierMask.KEY_MASK_SHIFT
+	)
+	settings.bindings[Bindings.TogglePluginActive] = APInputOption.key_press(
+		Key.KEY_A, KeyModifierMask.KEY_MASK_SHIFT
+	)
 	settings.transform_step = 0.1
 	settings.rotation_step = 5
 	settings.ui_scale = 1.0
-	settings.asset_library_path = "user://asset_library.json"
+	settings.palette_item_scale = 1.0
 	settings.update_channel = UpdateChannel.Stable
+
 	return settings

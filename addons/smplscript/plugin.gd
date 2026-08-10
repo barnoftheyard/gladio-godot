@@ -20,7 +20,7 @@ func _enter_tree():
 	settings = EditorInterface.get_editor_settings()
 	
 	#get our current extensions string
-	text_file_extensions = settings.get_settings("docks/filesystem/textfile_extensions")
+	text_file_extensions = settings.get_setting("docks/filesystem/textfile_extensions")
 	
 	#add our custom text file script extension
 	settings.set_setting("docks/filesystem/textfile_extensions", (text_file_extensions + ",smpl"))

@@ -5,29 +5,49 @@ var name: String
 var id: String
 var tags: Array[int]
 var folder_path: String
-var shallow_collections: Array[AssetCollection]:
-	get():
-		var shallow: Array[AssetCollection] = []
-		for id in tags:
-			shallow.push_back(AssetCollection.new("name", Color.TRANSPARENT, id))
-		return shallow
+var primary_collection: int = -1
+## UNIX timestamp of when the AssetResource was added to AssetLibrary.
+var date_added: float
 
 var _resource: Resource = null
 ## If _resource fails to load, don't try to load it anymore
 var _failed_load := false
 
 
-func _init(res_id: String, name: String, tags: Array[int] = [], folder_path: String = ""):
-	self.name = name
-	self.id = res_id
-	self.tags = tags
-	self.folder_path = folder_path
+## Checks whether the given filename is supported as a resource.
+static func is_file_supported(file: String) -> bool:
+	return file.get_extension() in ["tscn", "scn", "glb", "fbx", "obj", "gltf", "blend"]
+
+
+func _init(
+	res_id: String,
+	p_name: String,
+	p_tags: Array[int] = [],
+	p_folder_path: String = "",
+	p_primary_collection: int = -1,
+	p_date_added: float = 0.0,
+):
+	name = p_name
+	id = res_id
+	tags = p_tags
+	folder_path = p_folder_path
+	primary_collection = p_primary_collection
+	date_added = p_date_added
+
+
+func get_primary_collection() -> int:
+	if primary_collection >= 0:
+		return primary_collection
+	return -1
 
 
 ## Get the path to the resource if it exists
 func get_path() -> String:
 	if not has_resource():
 		return ""
+	# If id is already a path (not a UID), return it directly
+	if not id.begins_with("uid://"):
+		return id
 	return ResourceUID.get_id_path(ResourceUID.text_to_id(id))
 
 
@@ -57,3 +77,20 @@ func belongs_to_some_collection(collections: Array[AssetCollection]) -> bool:
 	return collections.any(
 		func(collection: AssetCollection): return self.belongs_to_collection(collection)
 	)
+
+
+## Adds a tag to this asset. Does nothing if it already has new_tag.
+func add_tag(new_tag: int):
+	if not new_tag in tags:
+		tags.append(new_tag)
+
+
+## Adds multiple new tags to this asset. Skips tags it already has.
+func add_tags(new_tags: Array[int]):
+	for new_tag in new_tags:
+		add_tag(new_tag)
+
+
+## Removes a tag from this asset. Does nothing if it doesn't have tag.
+func remove_tag(tag: int):
+	tags.erase(tag)

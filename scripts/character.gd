@@ -70,6 +70,7 @@ var was_on_floor : bool = true
 var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity") # Don't set this as a const, see the gravity section in _physics_process
 
 func _enter_tree():
+	#used as a fallback / redundancy
 	set_multiplayer_authority(name.to_int())
 
 func _ready():
@@ -94,7 +95,9 @@ func _ready():
 	if is_multiplayer_authority():
 		$Head/Camera.current = is_multiplayer_authority()
 		
-		#$male.hide()
+		$BodyMesh.hide()
+		$Head/Camera/HeadMesh.hide()
+		
 		
 	#if this player node is not the main player hide the GUI
 	else:
@@ -111,8 +114,8 @@ func _physics_process(delta):
 	
 	handle_jumping()
 	
+	#get the input direction
 	var input_dir = Vector2.ZERO
-	
 	if !immobile and is_multiplayer_authority():
 		input_dir = Input.get_vector(LEFT, RIGHT, FORWARD, BACKWARD)
 		
@@ -130,6 +133,8 @@ func _physics_process(delta):
 		$Head/Weapon/SubViewportContainer/SubViewport/WeaponViewmodel.transform = $Head/Camera.transform
 	
 	#code for the character animation
+	$BodyMesh/smg.rotation.y = $Head/Camera.rotation.y
+	
 	#match player model rotation and also rotate
 	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
 	#$male.character_animation(input_dir, is_on_floor(), state, delta)
@@ -320,8 +325,17 @@ func footsteps(moving):
 		$Footsteps/FootstepsTimer.stop()
 
 @rpc("any_peer", "call_local", "reliable")
+func send_client_info():
+	get_node("/root/Root").players[get_multiplayer_authority()]["name"] = get_node("
+	/root/Root/Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit").text
+
+
+@rpc("any_peer", "call_local", "reliable")
 func damage(amount, killer_id):
 	health -= amount
+	
+	$DamageSound.pitch_scale = randf_range(0.5, 1.25)
+	$DamageSound.play()
 	
 	if health <= 0:
 		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1

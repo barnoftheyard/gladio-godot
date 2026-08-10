@@ -1,13 +1,20 @@
 [gd_scene format=3 uid="uid://cc1m2a1obsyn4"]
 
 [ext_resource type="Script" uid="uid://chs6urvr2lo3c" path="res://scripts/character.gd" id="1_0t4e8"]
+[ext_resource type="Texture2D" uid="uid://c5h0t1godt1fk" path="res://icon.svg" id="2_2cgup"]
 [ext_resource type="PackedScene" uid="uid://b0fbdoho2psn5" path="res://scenes/Weapon.tscn" id="2_5kqqr"]
+[ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_a5ia6"]
 [ext_resource type="PackedScene" uid="uid://bbr8vsvckbpm6" path="res://scenes/UserInterface.tscn" id="3_wdmg4"]
 [ext_resource type="PackedScene" uid="uid://3mij3cjhkwsm" path="res://addons/fpc/reticles/reticle_1.tscn" id="5_lek5e"]
 [ext_resource type="AudioStream" uid="uid://dnt8qud2ucxju" path="res://sounds/step0.wav" id="5_q1r4f"]
 [ext_resource type="AudioStream" uid="uid://ctrg66kfmdi83" path="res://sounds/step1.wav" id="6_ocaur"]
+[ext_resource type="AudioStream" uid="uid://qh20r4d4ey4h" path="res://sounds/bart_bash_ow_sfx.mp3" id="9_0dpix"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uy03j"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vgqh4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ye2cy"]
 
 [sub_resource type="Animation" id="Animation_gh776"]
 resource_name = "RESET"
@@ -355,11 +362,17 @@ CROUCH_ANIMATION = NodePath("Head/CrouchAnimation")
 COLLISION_MESH = NodePath("Collision")
 RETICLE = NodePath("Reticle")
 crouch_enabled = false
-health = 85
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=818847784]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("CapsuleShape3D_uy03j")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=1395922927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("CapsuleMesh_vgqh4")
+
+[node name="smg" parent="BodyMesh" unique_id=1294995745 instance=ExtResource("2_a5ia6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545189, 0.24894643, 0)
 
 [node name="Head" type="Node3D" parent="." unique_id=852066632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -367,6 +380,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 [node name="Camera" type="Camera3D" parent="Head" unique_id=120471997]
 transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.99939096, 0, 0, 0)
 cull_mask = 1048569
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Head/Camera" unique_id=1750713182]
+mesh = SubResource("SphereMesh_ye2cy")
+skeleton = NodePath("../../../BodyMesh")
+
+[node name="Decal" type="Decal" parent="Head/Camera/HeadMesh" unique_id=621588567]
+transform = Transform3D(-1, 3.821371e-15, -8.742278e-08, 8.742278e-08, 4.371139e-08, -1, 0, -1, -4.371139e-08, 0, 0, -0.46362978)
+size = Vector3(0.5, 0.5, 0.5)
+texture_albedo = ExtResource("2_2cgup")
 
 [node name="HeadbobAnimation" type="AnimationPlayer" parent="Head" unique_id=1281146137]
 libraries/ = SubResource("AnimationLibrary_o0unb")
@@ -409,5 +431,8 @@ max_db = 1.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1436005100]
 replication_config = SubResource("SceneReplicationConfig_ltoef")
+
+[node name="DamageSound" type="AudioStreamPlayer3D" parent="." unique_id=5998640]
+stream = ExtResource("9_0dpix")
 
 [connection signal="timeout" from="Footsteps/FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]

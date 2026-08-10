@@ -8,10 +8,20 @@ var peer = ENetMultiplayerPeer.new()
 @onready var join_ip_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/IPLineEdit
 
 @export var players = {}
+var player_info = {
+	"name": "Player", 
+	"kills": 0, 
+	"deaths": 0
+}
+
 @export var chat_text = ""
 
 func _ready():
 	print("Welcome to Project Gladio!")
+	
+	multiplayer.peer_connected.connect(_add_player)
+	multiplayer.peer_disconnected.connect(_remove_player)
+	multiplayer.connected_to_server.connect(_on_connected_ok)
 	
 	host_port_entry.text = str(4764)
 	join_port_entry.text = str(4764)
@@ -19,7 +29,6 @@ func _ready():
 	#set the multiplayer_peer to null if we had the peer previous set to something
 	#I.E if we disconnected from a server previously
 	multiplayer.multiplayer_peer = null
-	
 	
 	
 var toggle = false
@@ -49,39 +58,50 @@ func _on_host_pressed():
 	$Title.hide()
 	
 	peer.create_server(int(host_port_entry.text))
+	
 	multiplayer.multiplayer_peer = peer
-	multiplayer.peer_connected.connect(_add_player)
-	multiplayer.peer_disconnected.connect(_remove_player)
 	
 	print("Hosting server on port " + host_port_entry.text)
 	
-	_add_player(multiplayer.get_unique_id())
+	_add_player(1)
+	players[1] = player_info
 	
 	if $Title/PanelContainer/VBoxContainer/CheckBox.button_pressed:
 		upnp_setup()
+		
+#the function that joins a hosted game
+func _on_join_pressed():
+	$Title.hide()
+	
+	peer.create_client(join_ip_entry.text, int(join_port_entry.text))
+	multiplayer.multiplayer_peer = peer
+	
+	print("Joining server " + join_ip_entry.text + ": " + join_port_entry.text)
 
 
 #the function for the signal that adds the player
-@rpc("any_peer", "call_local", "reliable")
-func set_player_data(id, _new_player):
-	players[id] = {
-		"name": $Title/PanelContainer/VBoxContainer/HBoxContainer3/NameLineEdit.text, 
-		"kills": 0, 
-		"deaths": 0
-	}
+@rpc("any_peer", "reliable")
+func _register_player(new_player_info):
+	var new_player_id = multiplayer.get_remote_sender_id()
+	players[new_player_id] = new_player_info
 	
-
+	print(players[new_player_id]["name"] + " (ID: " + str(new_player_id) + ")" + " has connected.")
+	#player_connected.emit(new_player_id, new_player_info)
+	
 func _add_player(id):
+	
+	_register_player.rpc_id(id, player_info)
+	
 	var player = player_scene.instantiate()
 	player.set_multiplayer_authority(id)
-	
-	set_player_data.rpc(id, players)
-	
 	#player nodes are named by their multiplayer ID
 	player.name = str(id)
+	player.position += Vector3(randi_range(-3, 3), 0, randi_range(-3, 3))
 	$test_world.call_deferred("add_child", player, true)
 	
-	print(players[id]["name"] + " (" + str(id) + ")" + " has connected.")
+func _on_connected_ok():
+	var peer_id = multiplayer.get_unique_id()
+	players[peer_id] = player_info
 
 #the function for the signal that removes the player
 func _remove_player(id):
@@ -91,15 +111,6 @@ func _remove_player(id):
 		players.erase(id)
 		
 	print("Player " + str(id) + " has disconnected.")
-
-#the function that joins a hosted game
-func _on_join_pressed():
-	$Title.hide()
-	
-	peer.create_client(join_ip_entry.text, int(join_port_entry.text))
-	multiplayer.multiplayer_peer = peer
-	
-	print("Joining server " + join_ip_entry.text + ": " + join_port_entry.text)
 	
 func upnp_setup():
 	var upnp = UPNP.new()
@@ -119,3 +130,7 @@ func _on_settings_button_pressed():
 
 func _on_popup_menu_popup_hide():
 	pass # Replace with function body.
+
+
+func _on_name_line_edit_text_changed(new_text: String) -> void:
+	player_info["name"] = new_text

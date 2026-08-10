@@ -7,7 +7,7 @@ signal asset_deselected
 signal parent_changed(parent: NodePath)
 signal options_changed(options: AssetPlacerOptions)
 signal transform_mode_changed(mode: TransformMode)
-signal placement_mode_changed(mode: PlacementMode)
+signal placement_mode_changed(mode: GapPlacementMode)
 signal preview_transform_axis_changed(axis: Vector3)
 signal asset_selected(asset: AssetResource)
 signal show_error(message: String)
@@ -16,13 +16,13 @@ signal asset_placed
 
 enum TransformMode { None, Rotate, Scale, Move }
 
-static var _instance: AssetPlacerPresenter
+static var instance: AssetPlacerPresenter
 static var transform_step: float = 0.1
 
 var options: AssetPlacerOptions
 var transform_mode: TransformMode = TransformMode.None
 var current_assets: Array[AssetResource]
-var placement_mode: PlacementMode = PlacementMode.SurfacePlacement.new():
+var placement_mode: GapPlacementMode = GapPlacementMode.SurfacePlacement.new():
 	set(value):
 		placement_mode = value
 		placement_mode_changed.emit(value)
@@ -32,12 +32,13 @@ var _selected_asset: AssetResource
 var _parent: NodePath = NodePath("")
 var _last_plane_options := PlaneOptions.new(Vector3.UP, Vector3.ZERO)
 var _selected_node: Node3D
+var _active: bool = false
 
 
 func _init():
 	options = AssetPlacerOptions.new()
-	self._selected_asset = null
-	self._instance = self
+	_selected_asset = null
+	instance = self
 
 
 func ready():
@@ -46,43 +47,57 @@ func ready():
 
 
 func plugin_is_active() -> bool:
-	if _selected_asset != null or _selected_node != null:
-		return true
-	else:
-		return false
+	return _active
+
+
+func set_active(value: bool) -> void:
+	if _active == value:
+		return
+	_active = value
+	placer_active.emit(_active)
+
+
+func toggle_active() -> bool:
+	set_active(not _active)
+	return _active
 
 
 func toggle_plane_placement():
-	placement_mode = PlacementMode.PlanePlacement.new(_last_plane_options)
+	placement_mode = GapPlacementMode.PlanePlacement.new(_last_plane_options)
 
 
 func cycle_placement_mode():
-	if placement_mode is PlacementMode.SurfacePlacement:
+	if placement_mode is GapPlacementMode.SurfacePlacement:
 		toggle_plane_placement()
-	elif placement_mode is PlacementMode.PlanePlacement:
+	elif placement_mode is GapPlacementMode.PlanePlacement:
 		toggle_transformation_mode(TransformMode.None)
 		toggle_surface_placement()
 
 
 func toggle_surface_placement():
-	placement_mode = PlacementMode.SurfacePlacement.new()
+	placement_mode = GapPlacementMode.SurfacePlacement.new()
 
 
 func toggle_terrain_3d_placement(node_path: NodePath):
 	if not node_path.is_empty():
-		var node = EditorInterface.get_edited_scene_root().get_node(node_path)
-		self.placement_mode = PlacementMode.Terrain3DPlacement.new(node)
+		self.placement_mode = GapPlacementMode.Terrain3DPlacement.new(node_path)
 	else:
 		placement_mode_changed.emit(placement_mode)
 
 
-func _select_placement_mode(mode: PlacementMode):
+func _select_placement_mode(mode: GapPlacementMode):
 	self.placement_mode = mode
+
+
+func get_assets_parent_path() -> NodePath:
+	return _parent
 
 
 func select_parent(node: NodePath):
 	self._parent = node
+	options.use_selected_as_parent = false
 	parent_changed.emit(node)
+	options_changed.emit(options)
 
 
 func toggle_transformation_mode(mode: TransformMode):
@@ -93,7 +108,7 @@ func toggle_transformation_mode(mode: TransformMode):
 	transform_mode_changed.emit(transform_mode)
 
 	if transform_mode == TransformMode.Move:
-		_select_placement_mode(PlacementMode.PlanePlacement.new(_last_plane_options))
+		_select_placement_mode(GapPlacementMode.PlanePlacement.new(_last_plane_options))
 
 	if transform_mode == TransformMode.Rotate:
 		set_random_rotation_enabled(false)
@@ -106,7 +121,58 @@ func toggle_transformation_mode(mode: TransformMode):
 
 func clear_parent():
 	self._parent = NodePath("")
+	options.use_selected_as_parent = false
 	parent_changed.emit(_parent)
+	options_changed.emit(options)
+
+
+func set_use_selected_as_parent(value: bool):
+	options.use_selected_as_parent = value
+	options_changed.emit(options)
+	parent_changed.emit(_parent)
+
+
+func resolve_placement_parent(edited_root: Node) -> Node3D:
+	if options.use_selected_as_parent:
+		return _resolve_parent_from_selection()
+	if _parent.is_empty():
+		push_warning(
+			(
+				'Asset Placer: enable "Use selection for parent" or choose an Assets Parent node '
+				+ "in the options panel."
+			)
+		)
+		return null
+	var node = edited_root.get_node_or_null(_parent)
+	if node is Node3D:
+		return node
+	push_warning("Asset Placer: Assets Parent path is invalid for this scene.")
+	return null
+
+
+func _resolve_parent_from_selection() -> Node3D:
+	var selected := EditorInterface.get_selection().get_selected_nodes()
+	if selected.size() > 1:
+		push_warning(
+			(
+				"Asset Placer: multiple nodes selected; select a single Node3D or disable "
+				+ '"Use selection for parent" and set Assets Parent.'
+			)
+		)
+		return null
+	if selected.is_empty():
+		push_warning(
+			(
+				"Asset Placer: no node selected; select a Node3D (new assets are placed as siblings) "
+				+ 'or disable "Use selection for parent" and set Assets Parent.'
+			)
+		)
+		return null
+	var picked: Node = selected[0]
+	if picked is not Node3D:
+		push_warning("Asset Placer: selected node must be a Node3D.")
+		return null
+	return picked
 
 
 func set_unform_scaling(value: bool):
@@ -141,10 +207,10 @@ func _select_axis(axis: Vector3):
 
 	var movement_mode = transform_mode == TransformMode.Move
 	var idle_mode = transform_mode == TransformMode.None
-	var plane_placement = placement_mode is PlacementMode.PlanePlacement
+	var plane_placement = placement_mode is GapPlacementMode.PlanePlacement
 	if plane_placement and (idle_mode || movement_mode):
 		_last_plane_options.normal = axis.normalized()
-		placement_mode = PlacementMode.PlanePlacement.new(_last_plane_options)
+		placement_mode = GapPlacementMode.PlanePlacement.new(_last_plane_options)
 
 
 func set_random_scale_enabled(value: bool):
@@ -223,52 +289,87 @@ func cancel():
 		toggle_transformation_mode(TransformMode.None)
 	elif _selected_node != null:
 		end_node_transform_mode()
-	else:
+	elif _selected_asset != null:
 		clear_selection()
+	else:
+		set_active(false)
 
 
 func clear_selection():
+	if _selected_asset == null:
+		return
 	_selected_asset = null
 	asset_deselected.emit()
-	placer_active.emit(false)
 
 
 func toggle_asset(asset: AssetResource):
 	if asset == _selected_asset:
-		_selected_asset = null
-		asset_deselected.emit()
-		placer_active.emit(false)
+		clear_selection()
 	else:
 		_selected_asset = asset
+		set_active(true)
 		asset_selected.emit(asset)
-		placer_active.emit(true)
 
 
 func select_asset(asset: AssetResource):
 	_selected_asset = asset
+	set_active(true)
 	asset_selected.emit(asset)
-	placer_active.emit(true)
 
 
 func start_node_transform_mode(node: Node3D):
 	_selected_node = node
-	placer_active.emit(true)
+	set_active(true)
 
 
 func end_node_transform_mode():
 	_selected_node = null
-	placer_active.emit(false)
+	if _selected_asset == null:
+		set_active(false)
 
 
 func on_asset_placed():
+	var es := APEditorSettingsManager.get_editor_settings()
+	if es:
+		es.update_asset_time_placed(_selected_asset.id)
+
 	if options.enable_random_placement:
 		var random = current_assets.pick_random()
 		select_asset(random)
+
+
+func set_automatic_grouping(value: bool):
+	options.group_automatically = value
+	options_changed.emit(options)
 
 
 func is_node_transform_mode() -> bool:
 	return _selected_node != null
 
 
+func has_placement_asset_selected() -> bool:
+	return _selected_asset != null
+
+
 func get_selected_node() -> Node3D:
 	return _selected_node
+
+
+func move_plane_up(direction: int):
+	if placement_mode is GapPlacementMode.PlanePlacement:
+		var plane_options = placement_mode.plane_options
+		var step = options.snapping_grid_step if options.snapping_enabled else 0.2
+		var new_origin = plane_options.origin + plane_options.normal * (direction * step)
+
+		# Apply grid snapping if enabled
+		if options.snapping_enabled:
+			var normal = plane_options.normal.normalized()
+			var distance_along_normal = normal.dot(new_origin)
+			var snapped_distance = (
+				round(distance_along_normal / options.snapping_grid_step)
+				* options.snapping_grid_step
+			)
+			new_origin = normal * snapped_distance
+
+		plane_options.origin = new_origin
+		placement_mode = GapPlacementMode.PlanePlacement.new(plane_options)

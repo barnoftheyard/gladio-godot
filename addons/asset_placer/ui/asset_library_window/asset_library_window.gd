@@ -4,10 +4,10 @@ extends Control
 
 signal asset_selected(asset: AssetResource)
 
-@onready var presenter = AssetLibraryPresenter.new()
-@onready var folder_presenter = FolderPresenter.new()
+@onready var presenter: AssetLibraryPresenter = AssetLibraryPresenter.new()
+@onready var folder_presenter: FolderPresenter = FolderPresenter.new()
 
-@onready var placer_presenter := AssetPlacerPresenter._instance
+@onready var placer_presenter := AssetPlacerPresenter.instance
 @onready var grid_container: Container = %GridContainer
 @onready var preview_resource = preload(
 	"res://addons/asset_placer/ui/components/asset_resource_preview.tscn"
@@ -17,6 +17,9 @@ signal asset_selected(asset: AssetResource)
 @onready var filter_button: Button = %FilterButton
 @onready var filters_label: Label = %FiltersLabel
 @onready var reload_button: Button = %ReloadButton
+@onready var sort_button: Button = %SortButton
+@onready var ascending_order_button: Button = %AscendingOrderButton
+
 @onready var progress_bar = %ProgressBar
 @onready var empty_content = %EmptyContent
 @onready var main_content = %MainContent
@@ -28,16 +31,27 @@ signal asset_selected(asset: AssetResource)
 
 
 func _ready():
+	if is_part_of_edited_scene():
+		return
+
 	presenter.assets_loaded.connect(show_assets)
 	presenter.show_filter_info.connect(show_filter_info)
-	presenter.show_sync_active.connect(show_sync_in_progress)
-	AssetPlacerPresenter._instance.asset_selected.connect(set_selected_asset)
-	AssetPlacerPresenter._instance.asset_deselected.connect(clear_selected_asset)
+	placer_presenter.asset_selected.connect(set_selected_asset)
+	placer_presenter.asset_deselected.connect(clear_selected_asset)
 	empty_collection_view_add_folder_btn.pressed.connect(show_folder_dialog)
 	empty_view_add_folder_btn.pressed.connect(show_folder_dialog)
 	presenter.show_empty_view.connect(show_empty_view)
+	presenter.synchronizer.sync_state_change.connect(func(v): show_sync_in_progress(v))
 
 	presenter.on_ready()
+
+	for method in AssetSortBy.SortMethod.keys():
+		sort_button.add_item(method.capitalize(), AssetSortBy.SortMethod[method])
+
+	sort_button.selected = 0
+	sort_button.item_selected.connect(presenter.on_sort_method_change)
+	ascending_order_button.pressed.connect(flip_order)
+
 	add_folder_button.pressed.connect(show_folder_dialog)
 	search_field.text_changed.connect(presenter.on_query_change)
 	reload_button.pressed.connect(presenter.sync)
@@ -70,7 +84,7 @@ func show_assets(assets: Array[AssetResource]):
 		child.set_asset(asset)
 
 
-func show_asset_menu(asset: AssetResource, control: Control):
+func show_asset_menu(asset: AssetResource, _control: Control):
 	var options_menu := PopupMenu.new()
 	var mouse_pos = DisplayServer.mouse_get_position()
 	options_menu.add_icon_item(EditorIconTexture2D.new("Groups"), "Manage collections")
@@ -80,12 +94,7 @@ func show_asset_menu(asset: AssetResource, control: Control):
 		func(index):
 			match index:
 				0:
-					CollectionPicker.show_in(
-						control,
-						asset.shallow_collections,
-						func(collection, add):
-							presenter.toggle_asset_collection(asset, collection, add)
-					)
+					ManageCollectionsDialog.open(asset.id)
 				1:
 					EditorInterface.open_scene_from_path(asset.get_path())
 					EditorInterface.set_main_screen_editor("3D")
@@ -105,7 +114,7 @@ func show_folder_dialog():
 	var folder_dialog = EditorFileDialog.new()
 	folder_dialog.file_mode = EditorFileDialog.FILE_MODE_OPEN_DIR
 	folder_dialog.access = EditorFileDialog.ACCESS_RESOURCES
-	folder_dialog.dir_selected.connect(presenter.add_asset_folder)
+	folder_dialog.dir_selected.connect(presenter.add_folder)
 	EditorInterface.popup_dialog_centered(folder_dialog)
 
 
@@ -140,6 +149,15 @@ func set_selected_asset(asset: AssetResource):
 	for child in grid_container.get_children():
 		if child is AssetResourcePreview:
 			child.select_not_signal(child.get_meta("id") == asset.id)
+
+
+func flip_order():
+	ascending_order_button.scale.y *= -1
+	var text := "Sort by %s order." % ("ascending" if presenter.is_sort_ascending else "descending")
+	ascending_order_button.tooltip_text = text
+
+	presenter.is_sort_ascending = not presenter.is_sort_ascending
+	presenter._filter_by_collections_and_query()
 
 
 func show_empty_view(type: AssetLibraryPresenter.EmptyType):

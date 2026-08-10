@@ -1,13 +1,13 @@
-class_name PlacementMode
+class_name GapPlacementMode
 extends RefCounted
 
 
 class SurfacePlacement:
-	extends PlacementMode
+	extends GapPlacementMode
 
 
 class PlanePlacement:
-	extends PlacementMode
+	extends GapPlacementMode
 	var plane_options: PlaneOptions
 
 	func _init(options: PlaneOptions = PlaneOptions.new(Vector3.UP, Vector3.ZERO)):
@@ -15,11 +15,14 @@ class PlanePlacement:
 
 
 class Terrain3DPlacement:
-	extends PlacementMode
-	var _terrain_3d_node: Node3D
+	extends GapPlacementMode
+	var _terrain_3d_node_path: NodePath
 
-	func _init(node: Node3D):
-		self._terrain_3d_node = node
+	func _init(path: NodePath):
+		self._terrain_3d_node_path = path
 
 	func get_terrain_3d_node() -> Node3D:
-		return _terrain_3d_node
+		var root = EditorInterface.get_edited_scene_root()
+		if root and not _terrain_3d_node_path.is_empty():
+			return root.get_node_or_null(_terrain_3d_node_path) as Node3D
+		return null
