@@ -2,11 +2,9 @@ extends Node3D
 
 @export var sway = 3
 @export var create_deformation = false
-@onready var viewmodel = $SubViewportContainer/SubViewport/smg
-@onready var initial_position = viewmodel.position
 
-const ARM_ANIM_POSITION_OFFSET = Vector3(-0.234,-0.275, 1.267)
-const ARM_ANIM_ROTATION_OFFSET = Vector3(-13.6, 11.1, 79.3)
+@onready var viewmodel = get_node("SubViewportContainer/SubViewport/" + current_weapon)
+@onready var initial_position = viewmodel.position
 
 var timer = 0
 var mouse_accel = Vector3.ZERO
@@ -14,10 +12,17 @@ var mouse_accel = Vector3.ZERO
 #dictionary of weapons
 var weapons = {
 	"smg": {"max_mag": 30, "max_ammo": 240, "mag": 30, "ammo": 30, "damage": 15,
-	"rate": 0.1}
+	"rate": 0.1, "initial_position": Vector3(0.25, -0.5, -1)},
+	
+	"pistol": {"max_mag": 12, "max_ammo": 144, "mag": 12, "ammo": 60, "damage": 25,
+	"rate": 0.2, "initial_position": Vector3(0.235, -0.755, -0.712)},
+	
+	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 100,
+	"rate": 2, "initial_position": Vector3(0, -0.658, -1.529)}
 }
 
-var current_weapon = "smg"
+@export var current_weapon = "smg"
+var current_weapon_index = 0
 var current_weapon_mag = weapons[current_weapon]["mag"]
 var current_weapon_ammo = weapons[current_weapon]["ammo"]
 
@@ -33,22 +38,51 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		mouse_accel.x = -event.relative.x * 0.0075
 		mouse_accel.y = -event.relative.y * 0.0075
+		
+	if event is InputEventMouseButton and event.is_pressed():
+		viewmodel.hide()
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			current_weapon_index += 1
+			current_weapon_index = clamp(current_weapon_index, 0, weapons.size()-1)
+			
+			current_weapon = weapons.keys()[current_weapon_index]
+			
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			current_weapon_index -= 1
+			current_weapon_index = clamp(current_weapon_index, 0, weapons.size()-1)
+			
+			current_weapon = weapons.keys()[current_weapon_index]
+			
+		#update our variables
+		viewmodel = get_node("SubViewportContainer/SubViewport/" + current_weapon)
+		viewmodel.show()
+		#initial_position = viewmodel.position
+		
+		current_weapon_mag = weapons[current_weapon]["mag"]
+		current_weapon_ammo = weapons[current_weapon]["ammo"]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	#if not host remove viewmodels
 	if !is_multiplayer_authority():
 		$SubViewportContainer.queue_free()
 	else:
-		#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
-		set_all_meshes_layer_mask(viewmodel, 1, false)
-		set_all_meshes_layer_mask(viewmodel, 2, true)
+		for x in $SubViewportContainer/SubViewport.get_children():
+			#skip WeaponViewmodel
+			if x is not Camera3D:
+				#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
+				set_all_meshes_layer_mask(x, 1, false)
+				set_all_meshes_layer_mask(x, 2, true)
+				#connect the animation players of the viewmodel models with animation finished so that
+				#reloading works
+				x.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
+				
 		
 		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 1, false)
 		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 2, true)
 		
-	#connect the reload animation finishing to this script
-	viewmodel.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
 
 #creates the decals for bullet holes
 func create_bullet_decal(object, decal_position, time):
@@ -72,11 +106,12 @@ func shoot_weapon(collision):
 		viewmodel.get_node("AnimationPlayer").stop()
 		viewmodel.get_node("AnimationPlayer").play("fire")
 		
-		var thirdperson_gun = get_parent().get_parent().get_node_or_null("male/AnimationPlayer2")
-		if thirdperson_gun != null:
-			thirdperson_gun.play("shoot")
+		if current_weapon == "saw":
+			$SawSound.play()
+			$FireParticle.emitting = true
+		else:
+			$WeaponSound.play()
 		
-		$WeaponSound.play()
 		timer = weapons[current_weapon]["rate"]
 		
 		if collision is RigidBody3D:
@@ -142,13 +177,13 @@ func _physics_process(delta):
 					shoot_weapon($WeaponRay.get_collider())
 					
 				if (Input.is_action_just_pressed("reload") and 
-				!viewmodel.get_node("AnimationPlayer").is_playing()):
+				not viewmodel.get_node("AnimationPlayer").is_playing()):
 					reload_weapon()
 		else:
 			timer -= delta
 		
 		#transitional sway
-		viewmodel.position = viewmodel.position.lerp(mouse_accel + initial_position, sway * delta)
+		viewmodel.position = viewmodel.position.lerp(mouse_accel + weapons[current_weapon]["initial_position"], sway * delta)
 		
 		#rotational sway
 		viewmodel.rotation.y = lerp_angle(viewmodel.rotation.y, mouse_accel.x, sway * delta)
@@ -157,8 +192,8 @@ func _physics_process(delta):
 		#breathing-esque effect on the weapon
 		viewmodel.position.y += cos(delta * 2) * 0.0005
 		
-		var arms_bone = viewmodel.get_node("arms/Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D")
-		arms_bone.global_position = viewmodel.get_node("Armature/Bone").global_position
+		#var arms_bone = viewmodel.get_node("arms/Sketchfab_model/PSX_First_Person_Arms_fbx/Object_2/RootNode/arms_armature/Object_5/Skeleton3D/BoneAttachment3D")
+		#arms_bone.global_position = viewmodel.get_node("Armature/Bone").global_position
 		#arms_bone.global_rotation = viewmodel.get_node("Armature/Bone").rotation - ARM_ANIM_ROTATION_OFFSET
 		
 

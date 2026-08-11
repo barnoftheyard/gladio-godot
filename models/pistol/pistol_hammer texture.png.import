@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu31nt0crr0nl"
-path.s3tc="res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"
+uid="uid://d2ihrqnjsd3wd"
+path.s3tc="res://.godot/imported/pistol_hammer texture.png-689dea353d19ac86d4ed104f77590358.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "44a5143146335e24b6f0a038f6de0154"
+}
 
 [deps]
 
-source_file="res://textures/editor/dotted.png"
-dest_files=["res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"]
+source_file="res://models/pistol/pistol_hammer texture.png"
+dest_files=["res://.godot/imported/pistol_hammer texture.png-689dea353d19ac86d4ed104f77590358.s3tc.ctex"]
 
 [params]
 

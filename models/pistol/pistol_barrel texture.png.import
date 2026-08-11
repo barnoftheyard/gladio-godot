@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu31nt0crr0nl"
-path.s3tc="res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"
+uid="uid://dp81j18qh5sys"
+path.s3tc="res://.godot/imported/pistol_barrel texture.png-2cd3b058915281b8a6ba283aa95b67ef.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "be3fe46ceddfcdb338ce11bff0b48748"
+}
 
 [deps]
 
-source_file="res://textures/editor/dotted.png"
-dest_files=["res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"]
+source_file="res://models/pistol/pistol_barrel texture.png"
+dest_files=["res://.godot/imported/pistol_barrel texture.png-2cd3b058915281b8a6ba283aa95b67ef.s3tc.ctex"]
 
 [params]
 

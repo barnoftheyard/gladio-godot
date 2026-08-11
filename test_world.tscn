@@ -3,7 +3,6 @@
 [ext_resource type="Material" uid="uid://dpllmvhj7glh2" path="res://textures/gray.tres" id="1_genfv"]
 [ext_resource type="Material" uid="uid://5gfynywsg41j" path="res://textures/orange.tres" id="2_exixc"]
 [ext_resource type="ArrayMesh" uid="uid://dmr3t7go1eqva" path="res://models/aud/ref1.obj" id="3_aldv4"]
-[ext_resource type="PackedScene" uid="uid://0vhinhkrgqpx" path="res://scenes/dust_2.tscn" id="5_lf0gk"]
 [ext_resource type="Script" uid="uid://c6f3elr45vaag" path="res://addons/smplscript/interpreter.gd" id="6_cnaw2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lf0gk"]
@@ -41,7 +40,6 @@ shadow_enabled = true
 
 [node name="terrain" type="CSGCombiner3D" parent="." unique_id=1991633689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -9)
-visible = false
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="terrain" unique_id=2076277725]
@@ -117,8 +115,6 @@ metadata/_custom_type_script = "uid://c6f3elr45vaag"
 [node name="MeshInstance3D" type="MeshInstance3D" parent="SmplscriptInterpreter2" unique_id=1088272599]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.3184385)
 mesh = SubResource("BoxMesh_lf0gk")
-
-[node name="Dust2" parent="." unique_id=2036558206 instance=ExtResource("5_lf0gk")]
 
 [node name="SmplscriptInterpreter3" type="Node3D" parent="." unique_id=1614529561]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.129648, 0.9042803, 0)

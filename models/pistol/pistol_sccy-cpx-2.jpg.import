@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu31nt0crr0nl"
-path.s3tc="res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"
+uid="uid://b1d5yt6s44ls"
+path.s3tc="res://.godot/imported/pistol_sccy-cpx-2.jpg-d9dda1ee6572ad1d52998053d557dc12.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "304de5a4dab8353abc834de8a3e6c3f2"
+}
 
 [deps]
 
-source_file="res://textures/editor/dotted.png"
-dest_files=["res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"]
+source_file="res://models/pistol/pistol_sccy-cpx-2.jpg"
+dest_files=["res://.godot/imported/pistol_sccy-cpx-2.jpg-d9dda1ee6572ad1d52998053d557dc12.s3tc.ctex"]
 
 [params]
 

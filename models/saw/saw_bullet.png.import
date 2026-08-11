@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu31nt0crr0nl"
-path.s3tc="res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"
+uid="uid://clm17r8osu4ty"
+path.s3tc="res://.godot/imported/saw_bullet.png-d67bf4220cd12960d42466827e242f76.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "2b06b0eee7521f34933e583331c80b2b"
+}
 
 [deps]
 
-source_file="res://textures/editor/dotted.png"
-dest_files=["res://.godot/imported/dotted.png-9230e2dee32768a82cf44d2015748c7c.s3tc.ctex"]
+source_file="res://models/saw/saw_bullet.png"
+dest_files=["res://.godot/imported/saw_bullet.png-d67bf4220cd12960d42466827e242f76.s3tc.ctex"]
 
 [params]
 

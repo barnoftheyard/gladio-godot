@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ccaj87oyqvxt5"]
+
+[ext_resource type="Texture2D" uid="uid://clm17r8osu4ty" path="res://models/saw/saw_bullet.png" id="1_jrhk5"]
+
+[resource]
+resource_name = "Bullet"
+cull_mode = 2
+albedo_texture = ExtResource("1_jrhk5")
+roughness = 0.5
+metadata/_gltf_primary_texture_coord = 0

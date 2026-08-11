@@ -1,7 +1,7 @@
 extends ResourceFormatLoader
 
 func _get_recognized_extensions():
-	return ["smpl"]
+	return ["smpl", "txt"]
 
 func _get_resource_type(path):
 	return "Script"

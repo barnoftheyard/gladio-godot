@@ -2,8 +2,31 @@
 
 [ext_resource type="Script" uid="uid://bd23xbvk0w2fd" path="res://scripts/Weapon.gd" id="1_tk8kd"]
 [ext_resource type="PackedScene" uid="uid://cvd7tqvvgoycy" path="res://models/smg/smg.glb" id="2_nryhr"]
-[ext_resource type="PackedScene" uid="uid://coujrvkdglup4" path="res://scenes/arms.tscn" id="3_anh8k"]
 [ext_resource type="AudioStream" uid="uid://c7l8rb5v4ngxh" path="res://sounds/lmg.mp3" id="3_kaanv"]
+[ext_resource type="PackedScene" uid="uid://cwleojutt4yer" path="res://models/saw/saw.glb" id="4_8fs1i"]
+[ext_resource type="PackedScene" uid="uid://ditbs5c87qi7s" path="res://models/pistol/pistol.glb" id="4_anpjy"]
+[ext_resource type="AudioStream" uid="uid://s74yj7n0fjqj" path="res://sounds/gauss2.wav" id="6_8fs1i"]
+[ext_resource type="Texture2D" uid="uid://bu31nt0crr0nl" path="res://textures/editor/dotted.png" id="7_ki372"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ye2cy"]
+angle_min = 225.00002
+angle_max = 225.00002
+direction = Vector3(0, 0, -1)
+spread = 1.837
+initial_velocity_max = 136.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pn8tg"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.9, 0.77580005, 0.27899998, 1)
+albedo_texture = ExtResource("7_ki372")
+billboard_mode = 1
+stencil_flags = 2
+stencil_outline_thickness = 0.563
+
+[sub_resource type="QuadMesh" id="QuadMesh_kmvbd"]
+material = SubResource("StandardMaterial3D_pn8tg")
+size = Vector2(0.25, 0.25)
 
 [node name="Weapon" type="Node3D" unique_id=71187924]
 script = ExtResource("1_tk8kd")
@@ -29,8 +52,12 @@ cull_mask = 1048570
 [node name="smg" parent="SubViewportContainer/SubViewport" unique_id=593447548 instance=ExtResource("2_nryhr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
 
-[node name="arms" parent="SubViewportContainer/SubViewport/smg" unique_id=1894086370 instance=ExtResource("3_anh8k")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.638521, -3.91618, 1.29766)
+[node name="pistol" parent="SubViewportContainer/SubViewport" unique_id=978233945 instance=ExtResource("4_anpjy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23515797, -0.75468874, -0.7117647)
+visible = false
+
+[node name="saw" parent="SubViewportContainer/SubViewport" unique_id=689153565 instance=ExtResource("4_8fs1i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65814054, -1.5290694)
 visible = false
 
 [node name="WeaponRay" type="RayCast3D" parent="." unique_id=869462007]
@@ -38,3 +65,17 @@ target_position = Vector3(0, 0, -2048)
 
 [node name="WeaponSound" type="AudioStreamPlayer3D" parent="." unique_id=311168532]
 stream = ExtResource("3_kaanv")
+
+[node name="SawSound" type="AudioStreamPlayer3D" parent="." unique_id=2019692294]
+stream = ExtResource("6_8fs1i")
+
+[node name="FireParticle" type="GPUParticles3D" parent="." unique_id=1556434168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15314656, -0.2486557, -1.168957)
+emitting = false
+amount = 10
+one_shot = true
+explosiveness = 0.85
+randomness = 0.74
+collision_base_size = 0.25
+process_material = SubResource("ParticleProcessMaterial_ye2cy")
+draw_pass_1 = SubResource("QuadMesh_kmvbd")

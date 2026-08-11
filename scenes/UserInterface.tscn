@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bbr8vsvckbpm6"]
+[gd_scene format=3 uid="uid://bbr8vsvckbpm6"]
 
 [ext_resource type="Theme" uid="uid://i8io85gcx1ir" path="res://theme.tres" id="1_4m6lg"]
-[ext_resource type="Script" path="res://scripts/UserInterface.gd" id="1_g1r2y"]
-[ext_resource type="Script" path="res://addons/fpc/debug.gd" id="2_j2w1a"]
+[ext_resource type="Script" uid="uid://cf2ohb20xbst1" path="res://scripts/UserInterface.gd" id="1_g1r2y"]
+[ext_resource type="Script" uid="uid://cdi635o52jhb8" path="res://addons/fpc/debug.gd" id="2_j2w1a"]
 [ext_resource type="Texture2D" uid="uid://dxa5j4ootnvop" path="res://textures/tccc.png" id="4_4d3cc"]
 
 [sub_resource type="Animation" id="Animation_22xpp"]
@@ -66,12 +66,12 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l62vd"]
 _data = {
-"RESET": SubResource("Animation_22xpp"),
-"console": SubResource("Animation_5wyje"),
-"fade": SubResource("Animation_i5h5i")
+&"RESET": SubResource("Animation_22xpp"),
+&"console": SubResource("Animation_5wyje"),
+&"fade": SubResource("Animation_i5h5i")
 }
 
-[node name="UserInterface" type="Control"]
+[node name="UserInterface" type="Control" unique_id=1960414395]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -81,7 +81,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_g1r2y")
 
-[node name="DebugPanel" type="PanelContainer" parent="."]
+[node name="DebugPanel" type="PanelContainer" parent="." unique_id=1216992402]
 visible = false
 layout_mode = 1
 anchors_preset = 10
@@ -91,26 +91,26 @@ grow_horizontal = 2
 theme = ExtResource("1_4m6lg")
 script = ExtResource("2_j2w1a")
 
-[node name="PlayerList" type="VBoxContainer" parent="DebugPanel"]
+[node name="PlayerList" type="VBoxContainer" parent="DebugPanel" unique_id=1617563354]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="DebugPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="DebugPanel" unique_id=1622313157]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="Label" type="Label" parent="DebugPanel/HBoxContainer"]
+[node name="Label" type="Label" parent="DebugPanel/HBoxContainer" unique_id=521305579]
 custom_minimum_size = Vector2(1024, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Player List"
 
-[node name="Button" type="Button" parent="DebugPanel/HBoxContainer"]
+[node name="Button" type="Button" parent="DebugPanel/HBoxContainer" unique_id=79011976]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Enter"
 
-[node name="ChatPanel" type="PanelContainer" parent="."]
+[node name="ChatPanel" type="PanelContainer" parent="." unique_id=181959117]
 visible = false
 layout_mode = 1
 anchors_preset = 2
@@ -121,18 +121,18 @@ offset_right = 583.0
 grow_vertical = 0
 theme = ExtResource("1_4m6lg")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ChatPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatPanel" unique_id=2068717306]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ChatPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="ChatPanel/VBoxContainer" unique_id=1691663897]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ChatPanel/VBoxContainer" unique_id=252994684]
 visible = false
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="LineEdit" type="LineEdit" parent="ChatPanel/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="ChatPanel/VBoxContainer/HBoxContainer" unique_id=636350696]
 custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
 placeholder_text = "Enter here"
@@ -140,11 +140,11 @@ max_length = 512
 flat = true
 caret_blink = true
 
-[node name="Timer" type="Timer" parent="ChatPanel"]
+[node name="Timer" type="Timer" parent="ChatPanel" unique_id=210173388]
 wait_time = 3.0
 one_shot = true
 
-[node name="Info" type="TextureRect" parent="."]
+[node name="Info" type="TextureRect" parent="." unique_id=1973730127]
 visible = false
 layout_mode = 0
 offset_right = 40.0
@@ -152,29 +152,29 @@ offset_bottom = 40.0
 texture = ExtResource("4_4d3cc")
 stretch_mode = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Info"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Info" unique_id=110850565]
 layout_mode = 0
 offset_left = 143.0
 offset_top = 4.0
 offset_right = 219.0
 offset_bottom = 87.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Info/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Info/VBoxContainer" unique_id=1075533757]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer" unique_id=215207715]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "BP:"
 
-[node name="bp" type="Label" parent="Info/VBoxContainer/HBoxContainer"]
+[node name="bp" type="Label" parent="Info/VBoxContainer/HBoxContainer" unique_id=440090985]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "126
 82"
 horizontal_alignment = 1
 
-[node name="line" type="Label" parent="Info/VBoxContainer/HBoxContainer/bp"]
+[node name="line" type="Label" parent="Info/VBoxContainer/HBoxContainer/bp" unique_id=1442411668]
 layout_mode = 0
 offset_top = 8.0
 offset_right = 40.0
@@ -183,30 +183,30 @@ text = "___"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Info/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Info/VBoxContainer" unique_id=209328001]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="Info/VBoxContainer/HBoxContainer2" unique_id=546541010]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "HR:"
 
-[node name="hr" type="Label" parent="Info/VBoxContainer/HBoxContainer2"]
+[node name="hr" type="Label" parent="Info/VBoxContainer/HBoxContainer2" unique_id=619971842]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "70"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer" unique_id=1700504811]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Info/VBoxContainer/VBoxContainer" unique_id=1926349253]
 layout_mode = 2
 
-[node name="Timer" type="Timer" parent="Info"]
+[node name="Timer" type="Timer" parent="Info" unique_id=586401135]
 wait_time = 5.0
 autostart = true
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=245305789]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -216,7 +216,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.2, 0.2, 0.2, 0)
 
-[node name="VSplitContainer" type="VSplitContainer" parent="ColorRect"]
+[node name="VSplitContainer" type="VSplitContainer" parent="ColorRect" unique_id=664771862]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -230,28 +230,28 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuButton" type="MenuButton" parent="ColorRect/VSplitContainer"]
+[node name="MenuButton" type="MenuButton" parent="ColorRect/VSplitContainer" unique_id=591398521]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "MENU"
 item_count = 2
 popup/item_0/text = "YES"
+popup/item_0/id = 0
 popup/item_1/text = "NO"
 popup/item_1/id = 1
 
-[node name="QuitButton" type="MenuButton" parent="ColorRect/VSplitContainer"]
+[node name="QuitButton" type="MenuButton" parent="ColorRect/VSplitContainer" unique_id=1353887558]
 layout_mode = 2
 theme = ExtResource("1_4m6lg")
 text = "QUIT"
 item_count = 2
 popup/item_0/text = "YES"
+popup/item_0/id = 0
 popup/item_1/text = "NO"
 popup/item_1/id = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_l62vd")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1674445420]
+libraries/ = SubResource("AnimationLibrary_l62vd")
 
 [connection signal="text_submitted" from="ChatPanel/VBoxContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="timeout" from="ChatPanel/Timer" to="." method="_on_timer_timeout"]

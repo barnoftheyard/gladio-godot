@@ -19,10 +19,6 @@ run/main_scene="res://scenes/Root.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
-[display]
-
-window/size/mode=2
-
 [dotnet]
 
 project/assembly_name="Gladio"

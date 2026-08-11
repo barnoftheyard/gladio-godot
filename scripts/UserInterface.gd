@@ -63,6 +63,7 @@ func _on_id_pressed2(id):
 	if id == 0: get_tree().quit()
 
 
+#send chat messages
 @rpc("any_peer", "call_local", "reliable") 
 func send_msg(new_text):
 	if $ChatPanel/VBoxContainer/Label.text != get_node("/root/Root").chat_text:
