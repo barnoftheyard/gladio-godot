@@ -524,6 +524,7 @@ JUMP_ANIMATION = NodePath("Head/JumpAnimation")
 CROUCH_ANIMATION = NodePath("Head/CrouchAnimation")
 COLLISION_MESH = NodePath("Collision")
 RETICLE = NodePath("Reticle")
+motion_smoothing = false
 crouch_enabled = false
 
 [node name="Collision" type="CollisionShape3D" parent="." unique_id=818847784]
@@ -545,7 +546,7 @@ transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.
 cull_mask = 1048569
 
 [node name="HeadMesh" type="MeshInstance3D" parent="Head/Camera" unique_id=1750713182]
-transform = Transform3D(1, 0, 0, 0, 0.99999833, 0.0017453288, 0, -0.0017453281, 0.9999987, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.9999983, 0.0017453288, 0, -0.001745328, 0.9999987, 0, 0, 0)
 mesh = SubResource("SphereMesh_ye2cy")
 skeleton = NodePath("../../../BodyMesh")
 

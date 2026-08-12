@@ -334,27 +334,28 @@ func footsteps(moving):
 @rpc("any_peer", "call_local", "reliable")
 func damage(amount, killer_id):
 	
-	if health <= 0 and not is_dead:
+	if not is_dead:
 		
-		#global function calls to all players
-		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
-		get_node("/root/Root").players[killer_id]["kills"] += 1
-		
-		print(get_node("/root/Root").players[get_multiplayer_authority()]["name"] + 
-		" got fragged by " + get_node("/root/Root").players[killer_id]["name"])
-		
-		is_dead = true
-		$DamageAnimation.play("death")
-		death_stuff.rpc_id(get_multiplayer_authority())
-		
-		
-	elif health > 0 and not is_dead:
 		health -= amount
 	
 		$DamageSound.pitch_scale = randf_range(0.5, 1.25)
 		$DamageSound.play()
 	
 		$DamageAnimation.play("damage")
+	
+		if health <= 0:
+			
+			#global function calls to all players
+			get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
+			get_node("/root/Root").players[killer_id]["kills"] += 1
+			
+			print(get_node("/root/Root").players[get_multiplayer_authority()]["name"] + 
+			" got fragged by " + get_node("/root/Root").players[killer_id]["name"])
+			
+			is_dead = true
+			$DamageAnimation.play("death")
+			death_stuff.rpc_id(get_multiplayer_authority())
+		
 
 #local function call to our player
 @rpc("any_peer", "call_local", "reliable")

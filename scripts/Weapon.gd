@@ -18,8 +18,8 @@ var weapons = {
 	"pistol": {"max_mag": 12, "max_ammo": 144, "mag": 12, "ammo": 60, "damage": 25,
 	"rate": 0.2, "initial_position": Vector3(0.235, -0.755, -0.712)},
 	
-	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 200,
-	"rate": 2, "initial_position": Vector3(0, -0.658, -1.529)}
+	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 999,
+	"rate": 1.0, "initial_position": Vector3(0, -0.658, -1.529)}
 }
 
 @export var current_weapon = "smg"
@@ -39,7 +39,8 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and is_multiplayer_authority() and !immobile:
 		mouse_accel.x = -event.relative.x * 0.0075
 		mouse_accel.y = -event.relative.y * 0.0075
-		
+	
+	#weapon switching logic
 	if event is InputEventMouseButton and event.is_pressed() and is_multiplayer_authority() and !immobile:
 		viewmodel.hide()
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -66,7 +67,7 @@ func _input(event):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	#if not host remove viewmodels
+	#if not our player remove viewmodels
 	if !is_multiplayer_authority():
 		$SubViewportContainer.queue_free()
 	else:
@@ -110,6 +111,7 @@ func shoot_weapon(collision):
 		if current_weapon == "saw":
 			$SawSound.play()
 			$FireParticle.emitting = true
+			get_parent().get_parent().velocity += global_transform.basis.z * 10
 		else:
 			$WeaponSound.play()
 		
@@ -117,7 +119,7 @@ func shoot_weapon(collision):
 		
 		if collision is RigidBody3D:
 			#apply a force onto a physics object to make it get knocked back
-			collision.apply_impulse(-$WeaponRay.get_collision_normal() * clamp(weapons[current_weapon
+			collision.apply_impulse(-global_transform.basis.z * clamp(weapons[current_weapon
 			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_point())	#apply push force
 			
 			#create a bullet hole decal
@@ -151,7 +153,7 @@ func shoot_weapon(collision):
 			
 		elif collision is CharacterBody3D:
 			#print(collision.name)
-			collision.damage.rpc(15, get_multiplayer_authority())
+			collision.damage.rpc(weapons[current_weapon]["damage"], get_multiplayer_authority())
 			
 	#if we run out of bullets in our mag
 	elif weapons[current_weapon]["mag"] <= 0:

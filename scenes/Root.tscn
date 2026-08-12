@@ -112,12 +112,14 @@ custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
 [node name="SettingsButton" type="Button" parent="Title/PanelContainer/VBoxContainer/VBoxContainer2" unique_id=2132095376]
+visible = false
 layout_mode = 2
 theme = ExtResource("3_bppuo")
 theme_override_font_sizes/font_size = 48
 text = "SETTINGS"
 
 [node name="CheckBox" type="CheckBox" parent="Title/PanelContainer/VBoxContainer" unique_id=65742511]
+visible = false
 layout_mode = 2
 text = "UPNP"
 

@@ -19,9 +19,12 @@ var player_info = {
 func _ready():
 	print("Welcome to Project Gladio!")
 	
+	#connect the signals
 	multiplayer.peer_connected.connect(_add_player)
 	multiplayer.peer_disconnected.connect(_remove_player)
 	multiplayer.connected_to_server.connect(_on_connected_ok)
+	multiplayer.connection_failed.connect(_on_connected_fail)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
 	host_port_entry.text = str(4764)
 	join_port_entry.text = str(4764)
@@ -55,9 +58,13 @@ func _unhandled_input(event):
 #hosts the a game for the server host. Updating player variables over the network is handled by
 #the multiplayerSpawner
 func _on_host_pressed():
-	$Title.hide()
 	
-	peer.create_server(int(host_port_entry.text))
+	var return_code = peer.create_server(int(host_port_entry.text))
+	if return_code != OK:
+		print("Server creation error!")
+		return
+		
+	$Title.hide()
 	
 	multiplayer.multiplayer_peer = peer
 	
@@ -110,10 +117,10 @@ func _on_connected_ok():
 #the function for the signal that removes the player
 func _remove_player(id):
 	var player = $test_world.get_node_or_null(str(id))
-	if player:
+	if player != null:
 		player.queue_free()
-		players.erase(id)
 		
+	players.erase(id)
 	print("Player " + str(id) + " has disconnected.")
 	
 func upnp_setup():
@@ -131,10 +138,19 @@ func upnp_setup():
 func _on_settings_button_pressed():
 	$Title/Settings.show()
 
+func remove_multiplayer_peer():
+	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+	players.clear()
+	get_tree().change_scene_to_file("res://scenes/Root.tscn")
+	
+func _on_connected_fail():
+	print("Failed connection!")
+	remove_multiplayer_peer()
+	
+func _on_server_disconnected():
+	print("Host server disconnected!")
+	remove_multiplayer_peer()
 
-func _on_popup_menu_popup_hide():
-	pass # Replace with function body.
-
-
+#please keep this
 func _on_name_line_edit_text_changed(new_text: String) -> void:
 	player_info["name"] = new_text
