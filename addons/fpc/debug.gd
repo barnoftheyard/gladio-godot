@@ -13,5 +13,11 @@ func _process(delta):
 	for y in current_player_list.players.keys():
 		var label = Label.new()
 		var x = current_player_list.players[y]
+		
+			
 		label.text = "(" + x["name"] + ")" + "\t Kills: " + str(x["kills"]) + "\t Deaths: " + str(x["deaths"])
+		
+		if y == 1:
+			label.text += " (You)"
+			
 		$PlayerList.add_child(label)

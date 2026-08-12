@@ -5,6 +5,7 @@ extends Node3D
 
 @onready var viewmodel = get_node("SubViewportContainer/SubViewport/" + current_weapon)
 @onready var initial_position = viewmodel.position
+@onready var immobile = get_parent().get_parent().immobile 
 
 var timer = 0
 var mouse_accel = Vector3.ZERO
@@ -17,7 +18,7 @@ var weapons = {
 	"pistol": {"max_mag": 12, "max_ammo": 144, "mag": 12, "ammo": 60, "damage": 25,
 	"rate": 0.2, "initial_position": Vector3(0.235, -0.755, -0.712)},
 	
-	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 100,
+	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 200,
 	"rate": 2, "initial_position": Vector3(0, -0.658, -1.529)}
 }
 
@@ -35,11 +36,11 @@ func set_all_meshes_layer_mask(node, value, boolean):
 			n.set_layer_mask_value(value, boolean)
 			
 func _input(event):
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and is_multiplayer_authority() and !immobile:
 		mouse_accel.x = -event.relative.x * 0.0075
 		mouse_accel.y = -event.relative.y * 0.0075
 		
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and is_multiplayer_authority() and !immobile:
 		viewmodel.hide()
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			current_weapon_index += 1
@@ -169,7 +170,9 @@ func reload_weapon():
 		
 
 func _physics_process(delta):
-	if is_multiplayer_authority():
+	immobile = get_parent().get_parent().immobile
+	
+	if is_multiplayer_authority() and !immobile:
 		
 		if timer <= 0:
 			if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:

@@ -56,6 +56,7 @@ extends CharacterBody3D
 @export var continuous_jumping : bool = true
 @export var view_bobbing : bool = true
 @export var jump_animation : bool = true
+@export var gravity_on : bool = true
 @export var health : int = 100
 
 # Member variables
@@ -65,6 +66,7 @@ var current_speed : float = 0.0
 var state : String = "normal"
 var low_ceiling : bool = false # This is for when the cieling is too low and the player needs to crouch.
 var was_on_floor : bool = true
+var is_dead : bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes
 var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity") # Don't set this as a const, see the gravity section in _physics_process
@@ -109,7 +111,7 @@ func _physics_process(delta):
 	
 	# Gravity
 	#gravity = ProjectSettings.get_setting("physics/3d/default_gravity") # If the gravity changes during your game, uncomment this code
-	if not is_on_floor():
+	if not is_on_floor() and gravity_on:
 		velocity.y -= gravity * delta
 	
 	handle_jumping()
@@ -133,7 +135,8 @@ func _physics_process(delta):
 		$Head/Weapon/SubViewportContainer/SubViewport/WeaponViewmodel.transform = $Head/Camera.transform
 	
 	#code for the character animation
-	$BodyMesh/smg.rotation = $Head/Camera/HeadMesh.rotation
+	$BodyMesh.rotation.y = $Head.rotation.y
+	$BodyMesh/smg.rotation.x = $Head.rotation.x
 	
 	#match player model rotation and also rotate
 	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
@@ -306,6 +309,7 @@ func _process(_delta):
 	#clamp camera rotation to 90 degrees
 	HEAD.rotation.x = clamp(HEAD.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	
+	
 	#controller support
 	if is_multiplayer_authority():
 		var controller_view_rotation = Input.get_vector("look_left", "look_right", "look_up", "look_down")
@@ -329,40 +333,64 @@ func footsteps(moving):
 
 @rpc("any_peer", "call_local", "reliable")
 func damage(amount, killer_id):
-	health -= amount
 	
-	$DamageSound.pitch_scale = randf_range(0.5, 1.25)
-	$DamageSound.play()
-	
-	$DamageAnimation.play("damage")
-	
-	if health <= 0:
+	if health <= 0 and not is_dead:
+		
+		#global function calls to all players
 		get_node("/root/Root").players[get_multiplayer_authority()]["deaths"] += 1
 		get_node("/root/Root").players[killer_id]["kills"] += 1
 		
 		print(get_node("/root/Root").players[get_multiplayer_authority()]["name"] + 
 		" got fragged by " + get_node("/root/Root").players[killer_id]["name"])
 		
-		$Collision.disabled = true
-		immobile = true
+		is_dead = true
 		$DamageAnimation.play("death")
-		$DeathTimer.start()
-		$DeathLabel.show()
-		$Reticle.hide()
+		death_stuff.rpc_id(get_multiplayer_authority())
+		
+		
+	elif health > 0 and not is_dead:
+		health -= amount
+	
+		$DamageSound.pitch_scale = randf_range(0.5, 1.25)
+		$DamageSound.play()
+	
+		$DamageAnimation.play("damage")
 
+#local function call to our player
+@rpc("any_peer", "call_local", "reliable")
+func death_stuff():
+	$DeathTimer.start()
+	
+	$Collision.set_deferred("disabled", true)
+	
+	immobile = true
+	gravity_on = false
+	
+	$DeathLabel.show()
+	$Reticle.hide()
+
+#local function call to our player
+@rpc("any_peer", "call_local", "reliable")
+func respawn_stuff():
+	$Collision.set_deferred("disabled", false)
+	
+	health = 100
+	position = Vector3.ZERO
+	immobile = false
+	gravity_on = true
+	
+	$DeathLabel.hide()
+	$Reticle.show()
+
+func _on_death_timer_timeout() -> void:
+	respawn_stuff.rpc_id(get_multiplayer_authority())
+	is_dead = false
+	
+	$DamageAnimation.play("RESET")
+	
 func _on_footsteps_timer_timeout():
 	#adjust the timing of the steps to our current player speed
 	$Footsteps/FootstepsTimer.wait_time = (2 / current_speed)
 	#get all sounds and play the sounds randomly
 	var sounds = $Footsteps/FootstepsSounds.get_children()
 	sounds[randi() % sounds.size()].play()
-
-
-func _on_death_timer_timeout() -> void:
-	health = 100
-	position = Vector3.ZERO
-	$Collision.disabled = false
-	immobile = false
-	$DamageAnimation.play("RESET")
-	$DeathLabel.hide()
-	$Reticle.show()

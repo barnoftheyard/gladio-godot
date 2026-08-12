@@ -13,7 +13,9 @@ func _process(_delta):
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$ColorRect.hide()
-			get_parent().immobile = false
+			
+			if not get_parent().is_dead:
+				get_parent().immobile = false
 			
 	if Input.is_action_just_pressed("inventory") and is_multiplayer_authority() and \
 	!$ColorRect.visible and !$ChatPanel.visible:
@@ -25,7 +27,9 @@ func _process(_delta):
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$Info.hide()
-			get_parent().immobile = false
+			
+			if not get_parent().is_dead:
+				get_parent().immobile = false
 			
 	if Input.is_action_just_pressed("info") and is_multiplayer_authority() and \
 	!$ColorRect.visible and !$ChatPanel/VBoxContainer/HBoxContainer/LineEdit.has_focus():
@@ -37,7 +41,9 @@ func _process(_delta):
 		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			$DebugPanel.hide()
-			get_parent().immobile = false
+			
+			if not get_parent().is_dead:
+				get_parent().immobile = false
 			
 	if Input.is_action_just_pressed("chat") and !$ChatPanel/VBoxContainer/HBoxContainer.is_visible_in_tree() \
 	and is_multiplayer_authority() and !$ColorRect.visible and !$Info.visible:
@@ -87,7 +93,9 @@ func _on_line_edit_text_submitted(new_text):
 		
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	$ChatPanel/VBoxContainer/HBoxContainer.hide()
-	get_parent().immobile = false
+	
+	if not get_parent().is_dead:
+		get_parent().immobile = false
 	
 	$ChatPanel/VBoxContainer/HBoxContainer/LineEdit.text = ""
 
