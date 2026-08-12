@@ -100,6 +100,8 @@ func _ready():
 		$BodyMesh.hide()
 		$Head/Camera/HeadMesh.hide()
 		
+		$PlayerModel.hide()
+		
 		
 	#if this player node is not the main player hide the GUI
 	else:
@@ -137,6 +139,9 @@ func _physics_process(delta):
 	#code for the character animation
 	$BodyMesh.rotation.y = $Head.rotation.y
 	$BodyMesh/smg.rotation.x = $Head.rotation.x
+	
+	#flip the playermodel by a whole radian
+	$PlayerModel.rotation = $BodyMesh.global_rotation + Vector3(0, PI, 0)
 	
 	#match player model rotation and also rotate
 	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180

@@ -22,8 +22,14 @@ extends Control
 @export var line_length : int = 10
 @export var line_distance : int = 5
 @export_enum("None", "Round") var cap_mode : int = 0
+@export var draw_circle : bool = true
 
 @onready var health = 0
+
+func _ready() -> void:
+	if !draw_circle:
+		$SubViewportContainer/SubViewport/CSGCombiner3D.hide()
+		
 
 func _physics_process(_delta):
 	$dot.position = self.size / 2

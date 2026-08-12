@@ -30,6 +30,7 @@ shadow_color = Color(0.152941, 0.152941, 0.152941, 0.721569)
 shadow_offset = Vector2(2, 2)
 
 [node name="Reticle" type="Control" unique_id=1590158360 node_paths=PackedStringArray("reticle_lines")]
+modulate = Color(1, 1, 1, 0.8745098)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,6 +44,7 @@ script = ExtResource("1_rimeb")
 reticle_lines = [NodePath("top"), NodePath("left"), NodePath("right"), NodePath("bottom")]
 dot_color = Color(0.980392, 0.843137, 0, 0.862745)
 line_color = Color(0.980392, 0.843137, 0, 0.862745)
+draw_circle = false
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1145830953]
 layout_mode = 1
@@ -137,6 +139,7 @@ height = 0.002
 sides = 32
 
 [node name="Compass" type="Node3D" parent="SubViewportContainer/SubViewport" unique_id=1445906453]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13288927, 0)
 
 [node name="N" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Compass" unique_id=1221819515]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, -1)
@@ -230,7 +233,7 @@ sides = 32
 material = ExtResource("2_x26x2")
 
 [node name="CSGCombiner3D2" type="CSGCombiner3D" parent="SubViewportContainer/SubViewport" unique_id=368949205]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.577, 0.7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6068188, 0.7)
 layers = 4
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="SubViewportContainer/SubViewport/CSGCombiner3D2" unique_id=2089286442]

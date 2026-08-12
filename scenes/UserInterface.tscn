@@ -86,7 +86,7 @@ visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 36.0
+offset_bottom = 32.0
 grow_horizontal = 2
 theme = ExtResource("1_4m6lg")
 script = ExtResource("2_j2w1a")
@@ -104,11 +104,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Player List"
-
-[node name="Button" type="Button" parent="DebugPanel/HBoxContainer" unique_id=79011976]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Enter"
 
 [node name="ChatPanel" type="PanelContainer" parent="." unique_id=181959117]
 visible = false

@@ -7,6 +7,9 @@ var peer = ENetMultiplayerPeer.new()
 @onready var join_port_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/PortLineEdit
 @onready var join_ip_entry = $Title/PanelContainer/VBoxContainer/VBoxContainer2/HBoxContainer/IPLineEdit
 
+@export var port = 6745
+@export var ip = "localhost"
+
 @export var players = {}
 var player_info = {
 	"name": "Player", 
@@ -26,9 +29,9 @@ func _ready():
 	multiplayer.connection_failed.connect(_on_connected_fail)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
-	host_port_entry.text = str(4764)
-	join_port_entry.text = str(4764)
-	join_ip_entry.text = "localhost"
+	host_port_entry.text = str(port)
+	join_port_entry.text = str(port)
+	join_ip_entry.text = str(ip)
 	#set the multiplayer_peer to null if we had the peer previous set to something
 	#I.E if we disconnected from a server previously
 	multiplayer.multiplayer_peer = null
@@ -40,12 +43,14 @@ func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.is_pressed() and !toggle:
 			match event.keycode:
+				#fullscreen toggle
 				KEY_F11:
 					toggle = true
 					if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED:
 						DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 					else:
 						DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+				#screenshot
 				KEY_F12:
 					toggle = true
 					var _time = Time.get_datetime_string_from_system()
@@ -60,6 +65,7 @@ func _unhandled_input(event):
 func _on_host_pressed():
 	
 	var return_code = peer.create_server(int(host_port_entry.text))
+	#if unable to create server, then exit out of function
 	if return_code != OK:
 		print("Server creation error!")
 		return
