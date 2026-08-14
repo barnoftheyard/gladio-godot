@@ -3,7 +3,7 @@ extends Node3D
 @export var sway = 3
 @export var create_deformation = false
 
-@onready var viewmodel = get_node("SubViewportContainer/SubViewport/" + current_weapon)
+@onready var viewmodel = get_node("SubViewportContainer/SubViewport/WeaponViewmodel/" + current_weapon)
 @onready var initial_position = viewmodel.position
 @onready var immobile = get_parent().get_parent().immobile 
 
@@ -56,7 +56,7 @@ func _input(event):
 			current_weapon = weapons.keys()[current_weapon_index]
 			
 		#update our variables
-		viewmodel = get_node("SubViewportContainer/SubViewport/" + current_weapon)
+		viewmodel = get_node("SubViewportContainer/SubViewport/WeaponViewmodel/" + current_weapon)
 		viewmodel.show()
 		#initial_position = viewmodel.position
 		
@@ -71,16 +71,14 @@ func _ready():
 	if !is_multiplayer_authority():
 		$SubViewportContainer.queue_free()
 	else:
-		for x in $SubViewportContainer/SubViewport.get_children():
-			#skip WeaponViewmodel
-			if x is not Camera3D:
-				#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
-				set_all_meshes_layer_mask(x, 1, false)
-				set_all_meshes_layer_mask(x, 2, true)
-				#connect the animation players of the viewmodel models with animation finished so that
-				#reloading works
-				x.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
-				
+		for x in $SubViewportContainer/SubViewport/WeaponViewmodel.get_children():
+			#turn off seeing layer 1 (the world geometry layer) and turn on layer 2 (the viewmodel layer)
+			set_all_meshes_layer_mask(x, 1, false)
+			set_all_meshes_layer_mask(x, 2, true)
+			#connect the animation players of the viewmodel models with animation finished so that
+			#reloading works
+			x.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
+			
 		
 		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 1, false)
 		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 2, true)
@@ -173,6 +171,8 @@ func reload_weapon():
 
 func _physics_process(delta):
 	immobile = get_parent().get_parent().immobile
+	
+	$SubViewportContainer/SubViewport/WeaponViewmodel.transform = get_parent().get_node("Camera").global_transform
 	
 	if is_multiplayer_authority() and !immobile:
 		

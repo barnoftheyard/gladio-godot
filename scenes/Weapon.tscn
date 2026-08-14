@@ -49,14 +49,14 @@ render_target_update_mode = 4
 [node name="WeaponViewmodel" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=572840936]
 cull_mask = 1048570
 
-[node name="smg" parent="SubViewportContainer/SubViewport" unique_id=593447548 instance=ExtResource("2_nryhr")]
+[node name="smg" parent="SubViewportContainer/SubViewport/WeaponViewmodel" unique_id=593447548 instance=ExtResource("2_nryhr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.5, -1)
 
-[node name="pistol" parent="SubViewportContainer/SubViewport" unique_id=978233945 instance=ExtResource("4_anpjy")]
+[node name="pistol" parent="SubViewportContainer/SubViewport/WeaponViewmodel" unique_id=978233945 instance=ExtResource("4_anpjy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23515797, -0.75468874, -0.7117647)
 visible = false
 
-[node name="saw" parent="SubViewportContainer/SubViewport" unique_id=689153565 instance=ExtResource("4_8fs1i")]
+[node name="saw" parent="SubViewportContainer/SubViewport/WeaponViewmodel" unique_id=689153565 instance=ExtResource("4_8fs1i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.65814054, -1.5290694)
 visible = false
 

@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://djcxodeoi5b1e" path="res://models/heads/head.png" id="4_irmqu"]
 [ext_resource type="PackedScene" uid="uid://3mij3cjhkwsm" path="res://addons/fpc/reticles/reticle_1.tscn" id="5_lek5e"]
 [ext_resource type="AudioStream" uid="uid://qh20r4d4ey4h" path="res://sounds/bart_bash_ow_sfx.mp3" id="9_0dpix"]
-[ext_resource type="AudioStream" uid="uid://6pose22ox53c" path="res://sounds/footsteps/footstep_snow_000.ogg" id="9_irmqu"]
-[ext_resource type="AudioStream" uid="uid://dwqhub3lux1x6" path="res://sounds/footsteps/footstep_snow_001.ogg" id="10_7eonc"]
+[ext_resource type="AudioStream" uid="uid://bcugth0thhkp0" path="res://sounds/footsteps/footstep_concrete_000.ogg" id="9_irmqu"]
+[ext_resource type="AudioStream" uid="uid://yjxxakb1ds0k" path="res://sounds/footsteps/footstep_concrete_001.ogg" id="10_7eonc"]
 [ext_resource type="PackedScene" uid="uid://cp6bev4la0723" path="res://models/kenney/player_model.tscn" id="11_irmqu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uy03j"]
@@ -551,7 +551,7 @@ transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.
 cull_mask = 1048569
 
 [node name="HeadMesh" type="MeshInstance3D" parent="Head/Camera" unique_id=1750713182]
-transform = Transform3D(1, 0, 0, 0, 0.9999978, 0.0017453288, 0, -0.0017453271, 0.9999987, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.9999977, 0.0017453288, 0, -0.0017453269, 0.9999987, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_ye2cy")
 skeleton = NodePath("../../../BodyMesh")
@@ -589,9 +589,11 @@ one_shot = true
 
 [node name="step0" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds" unique_id=972694937]
 stream = ExtResource("9_irmqu")
+max_db = 1.0
 
 [node name="step1" type="AudioStreamPlayer3D" parent="Footsteps/FootstepsSounds" unique_id=690632331]
 stream = ExtResource("10_7eonc")
+max_db = 1.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1436005100]
 replication_config = SubResource("SceneReplicationConfig_ltoef")
