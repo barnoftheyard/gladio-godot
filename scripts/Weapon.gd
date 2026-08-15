@@ -10,6 +10,8 @@ extends Node3D
 var timer = 0
 var mouse_accel = Vector3.ZERO
 
+const MOUSE_DELTA = 0.0075
+
 #dictionary of weapons
 var weapons = {
 	"smg": {"max_mag": 30, "max_ammo": 240, "mag": 30, "ammo": 30, "damage": 15,
@@ -23,6 +25,7 @@ var weapons = {
 }
 
 @export var current_weapon = "smg"
+
 var current_weapon_index = 0
 var current_weapon_mag = weapons[current_weapon]["mag"]
 var current_weapon_ammo = weapons[current_weapon]["ammo"]
@@ -37,8 +40,8 @@ func set_all_meshes_layer_mask(node, value, boolean):
 			
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and is_multiplayer_authority() and !immobile:
-		mouse_accel.x = -event.relative.x * 0.0075
-		mouse_accel.y = -event.relative.y * 0.0075
+		mouse_accel.x = -event.relative.x * MOUSE_DELTA
+		mouse_accel.y = -event.relative.y * MOUSE_DELTA
 	
 	#weapon switching logic
 	if event is InputEventMouseButton and event.is_pressed() and is_multiplayer_authority() and !immobile:
@@ -89,7 +92,8 @@ func create_bullet_decal(object, decal_position, time):
 	var decal = Decal.new()
 	decal.size = Vector3(0.2, 0.2, 0.2)
 	
-	decal.texture_albedo = load("res://textures/editor/bullseye.png")
+	decal.texture_albedo = load("res://textures/editor/dotted.png")
+	decal.modulate = Color(0.2, 0.2, 0.2)
 	
 	object.add_child(decal)
 	decal.global_position = decal_position
@@ -99,6 +103,7 @@ func create_bullet_decal(object, decal_position, time):
 		
 func shoot_weapon(collision):
 	
+	#remove one bullet from mag
 	if weapons[current_weapon]["mag"] > 0:
 		weapons[current_weapon]["mag"] -= 1
 		
@@ -118,7 +123,7 @@ func shoot_weapon(collision):
 		if collision is RigidBody3D:
 			#apply a force onto a physics object to make it get knocked back
 			collision.apply_impulse(-global_transform.basis.z * clamp(weapons[current_weapon
-			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_point())	#apply push force
+			]["damage"] / collision.mass, 1, 10), $WeaponRay.get_collision_normal())	#apply push force
 			
 			#create a bullet hole decal
 			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
@@ -176,6 +181,7 @@ func _physics_process(delta):
 	
 	if is_multiplayer_authority() and !immobile:
 		
+		#timer is the delay between shots
 		if timer <= 0:
 			if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 				if Input.is_action_pressed("fire"):
@@ -187,10 +193,10 @@ func _physics_process(delta):
 		else:
 			timer -= delta
 		
-		#transitional sway
+		#transitional sway of the view model
 		viewmodel.position = viewmodel.position.lerp(mouse_accel + weapons[current_weapon]["initial_position"], sway * delta)
 		
-		#rotational sway
+		#rotational sway of the view model
 		viewmodel.rotation.y = lerp_angle(viewmodel.rotation.y, mouse_accel.x, sway * delta)
 		viewmodel.rotation.x = lerp_angle(viewmodel.rotation.x, mouse_accel.y, sway * delta)
 		

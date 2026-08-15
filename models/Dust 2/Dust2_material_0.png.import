@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://32dfxkjmk7rv"
-path.s3tc="res://.godot/imported/Dust2_material_0.png-f59ec8c69bfc10caf1093c36119a0b4d.s3tc.ctex"
+path.s3tc="res://.godot/imported/Dust2_material_0.png-07980f2b71ef19e51f1aa9c411f00735.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/Dust2_material_0.png"
-dest_files=["res://.godot/imported/Dust2_material_0.png-f59ec8c69bfc10caf1093c36119a0b4d.s3tc.ctex"]
+source_file="res://models/Dust 2/Dust2_material_0.png"
+dest_files=["res://.godot/imported/Dust2_material_0.png-07980f2b71ef19e51f1aa9c411f00735.s3tc.ctex"]
 
 [params]
 

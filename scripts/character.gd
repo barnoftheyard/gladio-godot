@@ -157,7 +157,7 @@ func _physics_process(delta):
 		#this pushes physics objects
 		if collision.get_collider() is RigidBody3D:
 			collision.get_collider().apply_central_impulse(-collision.get_normal() * 
-			collision.get_collider().mass)	#apply push force
+			sqrt(collision.get_collider().mass))	#apply push force
 	
 	#jump animation handling
 	if jump_animation:

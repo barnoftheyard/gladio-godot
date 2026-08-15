@@ -551,7 +551,7 @@ transform = Transform3D(1, 0, 0, 0, 0.99939096, -0.034899514, 0, 0.034899514, 0.
 cull_mask = 1048569
 
 [node name="HeadMesh" type="MeshInstance3D" parent="Head/Camera" unique_id=1750713182]
-transform = Transform3D(1, 0, 0, 0, 0.9999977, 0.0017453288, 0, -0.0017453269, 0.9999987, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.99999756, 0.0017453288, 0, -0.0017453268, 0.9999987, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_ye2cy")
 skeleton = NodePath("../../../BodyMesh")
