@@ -117,6 +117,7 @@ func shoot_weapon(collision):
 			get_parent().get_parent().velocity += global_transform.basis.z * 10
 		else:
 			$WeaponSound.play()
+			$FireParticle.emitting = true
 		
 		timer = weapons[current_weapon]["rate"]
 		
@@ -177,9 +178,8 @@ func reload_weapon():
 func _physics_process(delta):
 	immobile = get_parent().get_parent().immobile
 	
-	$SubViewportContainer/SubViewport/WeaponViewmodel.transform = get_parent().get_node("Camera").global_transform
-	
 	if is_multiplayer_authority() and !immobile:
+		$SubViewportContainer/SubViewport/WeaponViewmodel.transform = get_parent().get_node("Camera").global_transform
 		
 		#timer is the delay between shots
 		if timer <= 0:

@@ -9,6 +9,7 @@ var peer = ENetMultiplayerPeer.new()
 
 @export var port = 6745
 @export var ip = "localhost"
+@export var tick_rate = 60.0
 
 @export var players = {}
 var player_info = {

@@ -9,10 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bu31nt0crr0nl" path="res://textures/editor/dotted.png" id="7_ki372"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ye2cy"]
-angle_min = 225.00002
-angle_max = 225.00002
 direction = Vector3(0, 0, -1)
-spread = 1.837
+spread = 10.0
 initial_velocity_max = 136.25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pn8tg"]
@@ -26,7 +24,7 @@ stencil_outline_thickness = 0.563
 
 [sub_resource type="QuadMesh" id="QuadMesh_kmvbd"]
 material = SubResource("StandardMaterial3D_pn8tg")
-size = Vector2(0.25, 0.25)
+size = Vector2(0.1, 0.1)
 
 [node name="Weapon" type="Node3D" unique_id=71187924]
 script = ExtResource("1_tk8kd")
@@ -73,9 +71,9 @@ stream = ExtResource("6_8fs1i")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15314656, -0.2486557, -1.168957)
 emitting = false
 amount = 10
+lifetime = 0.15000000000000002
 one_shot = true
-explosiveness = 0.85
-randomness = 0.74
-collision_base_size = 0.25
+randomness = 1.0
+collision_base_size = 1.0
 process_material = SubResource("ParticleProcessMaterial_ye2cy")
 draw_pass_1 = SubResource("QuadMesh_kmvbd")

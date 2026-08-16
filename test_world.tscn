@@ -33,6 +33,7 @@ points = PackedVector3Array(1.2457376, 0.32267618, 1.0631602, 1.1804094, -0.1623
 albedo_texture = ExtResource("4_kt6p6")
 uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
+texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_n4xt4"]
 material = SubResource("StandardMaterial3D_cnaw2")

@@ -3,9 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bga8f7ymilft1" path="res://models/kenney/Model/characterMedium.fbx" id="1_dcg0e"]
 [ext_resource type="Script" uid="uid://e0sicniftbrn" path="res://models/kenney/player_model.gd" id="2_6vyxd"]
 [ext_resource type="Texture2D" uid="uid://cnxjvplt85w3c" path="res://models/kenney/Skins/humanMaleA.png" id="2_lypv2"]
+[ext_resource type="PackedScene" uid="uid://ditbs5c87qi7s" path="res://models/pistol/pistol.glb" id="4_6vyxd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0lohr"]
 albedo_texture = ExtResource("2_lypv2")
+texture_filter = 0
 
 [sub_resource type="Animation" id="Animation_dcg0e"]
 resource_name = "Root|Idle"
@@ -972,41 +974,41 @@ bones/16/rotation = Quaternion(-0.70710695, 9.415693e-08, 0.7071066, 9.4157e-08)
 bones/18/position = Vector3(-4.991548e-07, -0.0010399983, 0.014820565)
 bones/19/position = Vector3(4.645995e-06, 0.00321951, -4.656895e-10)
 bones/19/rotation = Quaternion(5.2898486e-05, -0.027772393, 0.9996133, 0.0014451931)
-bones/20/rotation = Quaternion(0.013124118, -1.00803e-08, -1.1236766e-08, 0.9999139)
+bones/20/rotation = Quaternion(-0.0038732411, -9.905454e-09, -1.1420199e-08, 0.99999255)
 bones/21/rotation = Quaternion(0.06234841, -0.044852853, -0.0028048106, 0.9970421)
 bones/22/rotation = Quaternion(0.09409423, -3.9099857e-09, -2.640992e-10, 0.9955634)
-bones/23/position = Vector3(4.399699e-06, 0.0027168188, 4.812237e-05)
-bones/23/rotation = Quaternion(0.093004465, -0.00038859432, -0.0014309903, 0.9956646)
-bones/23/scale = Vector3(0.59999526, 0.59999996, 0.59999996)
+bones/23/position = Vector3(7.348717e-10, 0.0027086455, 8.381903e-09)
+bones/23/rotation = Quaternion(0.0770782, -1.0961695e-05, -4.0354353e-05, 0.99702513)
+bones/23/scale = Vector3(0.59999526, 0.59999996, 0.5999999)
 bones/24/position = Vector3(1.8537748e-13, 0.0027800906, 2.6110505e-10)
-bones/24/rotation = Quaternion(-0.17066357, 0.044291366, -0.0076106843, 0.9843041)
+bones/24/rotation = Quaternion(-0.11029748, 0.04374456, -0.0102985315, 0.9928821)
 bones/24/scale = Vector3(1, 0.99999994, 0.99999994)
 bones/26/rotation = Quaternion(0.5976563, 0.39550754, 0.56564707, -0.40795112)
-bones/27/rotation = Quaternion(-0.33553067, 0.65229726, -0.24320321, 0.6346493)
-bones/28/rotation = Quaternion(0.35440356, -0.045620773, -0.101375684, 0.9284611)
-bones/29/rotation = Quaternion(0.0024703653, 0.72203547, -0.041013215, 0.6906349)
+bones/27/rotation = Quaternion(-0.35904765, 0.6725628, -0.24041125, 0.60078835)
+bones/28/rotation = Quaternion(0.35129708, -0.07241238, -0.07149459, 0.93071777)
+bones/29/rotation = Quaternion(-0.014574865, 0.724296, -0.031854592, 0.68859875)
 bones/31/rotation = Quaternion(0.7716675, 0.046640478, 0.0019655565, 0.63431084)
 bones/32/rotation = Quaternion(0.41093522, -0.027859284, 0.012505351, 0.911153)
 bones/34/rotation = Quaternion(-0.21306114, 0.69503915, 0.35843098, 0.5857071)
 bones/35/rotation = Quaternion(0.66064835, -0.07545568, 0.11935202, 0.737296)
 bones/37/rotation = Quaternion(0.67818654, -0.48571, 0.46352893, 0.29881394)
-bones/38/rotation = Quaternion(0.06844788, 0.90841514, 0.38498414, -0.14793251)
-bones/39/rotation = Quaternion(-0.10065342, -0.033455804, 0.35083494, 0.930411)
-bones/40/rotation = Quaternion(-0.009052927, 0.16124415, -0.03380694, 0.9862939)
+bones/38/rotation = Quaternion(0.04780317, 0.90632063, 0.40083337, -0.12502207)
+bones/39/rotation = Quaternion(-0.06860229, -0.021372795, 0.35177767, 0.9333218)
+bones/40/rotation = Quaternion(-0.010772263, 0.11052539, -0.03329898, 0.9932569)
 bones/42/rotation = Quaternion(-0.74740034, 0.04220676, 0.007655531, 0.66298777)
 bones/43/rotation = Quaternion(-0.4109373, -0.02785813, -0.012504919, 0.91115206)
 bones/45/rotation = Quaternion(-0.23101984, 0.80249286, -0.3471273, -0.4267759)
 bones/46/rotation = Quaternion(-0.59514266, 0.04592186, 0.31065425, 0.7397232)
-bones/48/rotation = Quaternion(0.9938069, 0.08131379, -0.0021792846, 0.0757051)
-bones/49/rotation = Quaternion(0.4034057, 0.029619763, 0.15060566, 0.90205574)
+bones/48/rotation = Quaternion(0.9965397, 0.06924879, -0.00273312, 0.045890946)
+bones/49/rotation = Quaternion(0.3473983, 0.03047949, 0.1296962, 0.9282049)
 bones/49/scale = Vector3(0.99999994, 0.9999999, 1)
-bones/50/rotation = Quaternion(-0.68513143, -0.15442978, -0.15987352, 0.6936765)
+bones/50/rotation = Quaternion(-0.6611988, -0.15910076, -0.1575362, 0.7160206)
 bones/51/rotation = Quaternion(-0.01981804, 0.9522868, -0.29825518, 0.06165173)
-bones/53/rotation = Quaternion(0.96665543, -0.06265399, -0.1515592, 0.19667663)
+bones/53/rotation = Quaternion(0.9725952, -0.054535504, -0.15228797, 0.16701195)
 bones/53/scale = Vector3(0.99999565, 1, 0.99999976)
-bones/54/rotation = Quaternion(0.44132802, 0.010216143, -0.18794689, 0.87738323)
+bones/54/rotation = Quaternion(0.39271006, 0.010529336, -0.16724211, 0.90426654)
 bones/54/scale = Vector3(0.99999994, 1.0000001, 0.99999994)
-bones/55/rotation = Quaternion(-0.63931614, 0.21618782, 0.17390771, 0.71714276)
+bones/55/rotation = Quaternion(-0.6182966, 0.21852326, 0.1720463, 0.7350898)
 bones/56/rotation = Quaternion(0.028260345, 0.9539412, -0.2975736, -0.025447812)
 
 [node name="NeckBone" type="BoneAttachment3D" parent="Root/Skeleton3D" index="0" unique_id=465760660]
@@ -1017,6 +1019,14 @@ override_pose = true
 
 [node name="characterMedium" parent="Root/Skeleton3D" index="1" unique_id=1115656845]
 surface_material_override/0 = SubResource("StandardMaterial3D_0lohr")
+
+[node name="RightHandBone" type="BoneAttachment3D" parent="Root/Skeleton3D" index="2" unique_id=1517876565]
+transform = Transform3D(0.08104655, -0.16116734, -0.9836025, 0.96450764, -0.23616095, 0.11816652, -0.2513217, -0.9582552, 0.13630871, -0.00592337, -0.001285787, 0.01350319)
+bone_name = "RightHand"
+bone_idx = 40
+
+[node name="pistol" parent="Root/Skeleton3D/RightHandBone" index="0" unique_id=2136286734 instance=ExtResource("4_6vyxd")]
+transform = Transform3D(-0.0015488841, -0.009200502, -0.0035988796, 0.00053741253, 0.0035589812, -0.009329791, 0.009864699, -0.0016384829, -5.6788296e-05, 0.0014922877, -0.00013658684, -0.00037801964)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=77458421]
 libraries/idle = SubResource("AnimationLibrary_lypv2")

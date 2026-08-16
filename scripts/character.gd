@@ -59,6 +59,10 @@ extends CharacterBody3D
 @export var gravity_on : bool = true
 @export var health : int = 100
 
+@export_group("Network Settings")
+@export var network_position : Vector3 = Vector3.ZERO
+@export var network_interpolation : bool = true
+
 # Member variables
 var speed : float = base_speed
 var current_speed : float = 0.0
@@ -138,15 +142,15 @@ func _physics_process(delta):
 	
 	#code for the character animation
 	$BodyMesh.rotation.y = $Head.rotation.y
-	$BodyMesh/smg.rotation.x = $Head.rotation.x
 	
 	#flip the playermodel by a whole radian
 	$PlayerModel.rotation = $BodyMesh.global_rotation + Vector3(0, PI, 0)
 	
-	#match player model rotation and also rotate
-	#$male.rotation_degrees.y = HEAD.rotation_degrees.y + 180
-	#$male.character_animation(input_dir, is_on_floor(), state, delta)
-	#$male/Armature/Skeleton3D/SpineOverride.rotation_degrees.x = -HEAD.rotation_degrees.x
+	#interpolate smooth the position of other players
+	if not is_multiplayer_authority() and network_interpolation:
+		position = position.lerp(network_position, delta * get_node("/root/Root").tick_rate)
+	else:
+		network_position = global_position
 	
 	#do the footstep sounds
 	footsteps(input_dir)
@@ -287,7 +291,7 @@ func headbob_animation(moving):
 	if moving and is_on_floor():
 		var use_headbob_animation : String
 		match state:
-			"normal","crouching":
+			"normal", "crouching":
 				use_headbob_animation = "walk"
 			"sprinting":
 				use_headbob_animation = "sprint"
