@@ -1,6 +1,6 @@
-let int a 0
-let int b 100
-let int c 0
+let int a 0								; accumulator
+let int b 100							; end of loop
+let int c 0								; compariters
 let int d 0
 let int e 0
 let int f 0

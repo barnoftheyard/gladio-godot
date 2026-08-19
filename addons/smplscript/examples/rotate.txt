@@ -1,6 +1,5 @@
 let vec3 rotation 0 0 0
-let vec3 limit 0 360 0
-let vec3 y 5 5 0
+let vec3 xy 5 5 0
 
 reset:
 	sub rotation rotation
@@ -9,7 +8,7 @@ reset:
 rotate:
 	
 	node_get MeshInstance3D rotation_degrees rotation
-	add rotation y
+	add rotation xy
 	node_set MeshInstance3D rotation_degrees rotation
 	
 	print rotation

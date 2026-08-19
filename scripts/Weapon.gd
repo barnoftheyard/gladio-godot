@@ -20,7 +20,7 @@ var weapons = {
 	"pistol": {"max_mag": 12, "max_ammo": 144, "mag": 12, "ammo": 60, "damage": 25,
 	"rate": 0.2, "initial_position": Vector3(0.235, -0.755, -0.712)},
 	
-	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 999,
+	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 100,
 	"rate": 1.0, "initial_position": Vector3(0, -0.658, -1.529)}
 }
 
@@ -81,11 +81,6 @@ func _ready():
 			#connect the animation players of the viewmodel models with animation finished so that
 			#reloading works
 			x.get_node("AnimationPlayer").connect("animation_finished", _on_animation_finished)
-			
-		
-		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 1, false)
-		#set_all_meshes_layer_mask(viewmodel.get_node("arms"), 2, true)
-		
 
 #creates the decals for bullet holes
 func create_bullet_decal(object, decal_position, time):
@@ -120,6 +115,10 @@ func shoot_weapon(collision):
 			$FireParticle.emitting = true
 		
 		timer = weapons[current_weapon]["rate"]
+		
+		
+		get_parent().rotation_degrees.x += randf_range(0.25, weapons[current_weapon]["damage"] * 0.01)
+		get_parent().rotation_degrees.y += randf_range(-0.5, 0.5)
 		
 		if collision is RigidBody3D:
 			#apply a force onto a physics object to make it get knocked back
@@ -156,7 +155,6 @@ func shoot_weapon(collision):
 			create_bullet_decal(collision, $WeaponRay.get_collision_point(), 5)
 			
 		elif collision is CharacterBody3D:
-			#print(collision.name)
 			collision.damage.rpc(weapons[current_weapon]["damage"], get_multiplayer_authority())
 			
 	#if we run out of bullets in our mag

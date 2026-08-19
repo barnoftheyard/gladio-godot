@@ -29,12 +29,13 @@ project/assembly_name="Gladio"
 
 [editor]
 
+movie_writer/movie_file="/home/brandon/Godot/recordings/1.avi"
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/koala_time/plugin.cfg", "res://addons/post_processing/plugin.cfg", "res://addons/smplscript/plugin.cfg")
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg", "res://addons/koala_time/plugin.cfg", "res://addons/post_processing/plugin.cfg", "res://addons/smplscript/plugin.cfg")
 
 [input]
 
