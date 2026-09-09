@@ -14,17 +14,17 @@ const MOUSE_DELTA = 0.0075
 
 #dictionary of weapons
 var weapons = {
-	"smg": {"max_mag": 30, "max_ammo": 240, "mag": 30, "ammo": 30, "damage": 15,
-	"rate": 0.1, "initial_position": Vector3(0.25, -0.5, -1)},
-	
 	"pistol": {"max_mag": 12, "max_ammo": 144, "mag": 12, "ammo": 60, "damage": 25,
 	"rate": 0.2, "initial_position": Vector3(0.235, -0.755, -0.712)},
 	
+	"smg": {"max_mag": 30, "max_ammo": 240, "mag": 30, "ammo": 30, "damage": 15,
+	"rate": 0.1, "initial_position": Vector3(0.25, -0.5, -1)},
+	
 	"saw": {"max_mag": 999, "max_ammo": 0, "mag": 999, "ammo": 0, "damage": 100,
-	"rate": 1.0, "initial_position": Vector3(0, -0.658, -1.529)}
+	"rate": 1.5, "initial_position": Vector3(0, -0.658, -1.529)}
 }
 
-@export var current_weapon = "smg"
+@export var current_weapon = "pistol"
 
 var current_weapon_index = 0
 var current_weapon_mag = weapons[current_weapon]["mag"]
