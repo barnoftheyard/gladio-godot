@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ctbk4ckoku7mi"]
+
+[ext_resource type="Texture2D" uid="uid://0bxhsnem7mgj" path="res://textures/editor/gray.png" id="1_vwgnr"]
+
+[resource]
+albedo_texture = ExtResource("1_vwgnr")
+metallic_specular = 0.2
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.000850145

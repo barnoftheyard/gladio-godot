@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://2s1w8l3tb1r3"]
+
+[ext_resource type="Texture2D" uid="uid://cia7r6u3j28vl" path="res://textures/Brick/tiles.png" id="1_7iphp"]
+
+[resource]
+albedo_texture = ExtResource("1_7iphp")
+metallic_specular = 0.2
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.000850145
